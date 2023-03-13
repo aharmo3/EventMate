@@ -1,33 +1,15 @@
-import React, {useState, useEffect} from "react";
-import './App.css';
-import ClientAPI from "./ClientAPI";
+import React, { useState, useEffect } from "react";
+import TopNav from "./components/TopNav";
+import RegistrationForm from "./components/RegistrationForm";
 
+import "./App.css";
 
 function App() {
-  let [message, setMessage] = useState("");
-
-  useEffect(() => {
-    commect();
-  }, []);
-
-  async function commect() {
-    let uresponse = await ClientAPI.commect();
-    if (uresponse.ok) {
-      setMessage(uresponse.data.welcome)
-    }
-    else {
-      console.log('Error!', uresponse.error);
-    }
-  }
-  
-
-
   return (
-    <div className="App">
-    {
-      message && <p>{message}</p>
-    }
-    </div>
+    <>
+      <TopNav />
+      <RegistrationForm />
+    </>
   );
 }
 
