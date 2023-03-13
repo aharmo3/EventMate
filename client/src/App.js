@@ -1,23 +1,32 @@
-import logo from './logo.svg';
+import React, {useState, useEffect} from "react";
 import './App.css';
+import ClientAPI from "./ClientAPI";
+
 
 function App() {
+  let [message, setMessage] = useState("");
+
+  useEffect(() => {
+    commect();
+  }, []);
+
+  async function commect() {
+    let uresponse = await ClientAPI.commect();
+    if (uresponse.ok) {
+      setMessage(uresponse.data.welcome)
+    }
+    else {
+      console.log('Error!', uresponse.error);
+    }
+  }
+  
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    {
+      message && <p>{message}</p>
+    }
     </div>
   );
 }
