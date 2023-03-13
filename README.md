@@ -8,6 +8,21 @@
 - Run `npm install` in project directory. This will install server-related dependencies such as `express`.
 - `cd client` and run `npm install`. This will install client dependencies (React).
 
+### Database Prep
+
+- Access the MySQL interface in your terminal by running `mysql -u root -p`
+- Create a new database called facebook: `create database team4`
+- Add the `.env`, to containing the MySQL authentication information for MySQL user. For example:
+
+```bash
+  DB_HOST=localhost
+  DB_USER=root
+  DB_NAME=team4
+  DB_PASS=YOURPASSWORD
+```
+
+- Run `npm run migrate` in the project folder of this repository, in a new terminal window. This will create a table users in your database.
+
 
 ### Development
 
