@@ -3,12 +3,14 @@ import TopNav from "./components/TopNav";
 import RegistrationForm from "./components/RegistrationForm";
 
 import "./App.css";
+import ChooseEvents from "./components/ChooseEvents";
 
 function App() {
   return (
     <>
       <TopNav />
       <RegistrationForm />
+      <ChooseEvents/>
     </>
   );
 }
