@@ -5,7 +5,7 @@
     column-gap: 50px;
     justify-content: center;
     justify-items: stretch;
-    row-gap: 1vw;
+    row-gap: 1.5vw;
 
 }
 
@@ -38,13 +38,13 @@
 
 .event-title{
     grid-area: title;
-    border:0.5px solid green;
+    /* border:0.5px solid green; */
     margin:0;
 }
 
 .event-date-time{
     grid-area: date;
-    border:0.5px solid blue;
+    /* border:0.5px solid blue; */
     margin:0;
     font-size: 10px;
     padding: 0;
@@ -52,7 +52,7 @@
 
 .event-venue{
     grid-area: venue;
-    border:0.5px solid purple;
+    /* border:0.5px solid purple; */
     margin:0;
     font-size: 10px;
     padding: 0;
