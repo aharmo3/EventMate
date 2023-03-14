@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { GetByLocTM } from "../ApiCalls/GetByLocTM";
+import Checkbox from '@mui/material/Checkbox';
+import "./chooseEvents.css"
 
 function ChooseEvents() {
       const [location, setLocation] = useState(""); // save location
@@ -22,9 +24,6 @@ function ChooseEvents() {
      
   async function getEvents(place){
     let results = await GetByLocTM(location);
-
-    
-
     //formatting the object to only take what we need
    let newResults= results.map((result) =>{
     return {"id": result.id, 
@@ -33,13 +32,7 @@ function ChooseEvents() {
     "date" : result.dates.start.localDate, 
     "time" : result.dates.start.localTime, 
     "venue" : result._embedded.venues["0"].name}});
-    // let newResults= results.map((result) =>
-    // [{"id": result.id}, 
-    // {"name":result.name}, 
-    // {"image" : result.images["0"].url}, 
-    // {"date" : result.dates.start.localDate}, 
-    // {"time" : result.dates.start.localTime}, 
-    // {"venue" : result._embedded.venues["0"].name}]);
+
     console.log("new Results" , newResults)
     await setEvents(newResults);
   }
@@ -70,20 +63,28 @@ function ChooseEvents() {
 
 
      { showEvents &&
-      <div className="results">
-       Events in {location}
+      <div className="show-choose-events">
+       <h2>Events in {location}</h2>
+       <div className="results-choose-events">
       {
       events.map(r => {
-          return <div key={r.id}>
-            <h3>{r.name}</h3>
-           <img src= {r.image} alt=""/>
-           <p>Date: {r.date}</p>
-           <p>Venue:{r.venue}</p>
+          return <div key={r.id} className="event-items">
+              <Checkbox
+                className="event-checkbox"
+                value={r.id}
+                inputProps={{
+                    'aria-label': 'Checkbox A',
+                }}
+            />
+            <img src= {r.image} alt="" className="event-img"/>
+            <p className="event-title">{r.name}</p>
+            <p className="event-date-time">{r.date} | {r.time}</p>
+            <p className="event-venue">{r.venue}</p>
           </div>
       }
            )}
          </div>
-         
+         </div>
          }
 
 
