@@ -12,7 +12,8 @@ export default function LanguageDropdown({ label, placeholder, name }) {
       <Autocomplete
         multiple
         onChange={(event, newValue) => {
-          handleFormChange(event, { name: name, value: newValue });
+          const values = newValue.map((value) => value.name);
+          handleFormChange(event, { name: name, value: values });
         }}
         options={languages}
         getOptionLabel={(option) => option && option.name}
