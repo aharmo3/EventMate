@@ -6,7 +6,8 @@ import RegistrationForm from "./components/Registration/RegistrationForm";
 import "./App.css";
 import ChooseEvents from "./components/ChooseEvents";
 
-
+//<RegistrationForm />
+//<ChooseEvents />
 //<UserListView />
 function App() {
   return (

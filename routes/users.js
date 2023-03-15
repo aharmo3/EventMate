@@ -34,6 +34,24 @@ router.get("/", async function (req, res, next) {
   }
 });
 
+// Will eventually get all users matched on an event
+router.get("/matched", async function (req, res, next) {
+  let sql = "SELECT * FROM users";
+
+  try {
+    let results = await db(sql);
+    let users = results.data;
+    if (users.length === 0) {
+      res.status(404).send({ error: "No users found" });
+    } else {
+      users.forEach((u) => delete u.password); // don't return passwords
+      res.send(users);
+    }
+  } catch (err) {
+    res.status(500).send({ error: err.message });
+  }
+});
+
 router.get("/:id", ensureSameUser, async (req, res) => {
   let userId = req.params.id;
   let sql = `select * from users where userId = ${userId}`;
@@ -44,24 +62,6 @@ router.get("/:id", ensureSameUser, async (req, res) => {
     let user = results.data[0];
     delete user.password; // don't return the password
     res.send(user);
-  } catch (err) {
-    res.status(500).send({ error: err.message });
-  }
-});
-
-// Will eventually get all users matched on an event
-router.get('/matched', async function(req, res) {
-  let sql = `SELECT * FROM users`;
-
-  try {
-    let result = await db(sql);
-    let users = result.data;
-    users.forEach((u) => delete u.password); // don't return passwords
-    if (users.length === 0) {
-      res.status(404).send({ error: "No users found" });
-    } else {
-      res.send(users);
-    }
   } catch (err) {
     res.status(500).send({ error: err.message });
   }
