@@ -1,6 +1,5 @@
 # Team4 - Event Partner App
 
-
 ## Setup
 
 ### Dependencies
@@ -11,7 +10,7 @@
 ### Database Prep
 
 - Access the MySQL interface in your terminal by running `mysql -u root -p`
-- Create a new database called facebook: `create database team4`
+- Create a new database called team4: `create database team4`
 - Add the `.env`, to containing the MySQL authentication information for MySQL user. For example:
 
 ```bash
@@ -23,9 +22,7 @@
 
 - Run `npm run migrate` in the project folder of this repository, in a new terminal window. This will create a table users in your database.
 
-
 ### Development
 
 - Run `npm start` in project directory to start the Express server on port 5000
 - In another terminal, do `cd client` and run `npm start` to start the client in development mode with hot reloading in port 3000.
-
