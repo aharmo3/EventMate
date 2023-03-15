@@ -10,11 +10,13 @@ import Form from "../Form";
 import LanguageDropdown from "./LanguageDropdown";
 import LocationDropdown from "./LocationDropdown";
 import InterestsDropdown from "./InterestsDropdown";
+import UploadImage from "./UploadImage";
 
 export default function RegistrationForm() {
   return (
     <Form
       submit={(form) => {
+        // TODO: data for submit
         console.log("FORM", form);
       }}
       formInitialValues={{
@@ -25,6 +27,7 @@ export default function RegistrationForm() {
         education: "",
         languages: [],
         interests: [],
+        avatarURL: "",
       }}
     >
       <Grid container spacing={2}>
@@ -69,6 +72,9 @@ export default function RegistrationForm() {
             name="interests"
             placeholder="Select An Interest"
           />
+          <FormControl sx={{ mt: 5, width: 300 }}>
+            <UploadImage name="avatarURL" />
+          </FormControl>
         </Grid>
         <Grid item xs={12}>
           <Button variant="contained" type="submit" size="large">
