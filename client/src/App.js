@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import TopNav from "./components/TopNav";
 import UserListView from "./components/UserListView";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import RegistrationForm from "./components/Registration/RegistrationForm";
 
 import "./App.css";
@@ -14,9 +15,13 @@ function App() {
     <>
       <TopNav />
       <main>
-        <RegistrationForm />
-        <ChooseEvents />
+      <Routes>
+      <Route path="/matched" element={<UserListView />} />
+      <Route path="/register" element={<RegistrationForm />}/>
+      <Route path="/events" element={<ChooseEvents />}/>
+      </Routes>
       </main>
+     
     </>
   );
 }
