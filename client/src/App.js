@@ -9,10 +9,10 @@ function App() {
   return (
     <>
       <TopNav />
-      
+
       <main>
         <RegistrationForm />
-        <ChooseEvents/>
+        <ChooseEvents />
       </main>
     </>
   );

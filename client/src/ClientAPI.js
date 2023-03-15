@@ -1,26 +1,22 @@
+import Local from "./helpers/Local";
 
 class ClientAPI {
-  
   static async commect() {
     return await this._doFetch("/api");
-  };
+  }
 
-  
-  static async _doFetch(url, method = 'GET', body = null) {
-
-    let options = { 
+  static async _doFetch(url, method = "GET", body = null) {
+    let options = {
       method,
-      headers: {}
+      headers: {},
     };
 
     if (body) {
-      options.headers['Content-Type'] = 'application/json';
+      options.headers["Content-Type"] = "application/json";
       options.body = JSON.stringify(body);
     }
 
-
-    let uresponse = { ok: false, data: null, status: 0, error: '' };
-    
+    let uresponse = { ok: false, data: null, status: 0, error: "" };
 
     try {
       let response = await fetch(url, options);
@@ -28,7 +24,6 @@ class ClientAPI {
         uresponse.ok = true;
         uresponse.data = await response.json();
         uresponse.status = response.status;
-        
       } else {
         uresponse.status = response.status;
         uresponse.error = response.statusText;
@@ -36,11 +31,9 @@ class ClientAPI {
     } catch (err) {
       uresponse.error = err.message;
     }
-    
+
     return uresponse;
   }
-
-
 }
 
 export default ClientAPI;
