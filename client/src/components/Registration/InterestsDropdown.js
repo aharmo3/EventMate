@@ -12,7 +12,8 @@ export default function InterestsDropdown({ label, placeholder, name }) {
       multiple
       options={betterInterests}
       onChange={(event, newValue) => {
-        handleFormChange(event, { name: name, value: newValue });
+        const values = newValue.map((value) => value.title);
+        handleFormChange(event, { name: name, value: values });
       }}
       getOptionLabel={(option) => option.title}
       renderOption={(props, option) => {
