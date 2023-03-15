@@ -19,7 +19,7 @@ app.use(cookieParser());
 //app.use(express.static(path.join(__dirname, 'public')));
 
 app.use("/api", indexRouter);
-app.use("/users", usersRouter);
+app.use("/api/users", usersRouter);
 app.use("/", authRouter);
 
 // Catch 404 and forward to error handler
@@ -32,5 +32,6 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.send({ error: err.message });
 });
+
 
 module.exports = app;
