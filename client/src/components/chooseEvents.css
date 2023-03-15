@@ -1,0 +1,59 @@
+.results-choose-events{
+    max-height: 500px;
+    display: grid;
+    grid-template-columns: 35vw 35vw;
+    column-gap: 50px;
+    justify-content: center;
+    justify-items: stretch;
+    row-gap: 1.5vw;
+
+}
+
+.event-items{
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-template-areas: 
+         "checkbox image title"
+         "checkbox image date"
+         "checkbox image venue";
+    height: 6.5vh;
+    justify-content: flex-start;
+    flex-direction: row;
+    align-items: start;
+  
+}
+
+
+/* ----------- Items in events ---------------------- */
+.event-checkbox{
+    grid-area: checkbox;
+    align-content: center;
+}
+.event-img{
+    grid-area: image;
+    width: 100px;
+    max-height: 6.5vh;
+    margin-right: 1vw;
+}
+
+.event-title{
+    grid-area: title;
+    /* border:0.5px solid green; */
+    margin:0;
+}
+
+.event-date-time{
+    grid-area: date;
+    /* border:0.5px solid blue; */
+    margin:0;
+    font-size: 10px;
+    padding: 0;
+}
+
+.event-venue{
+    grid-area: venue;
+    /* border:0.5px solid purple; */
+    margin:0;
+    font-size: 10px;
+    padding: 0;
+}

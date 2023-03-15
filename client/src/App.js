@@ -1,16 +1,21 @@
 import React, { useState, useEffect } from "react";
 import TopNav from "./components/TopNav";
-import RegistrationForm from "./components/RegistrationForm";
 import UserListView from "./components/UserListView";
+import RegistrationForm from "./components/Registration/RegistrationForm";
 
 import "./App.css";
-//<RegistrationForm />
+import ChooseEvents from "./components/ChooseEvents";
 
+
+//<UserListView />
 function App() {
   return (
     <>
       <TopNav />
-      <UserListView />
+      <main>
+        <RegistrationForm />
+        <ChooseEvents />
+      </main>
     </>
   );
 }
