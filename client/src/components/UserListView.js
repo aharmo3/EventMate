@@ -18,7 +18,7 @@ export default function UserListView() {
 
   const [matched, setMatched] = useState([]);
   const [open, setOpen] = useState(false);
-  const [match, setMatch] = useState(false);
+  const [matchClicked, setMatchClicked] = useState(false);
 
   useEffect(() => {
     getMatched();
@@ -34,17 +34,15 @@ export default function UserListView() {
     }
   }
 
-  const handleClickOpen = clickedMatch => () =>{
-    console.log(clickedMatch);
-    setMatch(clickedMatch);
-    if (match) {
-      console.log(match);
-      setOpen(true);
-    }
+  const handleClickOpen = (matchPass) =>{
+    console.log("----", matchPass)
+    setMatchClicked(matchPass);
+    setOpen(true);
   };
 
   const handleClose = () => {
     setOpen(false);
+    setMatchClicked(false);
   };
 
 
@@ -70,7 +68,7 @@ export default function UserListView() {
       { matched &&
         matched.map(match => (
           <div>
-          <ListItem key={match.id} onClick={handleClickOpen(match)}>
+          <ListItem key={match.userId} onClick={e => handleClickOpen(match)}>
 
             <ListItemAvatar sx={{ 
               mr: '15px'  
@@ -107,8 +105,10 @@ export default function UserListView() {
           </ListItem>
           <Divider component="li" />
 
-          <UserDialogView open={open} onClose={handleClose} match={match} />
-          
+          {
+            matchClicked && <UserDialogView open={open} onClose={handleClose} matchClicked={matchClicked} />
+          }
+
           </div>
         ))}
       </List>
