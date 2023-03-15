@@ -4,6 +4,7 @@ import RegistrationForm from "./components/Registration/RegistrationForm";
 
 import "./App.css";
 import ChooseEvents from "./components/ChooseEvents";
+import SearchEvents from "./components/SearchEvents";
 
 function App() {
   return (
@@ -11,7 +12,8 @@ function App() {
       <TopNav />
       
       <main>
-        <RegistrationForm />
+        {/* <RegistrationForm /> */}
+        {/* <SearchEvents/> */}
         <ChooseEvents/>
       </main>
     </>
