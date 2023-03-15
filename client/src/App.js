@@ -5,6 +5,7 @@ import RegistrationForm from "./components/Registration/RegistrationForm";
 import "./App.css";
 import ChooseEvents from "./components/ChooseEvents";
 import SearchEvents from "./components/SearchEvents";
+import EventsCards from "./components/EventsCards";
 
 function App() {
   return (
@@ -14,7 +15,9 @@ function App() {
       <main>
         {/* <RegistrationForm /> */}
         {/* <SearchEvents/> */}
-        <ChooseEvents/>
+        {/* <ChooseEvents/> */}
+        <EventsCards 
+        />
       </main>
     </>
   );

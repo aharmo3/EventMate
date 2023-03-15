@@ -41,7 +41,7 @@ function ChooseEvents() {
         setShowTitle(false);
     }  
 
-    async function handleSubmit(e){
+    async function handleFormLocation(e){
         e.preventDefault();
         await getEvents(location)
         console.log("events set as:", events)
@@ -79,6 +79,7 @@ function ChooseEvents() {
         checkedEvents.push(eventId)
         setChosenEvents(checkedEvents);
       }
+      console.log(chosenEvents);
    }
 
    function handleSend (){
@@ -94,7 +95,7 @@ function ChooseEvents() {
 
 { showEdit &&
        <div className="edit-location">
-        <form className= "edit-loc-form" onSubmit={e => handleSubmit(e)}>
+        <form className= "edit-loc-form" onSubmit={e => handleFormLocation(e)}>
         <h2>Events in </h2>
         <TextField id="standard-basic" label="city" variant="standard" 
               placeholder="enter your location"
