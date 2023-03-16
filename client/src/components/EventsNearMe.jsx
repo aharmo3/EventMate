@@ -39,7 +39,9 @@ useEffect(() => {
         "time" : result.dates.start.localTime, 
         "venue" : result._embedded.venues["0"].name}});
         console.log("new Results" , newResults)
-        await setEvents(newResults); 
+      let shortResults = newResults.slice(0,4); 
+        console.log(shortResults);    
+        await setEvents(shortResults); 
         setLoading(false)
         setShowList(true)
     }
