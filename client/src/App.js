@@ -13,6 +13,8 @@ function App() {
   let [user, setUser] = useState(Local.getUser());
   const [loginErrorMsg, setLoginErrorMsg] = useState("");
   const [registrationErrorMsg, setRegistrationErrorMsg] = useState("");
+  const [isRegistrationSuccessful, setIsRegistrationSuccessful] =
+    useState(false);
 
   // const navigate = useNavigate();
 
@@ -21,6 +23,7 @@ function App() {
     if (myresponse.ok) {
       doLogin(username, password);
       setRegistrationErrorMsg("");
+      setIsRegistrationSuccessful(myresponse);
     } else {
       setRegistrationErrorMsg(`Registration Failed`);
     }
@@ -51,7 +54,7 @@ function App() {
       <TopNav user={user} logOutCb={doLogout} />
       <main>
         {/* <RegistrationForm /> */}
-        <LoginForm />
+        <LoginForm registrationMessage={isRegistrationSuccessful} />
         {/* <ChooseEvents /> */}
       </main>
     </>

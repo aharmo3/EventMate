@@ -12,21 +12,7 @@ import "./LoginForm.css";
 //   email: "",
 // };
 
-export default function LoginForm() {
-  // const [input, setInput] = useState(EMPTYFORM);
-  // const [username, setUsername] = useState("");
-  // const [password, setPassword] = useState("");
-  // const [email, setEmail] = useState("");
-
-  // function handleChangeRegister(event) {
-  //   let name = event.target.name;
-  //   let value = event.target.value;
-
-  //   let newRegister = { ...input };
-  //   newRegister[name] = value;
-  //   setInput((input) => newRegister);
-  // }
-
+export default function LoginForm(props) {
   async function handleSubmit(form) {
     console.log(form);
     const response = await ClientAPI.loginUser(form.username, form.password);
@@ -78,6 +64,7 @@ export default function LoginForm() {
           <br />
           <br />
           <Button type="submit">Register</Button>
+          {props.registrationMessage && <p>Registration successful</p>}
         </Form>
       </div>
     </div>
