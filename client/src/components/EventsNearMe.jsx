@@ -10,6 +10,7 @@ import getMyEvents from '../helpers/Utils/getMyEvents.js';
 import { GetByLocTM } from '../ApiCalls/GetByLocTM.jsx';
 import { Button } from '@mui/material';
 import { Link } from 'react-router-dom';
+import noRepeatEvents from '../helpers/Utils/noRepeatEvents.js';
 
 
 //we can use geolocation or user's DB location - see "getEvents" function below
@@ -38,10 +39,12 @@ useEffect(() => {
         "date" : result.dates.start.localDate, 
         "time" : result.dates.start.localTime, 
         "venue" : result._embedded.venues["0"].name}});
-        console.log("new Results" , newResults)
-      let shortResults = newResults.slice(0,4); 
-        console.log(shortResults);    
-        await setEvents(shortResults); 
+        
+        //function checks events against first for uniqueness
+        // the number is how many objects it returns in the array
+        let limitedEvents = noRepeatEvents(newResults,4);
+  
+        await setEvents(limitedEvents); 
         setLoading(false)
         setShowList(true)
     }
