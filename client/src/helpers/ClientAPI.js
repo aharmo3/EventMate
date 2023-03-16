@@ -4,7 +4,7 @@ class ClientAPI {
   // To be updated later to actually get matched users for now it just gets all users
   static async getMatchedUsers() {
     return await this._doFetch("/users/matched");
-  };
+  }
 
   //register
   static async registerUser(username, password, email) {
@@ -12,6 +12,10 @@ class ClientAPI {
     return await this._doFetch("/register", "POST", body);
   }
 
+  //Update User (more details)
+  static async updateUser(body, userId) {
+    return await this._doFetch(`/users/${userId}`, "PUT", body);
+  }
   //login
   static async loginUser(username, password) {
     let body = { username, password };
