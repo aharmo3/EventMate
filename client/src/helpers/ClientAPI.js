@@ -61,6 +61,7 @@ class ClientAPI {
       } else {
         uresponse.status = response.status;
         uresponse.error = response.statusText;
+        //uresponse.data = await response.json(); //check error messages on all of them or none of them
       }
     } catch (err) {
       uresponse.error = err.message;

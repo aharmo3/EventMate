@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useParams, Link } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import { Typography } from "@mui/material";
 import Button from "@mui/material/Button";
@@ -13,9 +14,13 @@ import InterestsDropdown from "./InterestsDropdown";
 import UploadImage from "./UploadImage";
 import ClientAPI from "../../helpers/ClientAPI";
 import Local from "../../helpers/Local";
+
 export default function RegistrationForm() {
+  const { userId } = useParams();
+
   async function updateUser(form) {
-    const userId = Local.getUserId();
+    //const userId = Local.getUserId();
+    console.log(userId);
     ClientAPI.updateUser(form, userId);
   }
   return (
@@ -82,9 +87,11 @@ export default function RegistrationForm() {
           </FormControl>
         </Grid>
         <Grid item xs={12}>
-          <Button variant="contained" type="submit" size="large">
-            Submit
-          </Button>
+          <Link to="/events">
+            <Button variant="contained" type="submit" size="large">
+              Submit
+            </Button>
+          </Link>
         </Grid>
       </Grid>
     </Form>

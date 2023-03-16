@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import FormInput from "./FormInput";
 import Form from "./Form";
 import Button from "@mui/material/Button";
@@ -13,7 +13,7 @@ import "./LoginForm.css";
 // };
 
 // TODO - Navigate to dashboard
-export default function LoginForm(props) {
+export default function LoginForm({doRegister}) {
   async function handleSubmit(form) {
     console.log(form);
     const response = await ClientAPI.loginUser(form.username, form.password);
@@ -22,12 +22,13 @@ export default function LoginForm(props) {
 
   // TODO - Navigate to secondary registration
   async function handleRegistration(form) {
-    console.log(form);
-    const response = await ClientAPI.registerUser(
-      form.username,
-      form.email,
-      form.password
-    );
+    //console.log(form);
+    doRegister(form.username, form.email, form.password);
+    // const response = await ClientAPI.registerUser(
+    //   form.username,
+    //   form.email,
+    //   form.password
+    // );
   }
 
   return (
