@@ -5,7 +5,6 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Typography from '@mui/material/Typography';
 import React, {useState} from 'react'
-import { GetByLocTM } from '../ApiCalls/GetByLocTM';
 import { useEffect } from 'react';
 import getMyEvents from '../getMyEvents';
 
