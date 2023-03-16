@@ -64,6 +64,7 @@ function App() {
       <Route path="/register" element={<RegistrationForm />}/>
       <Route path="/events" element={<ChooseEvents />}/>
       <Route path="/login" element={<LoginForm />}/>
+   
       </Routes>
       </main>
      
