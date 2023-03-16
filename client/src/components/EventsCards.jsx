@@ -7,6 +7,8 @@ import Typography from '@mui/material/Typography';
 import React, {useState} from 'react'
 import { useEffect } from 'react';
 import getMyEvents from '../helpers/Utils/getMyEvents.js';
+import { CircularProgress } from '@mui/material';
+import EventsDisplayModal from './EventsDisplayModal.jsx';
 
 
 //pass the data into the component as a prop
@@ -16,10 +18,19 @@ function EventsCards() {
 const [events, setEvents] = useState(); 
 const [loading, setLoading] = useState(true);
 const [showList, setShowList]= useState(false);
+const [isOpen, setIsOpen]= useState(false);
+const [modalId, setModalId]= useState("");
 
 useEffect(() => {
  getEvents();
 }, [])
+
+function handleOpenModal(id){
+  setModalId(id);
+  setIsOpen(true);
+
+}
+
 
 
     async function getEvents(){  
@@ -43,7 +54,8 @@ useEffect(() => {
     <div className= "event-cards">
             {loading &&
             <div>
-            <h1>Loading......</h1>  
+            <CircularProgress />
+            {/* <h1>Loading......</h1>   */}
             </div>
             }
 
@@ -72,6 +84,7 @@ useEffect(() => {
         </ListItemAvatar>
         <ListItemText
           primary={r.name} 
+          onClick={e => handleOpenModal(r.id)} 
           secondary={
             <React.Fragment>
               <Typography
@@ -94,7 +107,13 @@ useEffect(() => {
         })} {/*close map fn */}
        </div> 
    }
-    </div>
+
+   <EventsDisplayModal
+   isOpen={isOpen}
+   handleOpen={setIsOpen}
+   eventID={modalId}
+   />
+   </div>
   )
 }
 

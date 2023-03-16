@@ -8,7 +8,7 @@ import React, {useState} from 'react'
 import { useEffect } from 'react';
 import getMyEvents from '../helpers/Utils/getMyEvents.js';
 import { GetByLocTM } from '../ApiCalls/GetByLocTM.jsx';
-import { Button } from '@mui/material';
+import { Button, CircularProgress } from '@mui/material';
 import { Link } from 'react-router-dom';
 import noRepeatEvents from '../helpers/Utils/noRepeatEvents.js';
 
@@ -53,7 +53,8 @@ useEffect(() => {
     <div className= "event-cards">
             {loading &&
             <div>
-            <h1>Loading......</h1>  
+            {/* <h1>Loading......</h1>   */}
+            <CircularProgress />
             </div>
             }
 

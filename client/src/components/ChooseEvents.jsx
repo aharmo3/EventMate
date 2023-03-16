@@ -11,7 +11,7 @@ function ChooseEvents() {
       const [showEdit, setShowEdit]= useState(false);
       const [showTitle, setShowTitle]= useState(true);
       const [chosenEvents, setChosenEvents] = useState([]);
-      const [isChecked, setIsChecked]= useState([]); 
+      // const [isChecked, setIsChecked]= useState([]); 
 
     //Loads with user's current country in DB     
     useEffect(() => {
@@ -25,8 +25,10 @@ function ChooseEvents() {
     }, [location]);
 
     async function getLocation(){
-        // fetche location from db
+        // fetch location from db
         //placeholder below
+
+        
         setLocation("barcelona");
     };
 
