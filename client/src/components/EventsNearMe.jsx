@@ -8,10 +8,14 @@ import React, {useState} from 'react'
 import { useEffect } from 'react';
 import getMyEvents from '../helpers/Utils/getMyEvents.js';
 import { GetByLocTM } from '../ApiCalls/GetByLocTM.jsx';
+import { Button } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 
-//pass the data into the component as a prop
-// you'll need a useEffect on the page it's nested in 
+//we can use geolocation or user's DB location - see "getEvents" function below
+
+// Currently limiting it to display only 4 events with a "see more" down the bottom,
+// but it can display up to 20. See More should eventually lead to the events search page
 
 function EventsCards() {
 const [events, setEvents] = useState(); 
@@ -95,6 +99,20 @@ useEffect(() => {
         })} {/*close map fn */}
        </div> 
    }
+
+
+        {/* Takes user to search events with default current location.
+        We can change this for a modal later if preferred */}
+        <Link to="/searchevents"
+        style={{textDecoration: "none"}}
+        >
+        <Button 
+        variant="text"
+        >See More...</Button>
+        </Link>
+
+
+
     </div>
   )
 }
