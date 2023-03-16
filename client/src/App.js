@@ -10,6 +10,7 @@ import FormInput from "./components/FormInput";
 import Local from "./helpers/Local";
 import ClientAPI from "./helpers/ClientAPI";
 import LoginForm from "./components/LoginForm";
+import UserDashboard from "./components/UserDashboardView";
 
 //<RegistrationForm />
 //<ChooseEvents />
@@ -64,7 +65,7 @@ function App() {
       <Route path="/register" element={<RegistrationForm />}/>
       <Route path="/events" element={<ChooseEvents />}/>
       <Route path="/login" element={<LoginForm />}/>
-   
+      <Route path="/dashboard" element={<UserDashboard />}/>
       </Routes>
       </main>
      
