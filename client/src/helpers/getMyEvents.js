@@ -13,12 +13,15 @@ export default async function getMyEvents(){
  //for every item -  call api by event id
  for (let i of dbData){
     let temp= await GetEventsFromTicketMaster("eventId", i);
+    //current error means some return "undefined" - to make sure something still loads,
+    // (and so we don't all get error messages) I added the if statement - but needs fixing
     if (temp){
         result.push(temp[0]);
     }else {
+        //see which ones aren't fetching properly in the console
         console.log("API fetch error, returning 'undefined' for event ID: ", i);
     }
- }
+ }  //see the result from Ticketmaster in the console
  console.log("Events arrived from Ticketmaster...", result)
     return result;
 }
