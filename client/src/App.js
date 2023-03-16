@@ -1,6 +1,7 @@
 import React from "react";
 import TopNav from "./components/TopNav";
 import UserListView from "./components/UserListView";
+import Home from "./components/Home";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import RegistrationForm from "./components/Registration/RegistrationForm";
 
@@ -16,6 +17,7 @@ function App() {
       <TopNav />
       <main>
       <Routes>
+      <Route path="/" element={<Home />} />
       <Route path="/matched" element={<UserListView />} />
       <Route path="/register" element={<RegistrationForm />}/>
       <Route path="/events" element={<ChooseEvents />}/>
