@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import TopNav from "./components/TopNav";
+import UserListView from "./components/UserListView";
 import RegistrationForm from "./components/Registration/RegistrationForm";
 import "./App.css";
 import ChooseEvents from "./components/ChooseEvents";
@@ -9,6 +10,9 @@ import ClientAPI from "./helpers/ClientAPI";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import LoginForm from "./components/LoginForm";
 
+//<RegistrationForm />
+//<ChooseEvents />
+//<UserListView />
 function App() {
   let [user, setUser] = useState(Local.getUser());
   const [loginErrorMsg, setLoginErrorMsg] = useState("");
