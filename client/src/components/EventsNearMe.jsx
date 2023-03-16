@@ -7,6 +7,7 @@ import Typography from '@mui/material/Typography';
 import React, {useState} from 'react'
 import { useEffect } from 'react';
 import getMyEvents from '../helpers/Utils/getMyEvents.js';
+import { GetByLocTM } from '../ApiCalls/GetByLocTM.jsx';
 
 
 //pass the data into the component as a prop
@@ -24,8 +25,8 @@ useEffect(() => {
 
     async function getEvents(){  
         console.log("getting events for event cards....")
-    //  let apiData =  await GetByLocTM("Barcelona");
-    let apiData =  await getMyEvents();
+     let apiData =  await GetByLocTM ("Barcelona");
+    // let apiData =  await getMyEvents();
     let newResults= apiData.map((result) =>{ 
         return {"id": result.id, 
         "name":result.name, 

@@ -2,14 +2,15 @@
 //pass the result as props for event cards component to display events
 
 import { GetEventsFromTicketMaster } from "../../ApiCalls/GetEventsFromTicketMaster"
-import ClientAPI from "./ClientAPI";
+import ClientAPI from "../ClientAPI";
 
 export default async function getMyEvents(userId){
     let result=[];   
- //fetch request from db - array
+
+//  fetch request from db - array
     const response = await ClientAPI.getUser()
         console.log("fetching user data...")
-  console.log(response);
+        console.log(response);
 
  //temp solution
  let dbData= ['Z698xZ2qZaFAa', 'Z698xZ2qZaFpc', 'Z698xZ2qZa6M-', 'Z698xZ2qZa6Ch', 'Z698xZ2qZa6U4', 'Z698xZ2qZaFp2']
