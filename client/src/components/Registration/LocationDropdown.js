@@ -113,7 +113,7 @@ export default function LocationDropdown({ label, name }) {
         setOptions(newValue ? [newValue, ...options] : options);
         setValue(newValue);
 
-        handleFormChange(event, { name: name, value: newValue });
+        handleFormChange(event, { name: name, value: newValue.description });
       }}
       onInputChange={(event, newInputValue) => {
         setInputValue(newInputValue);
