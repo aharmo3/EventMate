@@ -8,7 +8,7 @@ import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 
-import ClientAPI from "../ClientAPI";
+import ClientAPI from "../helpers/ClientAPI";
 import UserDialogView from "./UserDialogView"
 
 
