@@ -12,6 +12,7 @@ import "./LoginForm.css";
 //   email: "",
 // };
 
+// TODO - Navigate to dashboard
 export default function LoginForm(props) {
   async function handleSubmit(form) {
     console.log(form);
@@ -19,6 +20,7 @@ export default function LoginForm(props) {
     Local.saveUserInfo(response.data.token, response.data.user);
   }
 
+  // TODO - Navigate to secondary registration
   async function handleRegistration(form) {
     console.log(form);
     const response = await ClientAPI.registerUser(
@@ -64,7 +66,6 @@ export default function LoginForm(props) {
           <br />
           <br />
           <Button type="submit">Register</Button>
-          {props.registrationMessage && <p>Registration successful</p>}
         </Form>
       </div>
     </div>

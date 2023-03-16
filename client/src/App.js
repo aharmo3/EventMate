@@ -11,9 +11,7 @@ import Local from "./helpers/Local";
 import ClientAPI from "./helpers/ClientAPI";
 import LoginForm from "./components/LoginForm";
 
-//<RegistrationForm />
-//<ChooseEvents />
-//<UserListView />
+
 function App() {
   let [user, setUser] = useState(Local.getUser());
   const [loginErrorMsg, setLoginErrorMsg] = useState("");
@@ -61,7 +59,7 @@ function App() {
       <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/matched" element={<UserListView />} />
-      <Route path="/register" element={<RegistrationForm />}/>
+      <Route path="/register" element={<LoginForm />}/>
       <Route path="/events" element={<ChooseEvents />}/>
       </Routes>
       </main>
