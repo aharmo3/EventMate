@@ -40,7 +40,7 @@ useEffect(() => {
         "time" : result.dates.start.localTime, 
         "venue" : result._embedded.venues["0"].name}});
         
-        //function checks events against first for uniqueness
+        //function checks events against first event for uniqueness
         // the number is how many objects it returns in the array
         let limitedEvents = noRepeatEvents(newResults,4);
   
