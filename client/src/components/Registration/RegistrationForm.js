@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import { Typography } from "@mui/material";
 import Button from "@mui/material/Button";
@@ -16,13 +16,20 @@ import ClientAPI from "../../helpers/ClientAPI";
 import Local from "../../helpers/Local";
 
 export default function RegistrationForm() {
-  const { userId } = useParams();
+  const navigate = useNavigate();
+  const userId = Local.getUserId();
+  console.log(userId);
 
   async function updateUser(form) {
-    //const userId = Local.getUserId();
-    console.log(userId);
-    ClientAPI.updateUser(form, userId);
+    let myresponse = await ClientAPI.updateUser(form, userId);
+
+    if (myresponse.ok) {
+      navigate(`/events`);
+    } else {
+      console.log('Error!', myresponse.error);
+    }
   }
+
   return (
     <Form
       submit={(form) => {
@@ -87,11 +94,9 @@ export default function RegistrationForm() {
           </FormControl>
         </Grid>
         <Grid item xs={12}>
-          <Link to="/events">
             <Button variant="contained" type="submit" size="large">
               Submit
             </Button>
-          </Link>
         </Grid>
       </Grid>
     </Form>

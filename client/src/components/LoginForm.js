@@ -15,7 +15,6 @@ import "./LoginForm.css";
 // TODO - Navigate to dashboard
 export default function LoginForm({doRegister}) {
   async function handleSubmit(form) {
-    console.log(form);
     const response = await ClientAPI.loginUser(form.username, form.password);
     Local.saveUserInfo(response.data.token, response.data.user);
   }

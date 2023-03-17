@@ -21,16 +21,15 @@ function App() {
 const navigate = useNavigate();
 
 
-  // TODO - Navigate to secondary registration
   async function doRegister(username, email, password) {
     let myresponse = await ClientAPI.registerUser(username, email, password);
+    
     if (myresponse.ok) {
-      let fetchedId = myresponse.data.userId;
-      setUserid(fetchedId)
-      console.log(fetchedId);
+      console.log("doreg data----", myresponse.data);
+      Local.updateUserInfo(myresponse.data);
       setRegistrationErrorMsg("");
       if (myresponse.data.userId !== null) {
-        navigate(`/register/${fetchedId}`);
+        navigate("/register-two");
       }
     } else {
       console.log(myresponse);
@@ -40,7 +39,6 @@ const navigate = useNavigate();
 
   async function doLogin(username, password) {
     let myresponse = await ClientAPI.loginUser(username, password);
-    console.log(myresponse);
     if (myresponse.ok) {
       Local.saveUserInfo(myresponse.data.token, myresponse.data.user);
       setUser(myresponse.data.user);
@@ -70,7 +68,7 @@ const navigate = useNavigate();
           />
           <Route path="/matched" element={<UserListView />} />
           <Route path="/register" element={<LoginForm  doRegister={doRegister}/>} />
-          <Route path="/register/:userId" element={<RegistrationForm />} />
+          <Route path="/register-two" element={<RegistrationForm />} />
           <Route path="/events" element={<ChooseEvents />} />
         </Routes>
       </main>

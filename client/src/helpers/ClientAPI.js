@@ -7,7 +7,7 @@ class ClientAPI {
   }
 
   //register
-  static async registerUser(username, password, email) {
+  static async registerUser(username, email, password) {
     let body = { username, password, email };
     return await this._doFetch("/register", "POST", body);
   }
