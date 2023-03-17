@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
 import FormInput from "./FormInput";
 import Form from "./Form";
 import Button from "@mui/material/Button";
@@ -13,20 +12,22 @@ import "./LoginForm.css";
 //   email: "",
 // };
 
-export default function LoginForm(props) {
+// TODO - Navigate to dashboard
+export default function LoginForm({ doRegister }) {
   async function handleSubmit(form) {
-    console.log(form);
     const response = await ClientAPI.loginUser(form.username, form.password);
     Local.saveUserInfo(response.data.token, response.data.user);
   }
 
+  // TODO - Navigate to secondary registration
   async function handleRegistration(form) {
-    console.log(form);
-    const response = await ClientAPI.registerUser(
-      form.username,
-      form.email,
-      form.password
-    );
+    //console.log(form);
+    doRegister(form.username, form.email, form.password);
+    // const response = await ClientAPI.registerUser(
+    //   form.username,
+    //   form.email,
+    //   form.password
+    // );
   }
 
   return (
@@ -35,14 +36,11 @@ export default function LoginForm(props) {
         <h2>Login</h2>
         <Form
           formInitialValues={{ username: "", password: "" }}
-          // submit={(form) => {
-          //   console.warn(form);
-          // }}
           submit={handleSubmit}
         >
           <FormInput label="Username" name="username" />
           <br />
-          <FormInput label="Password" name="password" />
+          <FormInput label="Password" name="password" type="password" />
           <br />
           <br />
           <Button type="submit">Login</Button>
@@ -52,21 +50,16 @@ export default function LoginForm(props) {
         <h2>Register</h2>
         <Form
           formInitialValues={{ username: "", password: "", email: "" }}
-          // submit={(form) => {
-          //   console.warn(form);
-          // }}
           submit={handleRegistration}
         >
           <FormInput label="Username" name="username" />
           <br />
-          <FormInput label="Password" name="password" />
+          <FormInput label="Password" name="password" type="password" />
           <br />
           <FormInput label="Email" name="email" />
           <br />
           <br />
-          <Link to="/register">
-            <Button type="submit">Register</Button>
-          </Link>
+          <Button type="submit">Register</Button>
         </Form>
       </div>
     </div>

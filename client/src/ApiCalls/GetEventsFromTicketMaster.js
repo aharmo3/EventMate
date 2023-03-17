@@ -1,20 +1,23 @@
-//import to any page with location as param
+//import to any page and fetch data
+//params fetchType - input a string "location", or "eventId"
 
-
-
-export async function GetByLocTM (location){
+export async function GetEventsFromTicketMaster (fetchType, info){
     let EventUrl = `https://app.ticketmaster.com/discovery/v2/events.json?apikey=`;
-    console.log("api", process.env);
     let apiKey = process.env.REACT_APP_TICKETMASTER_API_KEY;
-    console.log("apikey", apiKey);
-    let cityKey = "&locale=*&city="
-      
+    let cityKey = "&locale=*&city=";
+    let eventIDkey =  "&id=";
+    let fullUrl = "";
+
+
+    if (fetchType=== "location"){
+    fullUrl = EventUrl + apiKey + cityKey + info;
+    }if (fetchType === "eventId"){
+        fullUrl = EventUrl + apiKey + eventIDkey + info; 
+    }
         
-        console.log("Fetching events....");
+    console.log("Fetching events....");
        
-        let fullUrl = EventUrl + apiKey + cityKey + location;
-        console.log("full", fullUrl);
-        console.log("getting events in location: ",location);
+        console.log(`getting events by ${fetchType}: `, info);
    
           try {
             let response = await fetch(fullUrl);
@@ -23,7 +26,7 @@ export async function GetByLocTM (location){
               // wait for data
               let ticketmaster = await response.json();
     
-              console.log("Event data response: ", ticketmaster);
+              console.log("Event data response: ", ticketmaster._embedded.events);
         
               return ticketmaster._embedded.events
             } else {
@@ -35,5 +38,3 @@ export async function GetByLocTM (location){
       
        
       };
-
-
