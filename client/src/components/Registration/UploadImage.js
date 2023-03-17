@@ -4,14 +4,23 @@ import Button from "@mui/material/Button";
 import ImageUploading from "react-images-uploading";
 import { FormContext } from "../Form";
 
+function Img({ src }) {
+  return <img src={src} width="200" />;
+}
 export default function UploadImage({ name }) {
   const formContext = useContext(FormContext);
-  const { handleFormChange } = formContext;
+  const { form, handleFormChange } = formContext;
   const [images, setImages] = React.useState([]);
   const maxNumber = 1; // Can update to reflect more than one later
-
+  console.log(form);
   const onChange = (imageList, addUpdateIndex) => {
-    handleFormChange({}, { name: name, value: imageList[0].file.name });
+    if (imageList.length) {
+      handleFormChange({}, { name: name, value: imageList[0].data_url });
+      // console.warn(imageList[0].file, imageList[0].file.name);
+      // formData.append("clientfile", imageList[0].file, imageList[0].file.name);
+
+      // uploadFile(formData);
+    }
     setImages(imageList);
   };
   return (
@@ -44,9 +53,12 @@ export default function UploadImage({ name }) {
           </Button>
           &nbsp;
           <Button onClick={onImageRemoveAll}>Remove all images</Button>
+          {!imageList.length && !form.avatarURL && (
+            <Img src="https://s3.amazonaws.com/FringeBucket/default-user.png" />
+          )}
           {imageList.map((image, index) => (
             <div key={index} className="image-item">
-              <img src={image["data_url"]} alt="" width="100" />
+              {form.avatarURL && <Img src={form.avatarURL} />}
               <div className="image-item__btn-wrapper">
                 <Button
                   variant="outlined"
