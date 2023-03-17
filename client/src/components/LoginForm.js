@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import FormInput from "./FormInput";
 import Form from "./Form";
 import Button from "@mui/material/Button";
@@ -63,8 +64,9 @@ export default function LoginForm(props) {
           <FormInput label="Email" name="email" />
           <br />
           <br />
-          <Button type="submit">Register</Button>
-          {props.registrationMessage && <p>Registration successful</p>}
+          <Link to="/register">
+            <Button type="submit">Register</Button>
+          </Link>
         </Form>
       </div>
     </div>
