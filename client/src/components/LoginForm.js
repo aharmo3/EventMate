@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import FormInput from "./FormInput";
 import Form from "./Form";
 import Button from "@mui/material/Button";
@@ -12,20 +12,22 @@ import "./LoginForm.css";
 //   email: "",
 // };
 
-export default function LoginForm(props) {
+// TODO - Navigate to dashboard
+export default function LoginForm({doRegister}) {
   async function handleSubmit(form) {
-    console.log(form);
     const response = await ClientAPI.loginUser(form.username, form.password);
     Local.saveUserInfo(response.data.token, response.data.user);
   }
 
+  // TODO - Navigate to secondary registration
   async function handleRegistration(form) {
-    console.log(form);
-    const response = await ClientAPI.registerUser(
-      form.username,
-      form.email,
-      form.password
-    );
+    //console.log(form);
+    doRegister(form.username, form.email, form.password);
+    // const response = await ClientAPI.registerUser(
+    //   form.username,
+    //   form.email,
+    //   form.password
+    // );
   }
 
   return (
@@ -58,7 +60,6 @@ export default function LoginForm(props) {
           <br />
           <br />
           <Button type="submit">Register</Button>
-          {props.registrationMessage && <p>Registration successful</p>}
         </Form>
       </div>
     </div>

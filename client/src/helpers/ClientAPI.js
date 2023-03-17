@@ -7,7 +7,7 @@ class ClientAPI {
   }
 
   //register
-  static async registerUser(username, password, email) {
+  static async registerUser(username, email, password) {
     let body = { username, password, email };
     return await this._doFetch("/register", "POST", body);
   }
@@ -61,6 +61,7 @@ class ClientAPI {
       } else {
         uresponse.status = response.status;
         uresponse.error = response.statusText;
+        //uresponse.data = await response.json(); //check error messages on all of them or none of them
       }
     } catch (err) {
       uresponse.error = err.message;

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import TopNav from "./components/TopNav";
 import UserListView from "./components/UserListView";
 import Home from "./components/Home";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
 import RegistrationForm from "./components/Registration/RegistrationForm";
 import "./App.css";
 import ChooseEvents from "./components/ChooseEvents";
@@ -13,32 +13,34 @@ import LoginForm from "./components/LoginForm";
 import UserDashboard from "./components/UserDashboardView";
 import SearchEvents from "./components/SearchEvents";
 
-//<RegistrationForm />
-//<ChooseEvents />
-//<UserListView />
+
 function App() {
   let [user, setUser] = useState(Local.getUser());
   const [loginErrorMsg, setLoginErrorMsg] = useState("");
   const [registrationErrorMsg, setRegistrationErrorMsg] = useState("");
-  const [isRegistrationSuccessful, setIsRegistrationSuccessful] =
-    useState(false);
+  const [userid, setUserid] = useState(false);
 
-  // const navigate = useNavigate();
+const navigate = useNavigate();
+
 
   async function doRegister(username, email, password) {
     let myresponse = await ClientAPI.registerUser(username, email, password);
+    
     if (myresponse.ok) {
-      doLogin(username, password);
+      console.log("doreg data----", myresponse.data);
+      Local.updateUserInfo(myresponse.data);
       setRegistrationErrorMsg("");
-      setIsRegistrationSuccessful(myresponse);
+      if (myresponse.data.userId !== null) {
+        navigate("/register-two");
+      }
     } else {
+      console.log(myresponse);
       setRegistrationErrorMsg(`Registration Failed`);
     }
   }
 
   async function doLogin(username, password) {
     let myresponse = await ClientAPI.loginUser(username, password);
-    console.log(myresponse);
     if (myresponse.ok) {
       Local.saveUserInfo(myresponse.data.token, myresponse.data.user);
       setUser(myresponse.data.user);
@@ -64,12 +66,11 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route
             path="/login"
-            element={
-              <LoginForm registrationMessage={isRegistrationSuccessful} />
-            }
+            element={<LoginForm doRegister={doRegister}/>}
           />
           <Route path="/matched" element={<UserListView />} />
-          <Route path="/register" element={<RegistrationForm />} />
+          <Route path="/register" element={<LoginForm  doRegister={doRegister}/>} />
+          <Route path="/register-two" element={<RegistrationForm />} />
           <Route path="/events" element={<ChooseEvents />} />
           <Route path="/dashboard" element={<UserDashboard />}/>
           <Route path="/searchevents" element={<SearchEvents />}/>
