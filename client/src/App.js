@@ -10,6 +10,8 @@ import FormInput from "./components/FormInput";
 import Local from "./helpers/Local";
 import ClientAPI from "./helpers/ClientAPI";
 import LoginForm from "./components/LoginForm";
+import UserDashboard from "./components/UserDashboardView";
+import SearchEvents from "./components/SearchEvents";
 
 //<RegistrationForm />
 //<ChooseEvents />
@@ -69,6 +71,8 @@ function App() {
           <Route path="/matched" element={<UserListView />} />
           <Route path="/register" element={<RegistrationForm />} />
           <Route path="/events" element={<ChooseEvents />} />
+          <Route path="/dashboard" element={<UserDashboard />}/>
+          <Route path="/searchevents" element={<SearchEvents />}/>
         </Routes>
       </main>
     </>

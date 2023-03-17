@@ -1,5 +1,5 @@
 //import to any page and fetch data
-
+//params fetchType - input a string "location", or "eventId"
 
 export async function GetEventsFromTicketMaster (fetchType, info){
     let EventUrl = `https://app.ticketmaster.com/discovery/v2/events.json?apikey=`;

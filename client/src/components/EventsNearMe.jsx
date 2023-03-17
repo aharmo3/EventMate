@@ -7,10 +7,16 @@ import Typography from '@mui/material/Typography';
 import React, {useState} from 'react'
 import { useEffect } from 'react';
 import getMyEvents from '../helpers/Utils/getMyEvents.js';
+import { GetByLocTM } from '../ApiCalls/GetByLocTM.jsx';
+import { Button } from '@mui/material';
+import { Link } from 'react-router-dom';
+import noRepeatEvents from '../helpers/Utils/noRepeatEvents.js';
 
 
-//pass the data into the component as a prop
-// you'll need a useEffect on the page it's nested in 
+//we can use geolocation or user's DB location - see "getEvents" function below
+
+// Currently limiting it to display only 4 events with a "see more" down the bottom,
+// but it can display up to 20. See More should eventually lead to the events search page
 
 function EventsCards() {
 const [events, setEvents] = useState(); 
@@ -24,8 +30,8 @@ useEffect(() => {
 
     async function getEvents(){  
         console.log("getting events for event cards....")
-    //  let apiData =  await GetByLocTM("Barcelona");
-    let apiData =  await getMyEvents();
+     let apiData =  await GetByLocTM ("Barcelona");
+    // let apiData =  await getMyEvents();
     let newResults= apiData.map((result) =>{ 
         return {"id": result.id, 
         "name":result.name, 
@@ -33,8 +39,12 @@ useEffect(() => {
         "date" : result.dates.start.localDate, 
         "time" : result.dates.start.localTime, 
         "venue" : result._embedded.venues["0"].name}});
-        console.log("new Results" , newResults)
-        await setEvents(newResults); 
+        
+        //function checks events against first event for uniqueness
+        // the number is how many objects it returns in the array
+        let limitedEvents = noRepeatEvents(newResults,4);
+  
+        await setEvents(limitedEvents); 
         setLoading(false)
         setShowList(true)
     }
@@ -94,6 +104,20 @@ useEffect(() => {
         })} {/*close map fn */}
        </div> 
    }
+
+
+        {/* Takes user to search events with default current location.
+        We can change this for a modal later if preferred */}
+        <Link to="/searchevents"
+        style={{textDecoration: "none"}}
+        >
+        <Button 
+        variant="text"
+        >See More...</Button>
+        </Link>
+
+
+
     </div>
   )
 }
