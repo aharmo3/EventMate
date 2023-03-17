@@ -26,11 +26,11 @@ function loadScript(src, position, id) {
 
 const autocompleteService = { current: null };
 
-export default function LocationDropdown({ label, name }) {
+export default function LocationDropdown({ label, name, defaultValue }) {
   const formContext = useContext(FormContext);
   const { form, handleFormChange } = formContext;
 
-  const [value, setValue] = useState(null);
+  const [value, setValue] = useState(defaultValue);
   const [inputValue, setInputValue] = useState("");
   const [options, setOptions] = useState([]);
   const loaded = useRef(false);
@@ -113,7 +113,10 @@ export default function LocationDropdown({ label, name }) {
         setOptions(newValue ? [newValue, ...options] : options);
         setValue(newValue);
 
-        handleFormChange(event, { name: name, value: newValue.description });
+        handleFormChange(event, {
+          name: name,
+          value: newValue?.description || null,
+        });
       }}
       onInputChange={(event, newInputValue) => {
         setInputValue(newInputValue);

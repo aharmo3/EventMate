@@ -12,7 +12,9 @@ occupation VARCHAR(100),
 languages VARCHAR(200),
 interests VARCHAR(400),
 about VARCHAR(400),
-avatarURL VARCHAR(150));
+avatarURL longblob);
+
+
 
 INSERT INTO users (username, password, email, age, gender, location, occupation, languages, interests, about, avatarURL) VALUES 
 ('Bob', '$2b$12$eFzMWbS9SogNtxkmo3J7aO8FQMFQSKbtpwLMIOVsF6GGKpTQdgq.W', 'bob@email.com', 35, 'male', 'Barcelona', 'Chef', 'spanish', 'hiking', 'I am Bob, a professional chef. After an event together I would treat you to my delicious paella', 'https://i.pravatar.cc/150?img=68'),

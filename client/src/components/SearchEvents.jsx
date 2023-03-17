@@ -105,13 +105,13 @@ function SearchEvents() {
       {
       events.map(r => {
           return <div key={r.id} className="event-items">
-              <Checkbox
+              {/* <Checkbox
                 className="event-checkbox"
                 value={r.id}
                 inputProps={{
                     'aria-label': 'Checkbox A',
                 }}
-            />
+            /> */}
             <img src= {r.image} alt="" className="event-img"/>
             <p className="event-title">{r.name}</p>
             <p className="event-date-time">{r.date} | {r.time}</p>

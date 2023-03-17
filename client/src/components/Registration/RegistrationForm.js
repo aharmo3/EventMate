@@ -20,10 +20,13 @@ export default function RegistrationForm() {
   const userId = Local.getUserId();
   console.log(userId);
 
+  const userInfo = Local.getUser();
   async function updateUser(form) {
     let myresponse = await ClientAPI.updateUser(form, userId);
 
     if (myresponse.ok) {
+      const updatedUser = { ...userInfo, ...form };
+      Local.updateUserInfo(updatedUser);
       navigate(`/events`);
     } else {
       console.log('Error!', myresponse.error);
@@ -37,14 +40,13 @@ export default function RegistrationForm() {
         updateUser(form);
       }}
       formInitialValues={{
-        age: "",
-        gender: "",
-        location: {},
-        occupation: "",
-        education: "",
-        languages: [],
-        interests: [],
-        avatarURL: "",
+        age: userInfo?.age || "",
+        gender: userInfo?.gender || "",
+        location: userInfo?.location || "",
+        occupation: userInfo?.occupation || "",
+        languages: userInfo?.languages || [],
+        interests: userInfo?.interests || [],
+        avatarURL: userInfo?.avatarURL || "",
       }}
     >
       <Grid container spacing={2}>
@@ -71,17 +73,18 @@ export default function RegistrationForm() {
               label="Where I live now"
               required
               name="location"
+              defaultValue={userInfo.location}
             />
           </FormControl>
 
           <FormInput label="Occupation" name="occupation" />
-          <FormInput label="Education" name="education" />
         </Grid>
         <Grid item xs={6}>
           <LanguageDropdown
             label="Languages I speak"
             name="languages"
             placeholder="Select A Language"
+            defaultValue={userInfo.languages}
           />
 
           <InterestsDropdown
@@ -91,6 +94,9 @@ export default function RegistrationForm() {
           />
           <FormControl sx={{ mt: 5, width: 300 }}>
             <UploadImage name="avatarURL" />
+          </FormControl>
+          <FormControl sx={{ mt: 5, width: 300 }}>
+            <FormInput label="About Me" name="about" multiline />
           </FormControl>
         </Grid>
         <Grid item xs={12}>

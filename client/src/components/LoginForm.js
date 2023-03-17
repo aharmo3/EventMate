@@ -36,14 +36,11 @@ export default function LoginForm({doRegister}) {
         <h2>Login</h2>
         <Form
           formInitialValues={{ username: "", password: "" }}
-          // submit={(form) => {
-          //   console.warn(form);
-          // }}
           submit={handleSubmit}
         >
           <FormInput label="Username" name="username" />
           <br />
-          <FormInput label="Password" name="password" />
+          <FormInput label="Password" name="password" type="password" />
           <br />
           <br />
           <Button type="submit">Login</Button>
@@ -53,14 +50,11 @@ export default function LoginForm({doRegister}) {
         <h2>Register</h2>
         <Form
           formInitialValues={{ username: "", password: "", email: "" }}
-          // submit={(form) => {
-          //   console.warn(form);
-          // }}
           submit={handleRegistration}
         >
           <FormInput label="Username" name="username" />
           <br />
-          <FormInput label="Password" name="password" />
+          <FormInput label="Password" name="password" type="password" />
           <br />
           <FormInput label="Email" name="email" />
           <br />
