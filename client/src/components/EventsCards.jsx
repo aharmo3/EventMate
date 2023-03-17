@@ -19,32 +19,42 @@ const [events, setEvents] = useState();
 const [loading, setLoading] = useState(true);
 const [showList, setShowList]= useState(false);
 const [isOpen, setIsOpen]= useState(false);
-const [modalId, setModalId]= useState("");
+const [modalData, setModalData]= useState({});
 
 useEffect(() => {
  getEvents();
 }, [])
 
-function handleOpenModal(id){
-  setModalId(id);
-  setIsOpen(true);
-
+function handleOpenModal(res){
+ 
+  setModalData(res);
+  setIsOpen(true)
 }
 
 
 
     async function getEvents(){  
         console.log("getting events for event cards....")
-    //  let apiData =  await GetByLocTM("Barcelona");
     let apiData =  await getMyEvents();
     let newResults= apiData.map((result) =>{ 
         return {"id": result.id, 
         "name":result.name, 
         "image": result.images["0"].url, 
+        "imageB":result.images["1"].url, 
+        "imageC":result.images["2"].url, 
         "date" : result.dates.start.localDate, 
         "time" : result.dates.start.localTime, 
-        "venue" : result._embedded.venues["0"].name}});
-        console.log("new Results" , newResults)
+        "venue" : result._embedded.venues["0"].name,
+        "currency": result.priceRanges["0"].currency,
+        "startingPrice":  result.priceRanges["0"].min,
+        "purchaseLink":  result.url,
+        "genreId":  result.classifications["0"].genre.id,
+        "genre": result.classifications["0"].genre.name,
+        "subgenre": result.classifications["0"].subGenre.name,
+        "eventType": result.classifications["0"].segment.name,
+        "eventHost": result._embedded.attractions.name
+      }});
+      console.log("new results mapped", newResults)
         await setEvents(newResults); 
         setLoading(false)
         setShowList(true)
@@ -84,7 +94,7 @@ function handleOpenModal(id){
         </ListItemAvatar>
         <ListItemText
           primary={r.name} 
-          onClick={e => handleOpenModal(r.id)} 
+          onClick={(e) => handleOpenModal(r)} 
           secondary={
             <React.Fragment>
               <Typography
@@ -111,7 +121,7 @@ function handleOpenModal(id){
    <EventsDisplayModal
    isOpen={isOpen}
    handleOpen={setIsOpen}
-   eventID={modalId}
+   eventData={modalData}
    />
    </div>
   )

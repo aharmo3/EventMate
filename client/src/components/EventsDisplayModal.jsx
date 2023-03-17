@@ -1,12 +1,11 @@
-import { Box, Modal } from '@mui/material'
-import React from 'react'
+import { Box, Button, Modal } from '@mui/material'
+import React, {useState} from 'react'
 
-function EventsDisplayModal({isOpen, handleOpen, eventID}) {
+function EventsDisplayModal({isOpen, handleOpen, eventData}) {
 
+    
 
-
-
-    const style = {
+const style = {
         position: 'absolute',
         top: '50%',
         left: '50%',
@@ -29,9 +28,23 @@ function EventsDisplayModal({isOpen, handleOpen, eventID}) {
         aria-describedby="parent-modal-description"
       >
     <Box sx={style}>
-   
-    {eventID}</Box>
+    <img
+     style={{maxHeight:"200px", maxWidth: "200px"}}
+     src= {eventData.image} 
+     alt= {`event ${eventData.name}`} 
+     />   
 
+    <h2>{eventData.name}</h2>
+
+    <h3>Description:</h3>
+    { eventData.eventType === "Music" &&
+    <p>{eventData.genre}-{eventData.subgenre} music event, live at {eventData.venue}</p>
+    }
+    <p>{eventData.eventType} Event, {eventData.genre}, {eventData.subgenre}</p>
+    <Button href={eventData.purchaseLink}  target="_blank" >Purchase Tickets Online</Button>
+    <Button>add to my events</Button>
+    </Box>
+       
 
       </Modal>
   )
