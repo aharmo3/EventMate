@@ -1,19 +1,26 @@
 //import to any page and fetch data
 //params fetchType - input a string "location", or "eventId"
 
+import convertCountryCode from "../helpers/Utils/convertCountryCode";
+
 export async function GetEventsFromTicketMaster (fetchType, info){
     let EventUrl = `https://app.ticketmaster.com/discovery/v2/events.json?apikey=`;
     let apiKey = process.env.REACT_APP_TICKETMASTER_API_KEY;
     let cityKey = "&locale=*&city=";
     let eventIDkey =  "&id=";
+    let countryExt= "&countryCode=";
     let fullUrl = "";
 
-
-    if (fetchType=== "location"){
-    fullUrl = EventUrl + apiKey + cityKey + info;
-    }if (fetchType === "eventId"){
-        fullUrl = EventUrl + apiKey + eventIDkey + info; 
-    }
+  
+      if (fetchType=== "location"){
+          let locationArr= info.split(", ");
+          let city = locationArr[0];
+          let country = locationArr[locationArr.length[-1]];
+          let countryCode = convertCountryCode(country);
+          fullUrl = EventUrl + apiKey + cityKey + city + countryExt + countryCode;
+      }if (fetchType === "eventId"){
+          fullUrl = EventUrl + apiKey + eventIDkey + info; 
+      }
         
     console.log("Fetching events....");
        
