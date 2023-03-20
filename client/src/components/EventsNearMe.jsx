@@ -30,7 +30,7 @@ useEffect(() => {
 
     async function getEvents(){  
         console.log("getting events for event cards....")
-     let apiData =  await GetByLocTM ("Barcelona");
+     let apiData =  await GetByLocTM ("Barcelona", "spain");
     // let apiData =  await getMyEvents();
     let newResults= apiData.map((result) =>{ 
         return {"id": result.id, 

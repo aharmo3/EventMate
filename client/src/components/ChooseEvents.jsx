@@ -4,6 +4,7 @@ import Checkbox from '@mui/material/Checkbox';
 import "./chooseEvents.css"
 import { Button, TextField } from "@mui/material";
 
+
 function ChooseEvents() {
       const [location, setLocation] = useState(); // save location
       const [events, setEvents] = useState(); 
@@ -26,10 +27,8 @@ function ChooseEvents() {
 
     async function getLocation(){
         // fetch location from db
-        //placeholder below
-
-        
-        setLocation("barcelona");
+        //placeholder below   
+        setLocation("Barcelona, Spain");
     };
 
 
@@ -53,7 +52,11 @@ function ChooseEvents() {
     
      
     async function getEvents(place){
-        let results = await GetByLocTM(location);
+      let placeArr= location.split(", ");
+      let country= placeArr[placeArr.length -1]
+      let city = placeArr[0]
+      console.log(country, city , "sdfghjkldfghjkl")
+        let results = await GetByLocTM(city, country);
         //formatting the object to only take what we need
        
     let newResults= results.map((result) =>{ 
@@ -106,6 +109,7 @@ function ChooseEvents() {
               value={location}
               onChange={e => handleChange(e)}
             />
+            {/* add a country dropdown selector  */}
           {/* <button className="edit" type="submit">
             ✓
           </button> */}

@@ -1,18 +1,21 @@
 //import to any page with location as param
 
+import convertCountryCode from "../helpers/Utils/convertCountryCode";
 
 
-export async function GetByLocTM (location){
+
+export async function GetByLocTM (city, country){
     let EventUrl = `https://app.ticketmaster.com/discovery/v2/events.json?apikey=`;
-    console.log("api", process.env);
     let apiKey = process.env.REACT_APP_TICKETMASTER_API_KEY;
-    let cityKey = "&locale=*&city="
-      
+    let cityKey = "&locale=*&city=";
+    let countryExt= "&countryCode=";
+    let countryCode = convertCountryCode(country);
+    console.log("get by location - country code: ", countryCode);  
         
         console.log("Fetching events....");
        
-        let fullUrl = EventUrl + apiKey + cityKey + location;
-        console.log("getting events in location: ",location);
+        let fullUrl = EventUrl + apiKey + cityKey + city + countryExt + countryCode;
+        console.log("getting events in location: ", city);
    
           try {
             let response = await fetch(fullUrl);
