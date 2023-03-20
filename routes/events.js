@@ -17,12 +17,11 @@ eventsRouter.get("/", async function (req, res, next) {
     }
   });
 
-// get event by event id - e.g. to access the event
+// get event by event id - e.g. to access the event details
 eventsRouter.get("/:eventid",  async (req, res) => {
     let eventid = req.params.eventid;
     let sql = 
-    `SELECT * FROM events WHERE eventId = ${eventid};`
-  
+    `SELECT * FROM events WHERE eventId = ${eventid} AND eventdetail = "yes";`
     try {
       let results = await db(sql);
       let event = results.data[0];
@@ -34,10 +33,10 @@ eventsRouter.get("/:eventid",  async (req, res) => {
 
 
 //get event by ticketmasterid - e.g. to check if it's in the db
-eventsRouter.get("/user/:userid",  async (req, res) => {
-    let userId = req.params.userid;
+eventsRouter.get("/ticketmaster/:ticketmasterid",  async (req, res) => {
+    let ticketmasterId = req.params.ticketmasterid;
     let sql = 
-    `SELECT * FROM events WHERE userId = ${userId};`
+    `SELECT * FROM events WHERE ticketmasterid = ${ticketmasterId};`
   
     try {
       let results = await db(sql);
@@ -48,6 +47,20 @@ eventsRouter.get("/user/:userid",  async (req, res) => {
     }
   });
 
+//get all user ids from event by ticketmasterid 
+eventsRouter.get("/user/ticketmaster/:ticketmasterid",  async (req, res) => {
+    let ticketmasterId = req.params.ticketmasterid;
+    let sql = 
+    `SELECT userId FROM events WHERE ticketmasterid = ${ticketmasterId};`
+  
+    try {
+      let results = await db(sql);
+      let event = results.data[0];
+      res.send(event);
+    } catch (err) {
+      res.status(500).send({ error: err.message });
+    }
+  });
 
 // get events by user id - e.g. show "my events"
 eventsRouter.get("/user/:userid",  async (req, res) => {
@@ -64,21 +77,6 @@ eventsRouter.get("/user/:userid",  async (req, res) => {
     }
   });
 
-
-//get user ids by event e.g. to see all users attending an event
-eventsRouter.get("/user/:userid",  async (req, res) => {
-    let userId = req.params.userid;
-    let sql = 
-    `SELECT * FROM events WHERE userId = ${userId};`
-  
-    try {
-      let results = await db(sql);
-      let event = results.data[0];
-      res.send(event);
-    } catch (err) {
-      res.status(500).send({ error: err.message });
-    }
-  });
 
 // -------------------------- POST ROUTES ---------------------------------
 
