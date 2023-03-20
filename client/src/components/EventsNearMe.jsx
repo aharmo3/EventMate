@@ -7,10 +7,10 @@ import Typography from '@mui/material/Typography';
 import React, {useState} from 'react'
 import { useEffect } from 'react';
 import getMyEvents from '../helpers/Utils/getMyEvents.js';
-import { GetByLocTM } from '../ApiCalls/GetByLocTM.jsx';
 import { Button, CircularProgress } from '@mui/material';
 import { Link } from 'react-router-dom';
 import noRepeatEvents from '../helpers/Utils/noRepeatEvents.js';
+import { GetByLocTM } from '../helpers/EventsApi/GetByLocTM.jsx';
 
 
 //we can use geolocation or user's DB location - see "getEvents" function below
@@ -30,7 +30,7 @@ useEffect(() => {
 
     async function getEvents(){  
         console.log("getting events for event cards....")
-     let apiData =  await GetByLocTM ("Barcelona", "spain");
+     let apiData =  await GetByLocTM("Barcelona, Spain");
     // let apiData =  await getMyEvents();
     let newResults= apiData.map((result) =>{ 
         return {"id": result.id, 

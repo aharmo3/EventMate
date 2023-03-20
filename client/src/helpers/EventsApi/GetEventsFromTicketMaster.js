@@ -1,7 +1,7 @@
 //import to any page and fetch data
 //params fetchType - input a string "location", or "eventId"
 
-import convertCountryCode from "../helpers/Utils/convertCountryCode";
+import convertCountryCode from "../Utils/convertCountryCode";
 
 export async function GetEventsFromTicketMaster (fetchType, info){
     let EventUrl = `https://app.ticketmaster.com/discovery/v2/events.json?apikey=`;

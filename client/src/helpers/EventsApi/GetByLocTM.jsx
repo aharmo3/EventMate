@@ -1,6 +1,6 @@
 //import to any page with location as param
 
-import convertCountryCode from "../helpers/Utils/convertCountryCode";
+import convertCountryCode from "../Utils/convertCountryCode";
 
 
 
