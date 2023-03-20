@@ -40,8 +40,6 @@ function handleOpenModal(res){
         return {"id": result.id, 
         "name":result.name, 
         "image": result.images["0"].url, 
-        "imageB":result.images["1"].url, 
-        "imageC":result.images["2"].url, 
         "date" : result.dates.start.localDate, 
         "time" : result.dates.start.localTime, 
         "venue" : result._embedded.venues["0"].name,

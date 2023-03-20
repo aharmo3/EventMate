@@ -33,6 +33,7 @@ function ChooseEvents() {
     getEvents(location)
     }, [location]);
 
+    //gets user location from local storage and sets it
     async function getLocation(){
         //get id to fetch user data
         let userInfo= await Local.getUser();
@@ -46,12 +47,12 @@ function ChooseEvents() {
         }
     };
 
-
+    //location submits on typing
     const handleChange = event => {
         setLocation(event.target.value);
       };
     
-
+      //show or don't show abiity to edit
     function handleEditButton(){
         setShowEdit(true);
         setShowTitle(false);
@@ -75,7 +76,15 @@ function ChooseEvents() {
         "image": result.images["0"].url, 
         "date" : result.dates.start.localDate, 
         "time" : result.dates.start.localTime, 
-        "venue" : result._embedded.venues["0"].name}});
+        "venue" : result._embedded.venues["0"].name,
+        "currency": result.priceRanges["0"].currency,
+        "startingPrice":  result.priceRanges["0"].min,
+        "purchaseLink":  result.url,
+        "genreId":  result.classifications["0"].genre.id,
+        "genre": result.classifications["0"].genre.name,
+        "subgenre": result.classifications["0"].subGenre.name,
+        "eventType": result.classifications["0"].segment.name,
+        "eventHost": result._embedded.attractions.name}});
         console.log("new Results" , newResults)
         await setEvents(newResults);
         setShowEvents(true);    
@@ -97,6 +106,7 @@ function ChooseEvents() {
       console.log(chosenEvents);
    }
 
+   //sends selected events to database
    function handleSend (){
     //here goes put request put(chosenEvents)
     // loading
