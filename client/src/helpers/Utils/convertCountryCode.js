@@ -94,8 +94,6 @@ const countries =[
 ]
 
       let countryObj=  countries.find(e => e.country === givenCountry)
-      console.log("the country object",countryObj)
-      console.log("the country object.code",countryObj.code)
         if (countryObj){
             return countryObj.code
         }else{
