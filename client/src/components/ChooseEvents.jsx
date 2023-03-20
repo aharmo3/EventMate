@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { GetByLocTM } from "../ApiCalls/GetByLocTM";
+import { GetByLocTM } from "../EventsApi/GetByLocTM";
 import Checkbox from '@mui/material/Checkbox';
 import Grid from "@mui/material/Grid";
 import "./chooseEvents.css"
@@ -7,6 +7,8 @@ import { Button, TextField } from "@mui/material";
 import LinearStepper from "./LinearStepper";
 import { useParams, useNavigate } from "react-router-dom";
 import NextBar from "./NextBar";
+import ClientAPI from "../helpers/ClientAPI";
+import Local from "../helpers/Local";
 
 
 function ChooseEvents() {
@@ -32,7 +34,13 @@ function ChooseEvents() {
     }, [location]);
 
     async function getLocation(){
-        // fetch location from db
+        //get id to fetch user data
+        let userInfo= await Local.getUser();
+        let userId = userInfo.userId;
+        // fetch user from db
+        let userData = await ClientAPI.getUser(userId)
+        //set user location to useState
+        console.log("fetch userdata and here userData", userData)
         //placeholder below   
         setLocation("Barcelona, Spain");
     };
@@ -58,13 +66,8 @@ function ChooseEvents() {
     
      
     async function getEvents(place){
-      let placeArr= location.split(", ");
-      let country= placeArr[placeArr.length -1]
-      let city = placeArr[0]
-      console.log(country, city , "sdfghjkldfghjkl")
-        let results = await GetByLocTM(city, country);
-        //formatting the object to only take what we need
-       
+        let results = await GetByLocTM(location);
+      //formatting the object to only take what we need
     let newResults= results.map((result) =>{ 
         return {"id": result.id, 
         "name":result.name, 
