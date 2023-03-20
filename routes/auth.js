@@ -46,10 +46,14 @@ router.post("/register", async (req, res) => {
         `;
       await db(sql);
 
-      let results = await db(`select * from users where username = "${username}"`);
+      let results = await db(
+        `select * from users where username = "${username}"`
+      );
       let user = results.data[0];
+      let payload = { userId: user.userId };
+      let token = jwt.sign(payload, SECRET_KEY);
       delete user.password;
-      res.send(user);
+      res.send({ message: "Registration succeeded", token: token, user: user });
     }
   } catch (err) {
     res.status(500).send({ err: err.message });

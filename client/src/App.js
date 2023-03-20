@@ -31,7 +31,7 @@ function App() {
 
     if (myresponse.ok) {
       console.log("doreg data----", myresponse.data);
-      Local.updateUserInfo(myresponse.data);
+      Local.saveUserInfo(myresponse.data.token, myresponse.data.user);
       setRegistrationErrorMsg("");
       if (myresponse.data.userId !== null) {
         navigate("/register-two");
@@ -63,7 +63,7 @@ function App() {
 
   return (
     <>
-      <TopNav user={user} logOutCb={doLogout} />
+      <TopNav logOutCb={doLogout} />
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -83,11 +83,7 @@ function App() {
 
           <Route
             path="/register"
-            element={
-              <ProtectedRoute>
-                <LoginForm doRegister={doRegister} />
-              </ProtectedRoute>
-            }
+            element={<LoginForm doRegister={doRegister} />}
           />
 
           <Route

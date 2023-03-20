@@ -8,12 +8,15 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { Link, useNavigate } from "react-router-dom";
 import * as React from "react";
 import Avatar from "@mui/material/Avatar";
+import Local from "../helpers/Local";
 
 export default function TopNav(props) {
   const navigate = useNavigate();
+  const userInfo = Local.getUser();
+  const isLoggedIn = Local.getToken() !== "";
   return (
     <div className="TopNav">
-      {props.user ? (
+      {isLoggedIn ? (
         <Box sx={{ flexGrow: 1 }}>
           <AppBar position="static">
             <Toolbar>
@@ -32,12 +35,12 @@ export default function TopNav(props) {
                 </Link>
               </Typography>
               <Avatar
-                alt={props.user.username}
-                src={props.user.avatarURL}
+                alt={userInfo.username}
+                src={userInfo.avatarURL}
                 sx={{ mr: 2 }}
               />
               <div>
-                {props.user.username}
+                {userInfo.username}
 
                 <Button
                   size="small"
@@ -78,7 +81,14 @@ export default function TopNav(props) {
                 EventMate
               </Typography>
 
-              <Button color="inherit">Login</Button>
+              <Button
+                color="inherit"
+                onClick={() => {
+                  navigate("/register");
+                }}
+              >
+                Login
+              </Button>
             </Toolbar>
           </AppBar>
         </Box>
