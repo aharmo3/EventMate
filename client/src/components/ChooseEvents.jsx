@@ -36,13 +36,14 @@ function ChooseEvents() {
     async function getLocation(){
         //get id to fetch user data
         let userInfo= await Local.getUser();
+        console.log("user info: ", userInfo)
         let userId = userInfo.userId;
-        // fetch user from db
-        let userData = await ClientAPI.getUser(userId)
-        //set user location to useState
-        console.log("fetch userdata and here userData", userData)
+        if (userInfo.location){
+          setLocation(userInfo.location)
+        }else{
         //placeholder below   
         setLocation("Barcelona, Spain");
+        }
     };
 
 
