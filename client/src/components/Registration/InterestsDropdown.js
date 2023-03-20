@@ -14,11 +14,11 @@ export default function InterestsDropdown({ label, placeholder, name }) {
   return (
     <Autocomplete
       multiple
-      defaultValue={defaultValues}
+      value={defaultValues || null}
       options={betterInterests}
       onChange={(event, newValue) => {
         const values = newValue.map((value) => value.title);
-        handleFormChange(event, { name: name, value: values });
+        handleFormChange(event, { name: name, value: values || null });
       }}
       getOptionLabel={(option) => option.title}
       renderOption={(props, option) => {

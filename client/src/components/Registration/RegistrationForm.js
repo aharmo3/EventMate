@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Grid from "@mui/material/Grid";
-import { Typography } from "@mui/material";
 import Button from "@mui/material/Button";
 
 import FormControl from "@mui/material/FormControl";
@@ -51,7 +50,7 @@ export default function RegistrationForm() {
     >
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <Typography variant="h3">A Few More Details...</Typography>
+          <h2>A Few More Details...</h2>
         </Grid>
 
         <Grid item xs={6}>
@@ -78,25 +77,23 @@ export default function RegistrationForm() {
           </FormControl>
 
           <FormInput label="Occupation" name="occupation" />
+          <FormInput label="About Me" name="about" multiline />
         </Grid>
         <Grid item xs={6}>
           <LanguageDropdown
             label="Languages I speak"
             name="languages"
-            placeholder="Select A Language"
-            defaultValue={userInfo.languages}
+            placeholder="Select All"
           />
 
           <InterestsDropdown
             label="General Interests"
             name="interests"
-            placeholder="Select An Interest"
+            placeholder="Select All"
           />
           <FormControl sx={{ mt: 5, width: 300 }}>
+            <h5>Your Profile Image</h5>
             <UploadImage name="avatarURL" />
-          </FormControl>
-          <FormControl sx={{ mt: 5, width: 300 }}>
-            <FormInput label="About Me" name="about" multiline />
           </FormControl>
         </Grid>
         <Grid item xs={12}>
