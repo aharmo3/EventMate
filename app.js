@@ -25,6 +25,11 @@ app.use("/api/users", usersRouter);
 app.use("/api", authRouter);
 app.use("/api/events", eventsRouter);
 
+
+app.get("/api/events", (req, res) =>{
+  res.json("Hello, welcome to the events table")
+})
+
 // Catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
