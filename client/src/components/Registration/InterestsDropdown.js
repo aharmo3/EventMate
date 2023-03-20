@@ -1,19 +1,24 @@
 import React, { useContext } from "react";
 import Autocomplete from "@mui/material/Autocomplete";
-import { FormContext } from "../Form";
+import { Form, FormContext } from "../Form";
 
 import betterInterests from "../../data/interests";
 import FormInput from "../FormInput";
 export default function InterestsDropdown({ label, placeholder, name }) {
   const formContext = useContext(FormContext);
-  const { handleFormChange } = formContext;
+  const { form, handleFormChange } = formContext;
+  const defaultValues = betterInterests.filter((item) =>
+    form.interests.includes(item.title)
+  );
+
   return (
     <Autocomplete
       multiple
+      value={defaultValues || null}
       options={betterInterests}
       onChange={(event, newValue) => {
         const values = newValue.map((value) => value.title);
-        handleFormChange(event, { name: name, value: values });
+        handleFormChange(event, { name: name, value: values || null });
       }}
       getOptionLabel={(option) => option.title}
       renderOption={(props, option) => {

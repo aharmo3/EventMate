@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { GetByLocTM } from "../ApiCalls/GetByLocTM";
 import Checkbox from '@mui/material/Checkbox';
+import Grid from "@mui/material/Grid";
 import "./chooseEvents.css"
 import { Button, TextField } from "@mui/material";
+import LinearStepper from "./LinearStepper";
+import { useParams, useNavigate } from "react-router-dom";
+import NextBar from "./NextBar";
 
 
 function ChooseEvents() {
+    const navigate = useNavigate();
+
       const [location, setLocation] = useState(); // save location
       const [events, setEvents] = useState(); 
       const [showEvents, setShowEvents] = useState(false);
@@ -91,13 +97,15 @@ function ChooseEvents() {
     //here goes put request put(chosenEvents)
     // loading
     //if return is successful - success message
-    // route to next page
+    // route to next page 
+    
+    navigate("/matched")
     console.log("submitted events:", chosenEvents)
   }
 
   return (
     <div className="choose-events">
-
+      
 { showEdit &&
        <div className="edit-location">
         <form className= "edit-loc-form" onSubmit={e => handleFormLocation(e)}>
@@ -150,14 +158,18 @@ function ChooseEvents() {
          </div>
          </div>
          }
-
-         <div className="next-bar">
-        <Button 
-        className="next-button" 
-        variant="contained"
-        onClick={(e)=>handleSend()}
-        >Next</Button>
-        </div>
+   
+        <NextBar 
+          activeStep={1}
+          nextCb={(e) => {
+            handleSend()
+          }}
+          prevCb={
+            () => {
+              navigate("/register-two")
+            }
+          }
+        />
     </div>
   )
 }

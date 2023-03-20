@@ -7,14 +7,18 @@ import FormInput from "../FormInput";
 export default function LanguageDropdown({ label, placeholder, name }) {
   const formContext = useContext(FormContext);
   const { form, handleFormChange } = formContext;
+  const defaultValues = languages.filter((item) =>
+    form.languages.includes(item.name)
+  );
   return (
     <>
       <Autocomplete
         multiple
         onChange={(event, newValue) => {
           const values = newValue.map((value) => value.name);
-          handleFormChange(event, { name: name, value: values });
+          handleFormChange(event, { name: name, value: values || null });
         }}
+        value={defaultValues || null}
         options={languages}
         getOptionLabel={(option) => option && option.name}
         renderInput={(params) => (
