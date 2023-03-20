@@ -1,6 +1,20 @@
 main {
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 1rem auto;
+  position:relative;
 }
 
 
+.next-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  position: fixed;
+  box-sizing: border-box;
+  bottom: 0;
+  right: 0;
+  background:white;
+  box-shadow: 3px -2px 5px 1px rgba(0, 0, 0, 0.50);
+  width: 100%;
+}
