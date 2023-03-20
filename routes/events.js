@@ -21,10 +21,10 @@ eventsRouter.get("/", async function (req, res, next) {
 eventsRouter.get("/:eventid",  async (req, res) => {
     let eventid = req.params.eventid;
     let sql = 
-    `SELECT * FROM events WHERE eventId = ${eventid} AND eventdetail = "yes";`
+    `SELECT * FROM events WHERE eventId = ${eventid};`
     try {
       let results = await db(sql);
-      let event = results.data[0];
+      let event = results.data;
       res.send(event);
     } catch (err) {
       res.status(500).send({ error: err.message });
@@ -36,26 +36,11 @@ eventsRouter.get("/:eventid",  async (req, res) => {
 eventsRouter.get("/ticketmaster/:ticketmasterid",  async (req, res) => {
     let ticketmasterId = req.params.ticketmasterid;
     let sql = 
-    `SELECT * FROM events WHERE ticketmasterid = ${ticketmasterId};`
+    `SELECT * FROM events WHERE ticketmasterid = ${ticketmasterId} AND eventdetail = "yes";`
   
     try {
       let results = await db(sql);
-      let event = results.data[0];
-      res.send(event);
-    } catch (err) {
-      res.status(500).send({ error: err.message });
-    }
-  });
-
-//get all user ids from event by ticketmasterid 
-eventsRouter.get("/user/ticketmaster/:ticketmasterid",  async (req, res) => {
-    let ticketmasterId = req.params.ticketmasterid;
-    let sql = 
-    `SELECT userId FROM events WHERE ticketmasterid = ${ticketmasterId};`
-  
-    try {
-      let results = await db(sql);
-      let event = results.data[0];
+      let event = results.data;
       res.send(event);
     } catch (err) {
       res.status(500).send({ error: err.message });
@@ -70,109 +55,94 @@ eventsRouter.get("/user/:userid",  async (req, res) => {
   
     try {
       let results = await db(sql);
-      let event = results.data[0];
+      let event = results.data;
       res.send(event);
     } catch (err) {
       res.status(500).send({ error: err.message });
     }
   });
 
+//get all user ids from event by ticketmasterid 
+eventsRouter.get("/user/ticketmaster/:ticketmasterid",  async (req, res) => {
+    let ticketmasterId = req.params.ticketmasterid;
+    let sql = 
+    `select userId, eventid from events WHERE ticketmasterid = ${ticketmasterId} ORDER BY userId;`
+  
+    try {
+      let results = await db(sql);
+      let event = results.data;
+      res.send(event);
+    } catch (err) {
+      res.status(500).send({ error: err.message });
+    }
+  });
 
 // -------------------------- POST ROUTES ---------------------------------
+// add event for detail
+eventsRouter.post("/", async (req, res) => {
+    let {
+        ticketmasterid, 
+        eventname, 
+        eventdate, 
+        starttime, 
+        imageurl, 
+        eventlocation, 
+        venue , 
+        currency, 
+        startingprice, 
+        ticketurl, 
+        genre, 
+        subgenre, 
+        host, 
+        eventtype, 
+        socialmedia, 
+    } = req.body;
+    let sql = `insert into events(userid,ticketmasterid, eventname, eventdate, starttime, imageurl, eventlocation, venue , currency, startingprice, ticketurl, genre, subgenre, host, eventtype, socialmedia, eventdetail) 
+    values(1, "${userid}","${ticketmasterid}", "${eventname}", "${eventdate}", "${starttime}", "${imageurl}", "${eventlocation}", "${venue}" , "${currency}", "${startingprice}", "${ticketurl}", "${genre}", "${subgenre}", "${host}", "${eventtype}", "${socialmedia}", "yes") `;
+  
+    try {
+      await db(sql);
+      let results = await db(`select * from events WHERE eventdetail = "yes";`);
+      res.status(201).send(results);
+    } catch (err) {
+      res.status(500).send({ err: err.message });
+    }
+  });
 
-
-// -------------------------- PUT ROUTES ---------------------------------
-
+// add event for user attendance
+eventsRouter.post("/user", async (req, res) => {
+    let {
+        userid,
+        ticketmasterid
+        
+    } = req.body;
+    let sql = `insert into events( userid, ticketmasterid, eventdetail) 
+    values("${userid}","${ticketmasterid}", "no") `;
+  
+    try {
+      await db(sql);
+      let results = await db(`select userId from events WHERE ticketmasterid = "${ticketmasterid}";`);
+      res.status(201).send(results);
+    } catch (err) {
+      res.status(500).send({ err: err.message });
+    }
+  });
 
 // -------------------------- DELETE ROUTES ---------------------------------
-
-// // Will eventually get all users matched on an event
-// router.get("/matched", async function (req, res, next) {
-//   let sql = "SELECT * FROM users";
-
-//   try {
-//     let results = await db(sql);
-//     let users = results.data;
-//     if (users.length === 0) {
-//       res.status(404).send({ error: "No users found" });
-//     } else {
-//       users.forEach((u) => delete u.password); // don't return passwords
-//       res.send(users);
-//     }
-//   } catch (err) {
-//     res.status(500).send({ error: err.message });
-//   }
-// });
-
-
-
-// // Add a new user
-// router.post("/", async (req, res) => {
-//   let {
-//     username,
-//     email,
-//     age,
-//     gender,
-//     location,
-//     occupation,
-//     languages,
-//     interests,
-//     about,
-//     avatarURL,
-//   } = req.body;
-//   let sql = `insert into users(username, email,age, gender, location, occupation, languages, interests, about, avatarURL) values("${username}","${email}", ${age}, "${gender}", "${location}", "${occupation}", "${languages}", "${interests}"," ${about}", "${avatarURL}") `;
-
-//   try {
-//     await db(sql);
-//     let results = await db(`select * from users`);
-//     res.status(201).send(results);
-//   } catch (err) {
-//     res.status(500).send({ err: err.message });
-//   }
-// });
-
-// // For secondary registration page
-// router.put("/:id", async (req, res) => {
-//   let userId = req.params.id;
-//   let sql = `SELECT * FROM users WHERE userId = ${userId}`;
-
-//   try {
-//     let results = await db(sql);
-
-//     if (results.data.length === 0) {
-//       res.status(404).send({ error: "User not found" });
-//     } else {
-//       let {
-//         age,
-//         gender,
-//         location,
-//         occupation,
-//         languages,
-//         interests,
-//         about,
-//         avatarURL,
-//       } = req.body;
-
-//       let sql = `
-//         UPDATE users
-//         SET
-//         age = "${age}",
-//         gender = "${gender}",
-//         location = "${location}",
-//         occupation = "${occupation}",
-//         languages = "${languages}",
-//         interests = "${interests}",
-//         about = "${about}",
-//         avatarURL = "${avatarURL}"
-//         WHERE userId = "${userId}"
-//       `;
-//       await db(sql);
-//       let results = await db(`SELECT * FROM users WHERE userId = ${userId}`);
-//       res.send(results.data);
-//     }
-//   } catch (err) {
-//     res.status(500).send({ error: err.message });
-//   }
-// });
+// delete event by eventid
+eventsRouter.delete("/:eventid", async (req, res) => {
+    let eventId = req.params.eventid;
+  let sql = `
+      DELETE FROM events
+      WHERE eventid = ${eventId}
+     `;
+  try {
+    await db(sql);
+    let result = await db(`select userId, eventid from events ORDER BY userId;`);
+    res.status(201).send(result.data);
+  } catch (err) {
+    res.status(500).send({ error: err.message });
+  }
+});
 
 module.exports = eventsRouter;
