@@ -5,6 +5,7 @@ const { ensureSameUser } = require("../middleware/guards");
 
 // Had to change from :id to /user/:id to stop conflicting with other routes
 router.get("/user/:id", async (req, res) => {
+  let id = req.params.id;
   let sql = `select * from users where userId = ${id}`;
 
   let results = await db(sql);
@@ -53,13 +54,34 @@ router.get("/matched", async function (req, res, next) {
 });
 
 // Connections
+// accepted - 1= confirmed, 2= rejected, null= not dealt with yet
 router.get("/connects/:id", async function (req, res, next) {
   let userId = req.params.id;
-  let sql = `SELECT * FROM connections WHERE inviterId = ${userId} OR inviteeId = ${userId}`;
+  let sql = 
+  `SELECT connections.connectId, 
+          connections.accepted,
+          inviter.userId as inviterId, 
+          inviter.username as inviterUsername,
+          invitee.userId as inviteeId, 
+          invitee.username as inviteeUsername,
+          events.eventid,
+          events.eventname,
+          events.eventdate,
+          events.eventlocation
+    FROM connections
+    INNER JOIN users inviter 
+    ON connections.inviterId = inviter.userId
+    INNER JOIN users invitee 
+    ON connections.inviteeId = invitee.userId 
+    INNER JOIN events 
+    ON connections.eventId = events.eventid 
+    WHERE connections.inviterId = ${userId} 
+    OR connections.inviteeId=${userId}`
 
   try {
     let results = await db(sql);
     let connections = results.data;
+    console.log(connections);
     if (connections.length === 0) {
       res.status(404).send({ error: "No connections" });
     } else {

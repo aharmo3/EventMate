@@ -34,7 +34,7 @@ export default function UserListView() {
   }
 
   const handleClickOpen = (matchPass) => {
-    console.log("----", matchPass);
+    console.log("t----", matchPass);
     setMatchClicked(matchPass);
     setOpen(true);
   };
@@ -67,7 +67,7 @@ export default function UserListView() {
             <div>
               <ListItem
                 key={match.userId}
-                onClick={(e) => handleClickOpen(match)}
+                onClick={(e) => handleClickOpen(match.userId)}
               >
                 <ListItemAvatar
                   sx={{
@@ -101,12 +101,13 @@ export default function UserListView() {
                 <UserDialogView
                   open={open}
                   onClose={handleClose}
-                  matchClicked={matchClicked}
+                  userId={matchClicked}
                 />
               )}
             </div>
           ))}
       </List>
+      
       <NextBar
         activeStep={3}
         prevCb={() => {

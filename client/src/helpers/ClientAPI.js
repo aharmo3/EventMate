@@ -32,7 +32,7 @@ class ClientAPI {
   }
   //get user by id
   static async getUser(userId) {
-    return await this._doFetch(`/users/${userId}`);
+    return await this._doFetch(`/users/user/${userId}`);
   }
   //get content
   static async getContent(url) {

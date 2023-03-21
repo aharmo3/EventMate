@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import ClientAPI from "../helpers/ClientAPI";
 
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -8,7 +9,26 @@ import DialogContent from '@mui/material/DialogContent';
 import Dialog from '@mui/material/Dialog';
 import IconButton from '@mui/material/IconButton';
 
-export default function UserListView({open, onClose, matchClicked}) {
+export default function UserDialogView({open, onClose, userId}) {
+  const [profile, setProfile] = useState(false);
+
+  useEffect(() => {
+    console.log("user id", userId);
+    getProfile(userId);
+  }, []);
+
+   // Gets the connections for the notification view
+   async function getProfile(user) {
+    console.log("user iddddd", user);
+    let uresponse = await ClientAPI.getUser(user);
+
+    if (uresponse.ok) {
+      setProfile(uresponse.data);
+    } else {
+      console.log('Error!', uresponse.error);
+    }
+  }
+
 
 
   return (
@@ -30,6 +50,8 @@ export default function UserListView({open, onClose, matchClicked}) {
       </IconButton>
 
 
+      { 
+        profile &&
         <Box    
           sx={{ 
             width: '70%',
@@ -48,13 +70,13 @@ export default function UserListView({open, onClose, matchClicked}) {
           >
             <Avatar
             variant="rounded"
-            alt={matchClicked.username}
-            src={matchClicked.avatarURL}
+            alt={profile.username}
+            src={profile.avatarURL}
             sx={{ width: 150, height: 150 }}
             />
 
-            <h2>{matchClicked.username}</h2>
-            <p>{matchClicked.location}</p>
+            <h2>{profile.username}</h2>
+            <p>{profile.location}</p>
           </Box>
 
           <Box
@@ -64,13 +86,13 @@ export default function UserListView({open, onClose, matchClicked}) {
           }}
           >
             <h5>Languages Spoken</h5>
-            <p>{matchClicked.languages}</p>
+            <p>{profile.languages}</p>
 
             <h5>Age</h5>
-            <p>{matchClicked.age}</p>
+            <p>{profile.age}</p>
 
             <h5>Gender</h5>
-            <p>{matchClicked.gender}</p>
+            <p>{profile.gender}</p>
           </Box>
 
           <Box
@@ -80,10 +102,10 @@ export default function UserListView({open, onClose, matchClicked}) {
           }}
           >
             <h5>Occupation</h5>
-            <p>{matchClicked.occupation}</p>
+            <p>{profile.occupation}</p>
 
             <h5>Interests</h5>
-            <p>{matchClicked.interests}</p>
+            <p>{profile.interests}</p>
 
             
           </Box>
@@ -96,7 +118,7 @@ export default function UserListView({open, onClose, matchClicked}) {
           }}
           >
             <h3>About</h3>
-            <p>{matchClicked.about}</p>
+            <p>{profile.about}</p>
 
             
           </Box>
@@ -115,6 +137,9 @@ export default function UserListView({open, onClose, matchClicked}) {
             
           </Box>
         </Box>
+      }
+
+
       </DialogContent>
     </Dialog>
   );
