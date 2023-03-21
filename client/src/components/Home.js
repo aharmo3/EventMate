@@ -48,7 +48,7 @@ export default function Home() {
             alignItems: "center",
           }}
         >
-          <Link to="/register">
+          <Link to="/login">
             <Button variant="contained" size="large">
               Find a Mate
             </Button>
