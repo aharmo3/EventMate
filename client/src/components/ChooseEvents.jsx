@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { GetByLocTM } from "../ApiCalls/GetByLocTM";
+import { GetByLocTM } from "../helpers/EventsApi/GetByLocTM";
 import Checkbox from '@mui/material/Checkbox';
 import Grid from "@mui/material/Grid";
 import "./chooseEvents.css"
@@ -7,6 +7,9 @@ import { Button, TextField } from "@mui/material";
 import LinearStepper from "./LinearStepper";
 import { useParams, useNavigate } from "react-router-dom";
 import NextBar from "./NextBar";
+import ClientAPI from "../helpers/ClientAPI";
+import Local from "../helpers/Local";
+
 
 function ChooseEvents() {
     const navigate = useNavigate();
@@ -17,8 +20,8 @@ function ChooseEvents() {
       const [showEdit, setShowEdit]= useState(false);
       const [showTitle, setShowTitle]= useState(true);
       const [chosenEvents, setChosenEvents] = useState([]);
-      const [isChecked, setIsChecked]= useState([]); 
-  
+      // const [isChecked, setIsChecked]= useState([]); 
+
     //Loads with user's current country in DB     
     useEffect(() => {
     getLocation();
@@ -30,18 +33,26 @@ function ChooseEvents() {
     getEvents(location)
     }, [location]);
 
+    //gets user location from local storage and sets it
     async function getLocation(){
-        // fetche location from db
-        //placeholder below
-        setLocation("barcelona");
+        //get id to fetch user data
+        let userInfo= await Local.getUser();
+        console.log("user info: ", userInfo)
+        let userId = userInfo.userId;
+        if (userInfo.location){
+          setLocation(userInfo.location)
+        }else{
+        //placeholder below   
+        setLocation("Barcelona, Spain");
+        }
     };
 
-
+    //location submits on typing
     const handleChange = event => {
         setLocation(event.target.value);
       };
     
-
+      //show or don't show abiity to edit
     function handleEditButton(){
         setShowEdit(true);
         setShowTitle(false);
@@ -58,15 +69,22 @@ function ChooseEvents() {
      
     async function getEvents(place){
         let results = await GetByLocTM(location);
-        //formatting the object to only take what we need
-       
+      //formatting the object to only take what we need
     let newResults= results.map((result) =>{ 
         return {"id": result.id, 
         "name":result.name, 
         "image": result.images["0"].url, 
         "date" : result.dates.start.localDate, 
         "time" : result.dates.start.localTime, 
-        "venue" : result._embedded.venues["0"].name}});
+        "venue" : result._embedded.venues["0"].name,
+        "currency": result.priceRanges["0"].currency,
+        "startingPrice":  result.priceRanges["0"].min,
+        "purchaseLink":  result.url,
+        "genreId":  result.classifications["0"].genre.id,
+        "genre": result.classifications["0"].genre.name,
+        "subgenre": result.classifications["0"].subGenre.name,
+        "eventType": result.classifications["0"].segment.name,
+        "eventHost": result._embedded.attractions.name}});
         console.log("new Results" , newResults)
         await setEvents(newResults);
         setShowEvents(true);    
@@ -88,6 +106,7 @@ function ChooseEvents() {
       console.log(chosenEvents);
    }
 
+   //sends selected events to database
    function handleSend (){
     //here goes put request put(chosenEvents)
     // loading
@@ -112,6 +131,7 @@ function ChooseEvents() {
               value={location}
               onChange={e => handleChange(e)}
             />
+            {/* add a country dropdown selector  */}
           {/* <button className="edit" type="submit">
             ✓
           </button> */}
