@@ -15,7 +15,6 @@ import NextBar from "../NextBar";
 export default function RegistrationForm() {
   const navigate = useNavigate();
   const userId = Local.getUserId();
-
   const userInfo = Local.getUser();
   async function updateUser(form) {
     let myresponse = await ClientAPI.updateUser(form, userId);
@@ -47,9 +46,9 @@ export default function RegistrationForm() {
         }}
       >
         <Grid container spacing={2}>
-          {/* <Grid item xs={12}>
-            <LinearStepper activeStep={1} />
-          </Grid> */}
+          <Grid item xs={12}>
+            <h2>Your Profile</h2>
+          </Grid>
 
           <Grid item xs={6}>
             <FormInput label="Age" name="age" type="number" />

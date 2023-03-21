@@ -4,13 +4,19 @@ import Form from "./Form";
 import Button from "@mui/material/Button";
 import ClientAPI from "../helpers/ClientAPI";
 import Local from "../helpers/Local";
+import { useNavigate } from "react-router-dom";
 import "./LoginForm.css";
 
 // TODO - Navigate to dashboard
 export default function LoginForm({ doRegister }) {
+  const navigate = useNavigate();
+
   async function handleSubmit(form) {
     const response = await ClientAPI.loginUser(form.username, form.password);
     Local.saveUserInfo(response.data.token, response.data.user);
+    if (response.ok) {
+      navigate("/dashboard");
+    }
   }
 
   // TODO - Navigate to secondary registration

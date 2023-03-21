@@ -11,12 +11,12 @@ import {
 import RegistrationForm from "./components/Registration/RegistrationForm";
 import "./App.css";
 import ChooseEvents from "./components/ChooseEvents";
-import FormInput from "./components/FormInput";
 import Local from "./helpers/Local";
 import ClientAPI from "./helpers/ClientAPI";
 import LoginForm from "./components/LoginForm";
 import UserDashboard from "./components/UserDashboardView";
 import SearchEvents from "./components/SearchEvents";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   let [user, setUser] = useState(Local.getUser());
@@ -31,7 +31,7 @@ function App() {
 
     if (myresponse.ok) {
       console.log("doreg data----", myresponse.data);
-      Local.updateUserInfo(myresponse.data);
+      Local.saveUserInfo(myresponse.data.token, myresponse.data.user);
       setRegistrationErrorMsg("");
       if (myresponse.data.userId !== null) {
         navigate("/register-two");
@@ -57,12 +57,13 @@ function App() {
   function doLogout() {
     Local.removeUserInfo();
     setUser(null);
+    navigate("/");
     // (NavBar will send user to home page)
   }
 
   return (
     <>
-      <TopNav user={user} logOutCb={doLogout} />
+      <TopNav logOutCb={doLogout} />
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -70,15 +71,56 @@ function App() {
             path="/login"
             element={<LoginForm doRegister={doRegister} />}
           />
-          <Route path="/matched" element={<UserListView />} />
+
+          <Route
+            path="/matched"
+            element={
+              <ProtectedRoute>
+                <UserListView />
+              </ProtectedRoute>
+            }
+          />
+
           <Route
             path="/register"
             element={<LoginForm doRegister={doRegister} />}
           />
-          <Route path="/register-two" element={<RegistrationForm />} />
-          <Route path="/events" element={<ChooseEvents />} />
-          <Route path="/dashboard" element={<UserDashboard />} />
-          <Route path="/searchevents" element={<SearchEvents />} />
+
+          <Route
+            path="/register-two"
+            element={
+              <ProtectedRoute>
+                <RegistrationForm />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/events"
+            element={
+              <ProtectedRoute>
+                <ChooseEvents />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <UserDashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/searchevents"
+            element={
+              <ProtectedRoute>
+                <SearchEvents />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </main>
     </>
