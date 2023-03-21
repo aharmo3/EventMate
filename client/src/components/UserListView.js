@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import Divider from "@mui/material/Divider";
@@ -7,11 +9,13 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-
 import ClientAPI from "../helpers/ClientAPI";
 import UserDialogView from "./UserDialogView";
+import NextBar from "./NextBar";
 
 export default function UserListView() {
+  const navigate = useNavigate();
+
   const [matched, setMatched] = useState([]);
   const [open, setOpen] = useState(false);
   const [matchClicked, setMatchClicked] = useState(false);
@@ -52,7 +56,6 @@ export default function UserListView() {
       }}
     >
       <h2>Your event matches...</h2>
-
       <List
         sx={{
           width: "100%",
@@ -104,6 +107,12 @@ export default function UserListView() {
             </div>
           ))}
       </List>
+      <NextBar
+        activeStep={3}
+        prevCb={() => {
+          navigate(`/events`);
+        }}
+      />
     </Box>
   );
 }

@@ -52,13 +52,13 @@ export default function UploadImage({ name }) {
             Click or Drop here
           </Button>
           &nbsp;
-          <Button onClick={onImageRemoveAll}>Remove all images</Button>
+          {/* <Button onClick={onImageRemoveAll}>Remove all images</Button> */}
           {!imageList.length && !form.avatarURL && (
             <Img src="https://s3.amazonaws.com/FringeBucket/default-user.png" />
           )}
+          {form.avatarURL && <Img src={form.avatarURL} />}
           {imageList.map((image, index) => (
             <div key={index} className="image-item">
-              {form.avatarURL && <Img src={form.avatarURL} />}
               <div className="image-item__btn-wrapper">
                 <Button
                   variant="outlined"

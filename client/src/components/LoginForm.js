@@ -4,30 +4,24 @@ import Form from "./Form";
 import Button from "@mui/material/Button";
 import ClientAPI from "../helpers/ClientAPI";
 import Local from "../helpers/Local";
+import { useNavigate } from "react-router-dom";
 import "./LoginForm.css";
-
-// let EMPTYFORM = {
-//   username: "",
-//   password: "",
-//   email: "",
-// };
 
 // TODO - Navigate to dashboard
 export default function LoginForm({ doRegister }) {
+  const navigate = useNavigate();
+
   async function handleSubmit(form) {
     const response = await ClientAPI.loginUser(form.username, form.password);
     Local.saveUserInfo(response.data.token, response.data.user);
+    if (response.ok) {
+      navigate("/dashboard");
+    }
   }
 
   // TODO - Navigate to secondary registration
   async function handleRegistration(form) {
-    //console.log(form);
     doRegister(form.username, form.email, form.password);
-    // const response = await ClientAPI.registerUser(
-    //   form.username,
-    //   form.email,
-    //   form.password
-    // );
   }
 
   return (
@@ -43,7 +37,9 @@ export default function LoginForm({ doRegister }) {
           <FormInput label="Password" name="password" type="password" />
           <br />
           <br />
-          <Button type="submit">Login</Button>
+          <Button type="submit" variant="contained">
+            Login
+          </Button>
         </Form>
       </div>
       <div className="registration-form">
@@ -59,7 +55,9 @@ export default function LoginForm({ doRegister }) {
           <FormInput label="Email" name="email" />
           <br />
           <br />
-          <Button type="submit">Register</Button>
+          <Button type="submit" variant="contained">
+            Register
+          </Button>
         </Form>
       </div>
     </div>

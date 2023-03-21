@@ -7,6 +7,8 @@ import Typography from '@mui/material/Typography';
 import React, {useState} from 'react'
 import { useEffect } from 'react';
 import getMyEvents from '../helpers/Utils/getMyEvents.js';
+import { CircularProgress } from '@mui/material';
+import EventsDisplayModal from './EventsDisplayModal.jsx';
 
 
 //pass the data into the component as a prop
@@ -16,15 +18,23 @@ function EventsCards() {
 const [events, setEvents] = useState(); 
 const [loading, setLoading] = useState(true);
 const [showList, setShowList]= useState(false);
+const [isOpen, setIsOpen]= useState(false);
+const [modalData, setModalData]= useState({});
 
 useEffect(() => {
  getEvents();
 }, [])
 
+function handleOpenModal(res){
+ 
+  setModalData(res);
+  setIsOpen(true)
+}
+
+
 
     async function getEvents(){  
         console.log("getting events for event cards....")
-    //  let apiData =  await GetByLocTM("Barcelona");
     let apiData =  await getMyEvents();
     let newResults= apiData.map((result) =>{ 
         return {"id": result.id, 
@@ -32,8 +42,17 @@ useEffect(() => {
         "image": result.images["0"].url, 
         "date" : result.dates.start.localDate, 
         "time" : result.dates.start.localTime, 
-        "venue" : result._embedded.venues["0"].name}});
-        console.log("new Results" , newResults)
+        "venue" : result._embedded.venues["0"].name,
+        "currency": result.priceRanges["0"].currency,
+        "startingPrice":  result.priceRanges["0"].min,
+        "purchaseLink":  result.url,
+        "genreId":  result.classifications["0"].genre.id,
+        "genre": result.classifications["0"].genre.name,
+        "subgenre": result.classifications["0"].subGenre.name,
+        "eventType": result.classifications["0"].segment.name,
+        "eventHost": result._embedded.attractions.name
+      }});
+      console.log("new results mapped", newResults)
         await setEvents(newResults); 
         setLoading(false)
         setShowList(true)
@@ -43,7 +62,8 @@ useEffect(() => {
     <div className= "event-cards">
             {loading &&
             <div>
-            <h1>Loading......</h1>  
+            <CircularProgress />
+            {/* <h1>Loading......</h1>   */}
             </div>
             }
 
@@ -72,6 +92,7 @@ useEffect(() => {
         </ListItemAvatar>
         <ListItemText
           primary={r.name} 
+          onClick={(e) => handleOpenModal(r)} 
           secondary={
             <React.Fragment>
               <Typography
@@ -94,7 +115,13 @@ useEffect(() => {
         })} {/*close map fn */}
        </div> 
    }
-    </div>
+
+   <EventsDisplayModal
+   isOpen={isOpen}
+   handleOpen={setIsOpen}
+   eventData={modalData}
+   />
+   </div>
   )
 }
 

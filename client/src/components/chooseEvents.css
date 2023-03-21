@@ -92,18 +92,3 @@ button.edit{
     padding: 0;
 }
 
-/* ----------------Next page bar------------------------------------ */
-.next-bar{
-    margin-top: 200px;
-    display: flex;
-    align-items: flex-end;
-    justify-content: flex-end;
-    padding: 10px;
-    position: fixed;
-    bottom:0;
-    right: 0;
-
-}
-.next-button{
-
-}

@@ -1,9 +1,20 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 
+import Local from "../helpers/Local";
+
 export default function Home() {
+  const navigate = useNavigate();
+  const isLoggedIn = Local.getToken() !== "";
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate("/dashboard");
+    }
+  }, []);
+
   return (
     <div>
       <Box

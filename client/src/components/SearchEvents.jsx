@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { GetByLocTM } from "../ApiCalls/GetByLocTM";
+import { GetByLocTM } from '../helpers/EventsApi/GetByLocTM.jsx';
 import Checkbox from '@mui/material/Checkbox';
 import "./chooseEvents.css"
 import { TextField } from "@mui/material";

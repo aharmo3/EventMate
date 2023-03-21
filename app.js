@@ -8,6 +8,7 @@ var authRouter = require("./routes/auth");
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var chatRouter = require("./routes/chat.js");
+var eventsRouter = require("./routes/events");
 
 const cors = require("cors");
 
@@ -24,6 +25,11 @@ app.use("/api", indexRouter);
 app.use("/api/users", usersRouter);
 app.use("/api", authRouter);
 app.use("/api/chat", chatRouter);
+app.use("/api/events", eventsRouter);
+
+app.get("/api/events", (req, res) => {
+  res.json("Hello, welcome to the events table");
+});
 
 // Catch 404 and forward to error handler
 app.use(function (req, res, next) {
