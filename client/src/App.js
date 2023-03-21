@@ -2,18 +2,22 @@ import React, { useState } from "react";
 import TopNav from "./components/TopNav";
 import UserListView from "./components/UserListView";
 import Home from "./components/Home";
-import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useNavigate,
+} from "react-router-dom";
 import RegistrationForm from "./components/Registration/RegistrationForm";
 import "./App.css";
 import ChooseEvents from "./components/ChooseEvents";
-import FormInput from "./components/FormInput";
 import Local from "./helpers/Local";
 import ClientAPI from "./helpers/ClientAPI";
 import LoginForm from "./components/LoginForm";
 import UserDashboard from "./components/UserDashboardView";
 import SearchEvents from "./components/SearchEvents";
 import NotificationView from "./components/NotificationView";
-
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   let [user, setUser] = useState(Local.getUser());
@@ -21,14 +25,14 @@ function App() {
   const [registrationErrorMsg, setRegistrationErrorMsg] = useState("");
   const [userid, setUserid] = useState(false);
 
-const navigate = useNavigate();
+  const navigate = useNavigate();
 
   async function doRegister(username, email, password) {
     let myresponse = await ClientAPI.registerUser(username, email, password);
-    
+
     if (myresponse.ok) {
       console.log("doreg data----", myresponse.data);
-      Local.updateUserInfo(myresponse.data);
+      Local.saveUserInfo(myresponse.data.token, myresponse.data.user);
       setRegistrationErrorMsg("");
       if (myresponse.data.userId !== null) {
         navigate("/register-two");
@@ -46,7 +50,6 @@ const navigate = useNavigate();
       setUser(myresponse.data.user);
       setLoginErrorMsg("");
       // navigate("/");
-      console.log(`hello`);
     } else {
       setLoginErrorMsg("Login failed");
     }
@@ -55,26 +58,79 @@ const navigate = useNavigate();
   function doLogout() {
     Local.removeUserInfo();
     setUser(null);
+    navigate("/");
     // (NavBar will send user to home page)
   }
 
   return (
     <>
-      <TopNav user={user} logOutCb={doLogout} />
+      <TopNav logOutCb={doLogout} />
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route
             path="/login"
-            element={<LoginForm doRegister={doRegister}/>}
+            element={<LoginForm doRegister={doRegister} />}
           />
-          <Route path="/matched" element={<UserListView />} />
-          <Route path="/notifications" element={<NotificationView />} />
-          <Route path="/register" element={<LoginForm  doRegister={doRegister}/>} />
-          <Route path="/register-two" element={<RegistrationForm />} />
-          <Route path="/events" element={<ChooseEvents />} />
-          <Route path="/dashboard" element={<UserDashboard />}/>
-          <Route path="/searchevents" element={<SearchEvents />}/>
+
+          <Route
+          path="/notifications"
+            element={
+              <ProtectedRoute>
+                <NotificationView />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/matched"
+            element={
+              <ProtectedRoute>
+                <UserListView />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/register"
+            element={<LoginForm doRegister={doRegister} />}
+          />
+
+          <Route
+            path="/register-two"
+            element={
+              <ProtectedRoute>
+                <RegistrationForm />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/events"
+            element={
+              <ProtectedRoute>
+                <ChooseEvents />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <UserDashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/searchevents"
+            element={
+              <ProtectedRoute>
+                <SearchEvents />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </main>
     </>

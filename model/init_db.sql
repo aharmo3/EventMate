@@ -17,11 +17,28 @@ about VARCHAR(400),
 avatarURL longblob
 );
 
-INSERT INTO users (username, password, email, age, gender, location, occupation, languages, interests, about) VALUES 
-('Bob', '$2b$12$eFzMWbS9SogNtxkmo3J7aO8FQMFQSKbtpwLMIOVsF6GGKpTQdgq.W', 'bob@email.com', 35, 'male', 'Barcelona', 'Chef', 'spanish', 'hiking', 'I am Bob, a professional chef. After an event together I would treat you to my delicious paella'),
-('Hannah', '$2b$12$eFzMWbS9SogNtxkmo3J7aO8FQMFQSKbtpwLMIOVsF6GGKpTQdgq.W', 'hannah@email.com', 30, 'female', 'Paris', 'Software engineer', 'french', 'snowboarding', 'I am Hannah'),
-('Lucy', '$2b$12$eFzMWbS9SogNtxkmo3J7aO8FQMFQSKbtpwLMIOVsF6GGKpTQdgq.W', 'lucy@email.com', 23, 'female', 'Barcelona', 'Acrobat', 'spanish', 'painting', 'I am Lucy'),
-('Juan Jose', "$2b$12$eFzMWbS9SogNtxkmo3J7aO8FQMFQSKbtpwLMIOVsF6GGKpTQdgq.W", 'juany@email.com', 87, 'male', 'Barcelona', 'Retired', 'english', 'snowboarding', 'I am Juan Jose');
+CREATE TABLE events (
+`eventid` INT NOT NULL AUTO_INCREMENT,    
+`userId` INT,
+ticketmasterid VARCHAR(100) NOT NULL,
+eventname VARCHAR(200),
+eventdate VARCHAR(100),
+starttime VARCHAR(100),
+imageurl VARCHAR(200),
+eventlocation VARCHAR(100),
+venue VARCHAR(100),
+currency VARCHAR(100),
+startingprice VARCHAR(100),
+ticketurl VARCHAR(200),
+genre  VARCHAR(100),
+subgenre VARCHAR(100),
+host VARCHAR(100),
+eventtype VARCHAR(100),
+socialmedia VARCHAR(100),
+eventdetail VARCHAR(100) DEFAULT "No",
+PRIMARY KEY (`eventid`),
+FOREIGN KEY(`userId`) REFERENCES `users`(`userId`)
+);
 
 CREATE TABLE events (
 eventId INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -45,3 +62,8 @@ FOREIGN KEY (eventId) REFERENCES events(eventId)
 
 INSERT INTO connections (inviterId, inviteeId, eventId, accepted) VALUES 
 (1, 2, 1, NULL);
+
+INSERT INTO events (userid,ticketmasterid, eventname, eventdate, starttime, imageurl, eventlocation, venue , currency, startingprice, ticketurl, genre, subgenre, host, eventtype, socialmedia, eventdetail) VALUES 
+(1, "G5diZ94NPjotW", "Shania Twain: Queen Of Me Tour", "2023-07-11", "19:30:00", "https://s1.ticketm.net/dam/a/1d1/47cc9b10-4904-4dec-b1d6-539e44a521d1_1825531_RETINA_PORTRAIT_3_2.jpg", "New York, USA", "Madison Square Garden" , "USD", 65.95, "https://www.ticketmaster.com/shania-twain-queen-of-me-tour-new-york-new-york-07-11-2023/event/3B005D58E5711A7D", "Country", "Country", null, "Music", null, "yes");
+
+
