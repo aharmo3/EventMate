@@ -1,5 +1,6 @@
-DROP TABLE IF EXISTS users; 
 DROP TABLE IF EXISTS events; 
+DROP TABLE IF EXISTS users; 
+
 
 CREATE TABLE users (
 userId INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -34,8 +35,7 @@ host VARCHAR(100),
 eventtype VARCHAR(100),
 socialmedia VARCHAR(100),
 eventdetail VARCHAR(100) DEFAULT "No",
-PRIMARY KEY (`eventid`),
-FOREIGN KEY(`userId`) REFERENCES `users`(`userId`)
+PRIMARY KEY (`eventid`)
 );
 
 
