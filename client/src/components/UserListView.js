@@ -11,9 +11,6 @@ import Button from "@mui/material/Button";
 import ClientAPI from "../helpers/ClientAPI";
 import UserDialogView from "./UserDialogView";
 
-import ClientAPI from "../helpers/ClientAPI";
-import UserDialogView from "./UserDialogView";
-
 export default function UserListView() {
   const [matched, setMatched] = useState([]);
   const [open, setOpen] = useState(false);

@@ -17,6 +17,7 @@ import ClientAPI from "./helpers/ClientAPI";
 import LoginForm from "./components/LoginForm";
 import UserDashboard from "./components/UserDashboardView";
 import SearchEvents from "./components/SearchEvents";
+import Chat from "./components/Chat";
 
 function App() {
   let [user, setUser] = useState(Local.getUser());
