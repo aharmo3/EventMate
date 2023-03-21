@@ -6,6 +6,11 @@ class ClientAPI {
     return await this._doFetch("/users/matched");
   }
 
+  // To get all connections for current user
+  static async getConnections(userId) {
+    return await this._doFetch(`/users/connects/${userId}`);
+  }
+
   //register
   static async registerUser(username, email, password) {
     let body = { username, password, email };

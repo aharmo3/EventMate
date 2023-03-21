@@ -33,7 +33,8 @@ router.get("/", async function (req, res, next) {
   }
 });
 
-// Will eventually get all users matched on an event
+// Will eventually get all users matched on an event --- Not sure if this'll be needed we could
+// just use get all users for the event id on other table without the current user
 router.get("/matched", async function (req, res, next) {
   let sql = "SELECT * FROM users";
 
@@ -41,7 +42,7 @@ router.get("/matched", async function (req, res, next) {
     let results = await db(sql);
     let users = results.data;
     if (users.length === 0) {
-      res.status(404).send({ error: "No users found" });
+      res.status(404).send({ error: "No matches found" });
     } else {
       users.forEach((u) => delete u.password); // don't return passwords
       res.send(users);
@@ -50,6 +51,25 @@ router.get("/matched", async function (req, res, next) {
     res.status(500).send({ error: err.message });
   }
 });
+
+// Connections
+router.get("/connects/:id", async function (req, res, next) {
+  let userId = req.params.id;
+  let sql = `SELECT * FROM connections WHERE inviterId = ${userId} OR inviteeId = ${userId}`;
+
+  try {
+    let results = await db(sql);
+    let connections = results.data;
+    if (connections.length === 0) {
+      res.status(404).send({ error: "No connections" });
+    } else {
+      res.send(connections);
+    }
+  } catch (err) {
+    res.status(500).send({ error: err.message });
+  }
+});
+
 
 router.get("/:id", ensureSameUser, async (req, res) => {
   let userId = req.params.id;

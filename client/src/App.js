@@ -12,6 +12,7 @@ import ClientAPI from "./helpers/ClientAPI";
 import LoginForm from "./components/LoginForm";
 import UserDashboard from "./components/UserDashboardView";
 import SearchEvents from "./components/SearchEvents";
+import NotificationView from "./components/NotificationView";
 
 
 function App() {
@@ -21,7 +22,6 @@ function App() {
   const [userid, setUserid] = useState(false);
 
 const navigate = useNavigate();
-
 
   async function doRegister(username, email, password) {
     let myresponse = await ClientAPI.registerUser(username, email, password);
@@ -69,6 +69,7 @@ const navigate = useNavigate();
             element={<LoginForm doRegister={doRegister}/>}
           />
           <Route path="/matched" element={<UserListView />} />
+          <Route path="/notifications" element={<NotificationView />} />
           <Route path="/register" element={<LoginForm  doRegister={doRegister}/>} />
           <Route path="/register-two" element={<RegistrationForm />} />
           <Route path="/events" element={<ChooseEvents />} />
