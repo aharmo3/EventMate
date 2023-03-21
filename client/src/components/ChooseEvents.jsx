@@ -37,8 +37,6 @@ function ChooseEvents() {
     async function getLocation(){
         //get id to fetch user data
         let userInfo= await Local.getUser();
-        console.log("user info: ", userInfo)
-        let userId = userInfo.userId;
         if (userInfo.location){
           setLocation(userInfo.location)
         }else{
@@ -106,14 +104,16 @@ function ChooseEvents() {
       console.log(chosenEvents);
    }
 
-   //sends selected events to database
-   function handleSend (){
-    //here goes put request put(chosenEvents)
+  //sends selected events to database
+  async function handleSend (){
     // loading
+    let userInfo= await Local.getUser();
+    let userId = userInfo.userId;
+    let toPost = await chosenEvents.forEach((c) => {ClientAPI.addToUserEvents(userId, c)})
     //if return is successful - success message
     // route to next page 
     
-    navigate("/matched")
+    // navigate("/matched")
     console.log("submitted events:", chosenEvents)
   }
 

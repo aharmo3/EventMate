@@ -55,7 +55,7 @@ class ClientAPI {
 
   //add event for user
   static async addToUserEvents (userid, ticketmasterid){
-   let body = {userid, ticketmasterid} 
+   let body = {userid, ticketmasterid}
    return await this._doFetch("/events/user", "POST", body);
   }
 
