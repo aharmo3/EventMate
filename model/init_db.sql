@@ -1,5 +1,8 @@
 DROP TABLE IF EXISTS users; 
 
+
+
+
 CREATE TABLE users (
 userId INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 username VARCHAR(100) NOT NULL UNIQUE,
@@ -20,4 +23,14 @@ INSERT INTO users (username, password, email, age, gender, location, occupation,
 ('Bob', '$2b$12$eFzMWbS9SogNtxkmo3J7aO8FQMFQSKbtpwLMIOVsF6GGKpTQdgq.W', 'bob@email.com', 35, 'male', 'Barcelona', 'Chef', 'spanish', 'hiking', 'I am Bob, a professional chef. After an event together I would treat you to my delicious paella', 'https://i.pravatar.cc/150?img=68'),
 ('Hannah', '$2b$12$eFzMWbS9SogNtxkmo3J7aO8FQMFQSKbtpwLMIOVsF6GGKpTQdgq.W', 'hannah@email.com', 30, 'female', 'Paris', 'Software engineer', 'french', 'snowboarding', 'I am Hannah', 'https://i.pravatar.cc/150?img=34'),
 ('Lucy', '$2b$12$eFzMWbS9SogNtxkmo3J7aO8FQMFQSKbtpwLMIOVsF6GGKpTQdgq.W', 'lucy@email.com', 23, 'female', 'Barcelona', 'Acrobat', 'spanish', 'painting', 'I am Lucy', 'https://i.pravatar.cc/150?img=16'),
-('Juan Jose', "$2b$12$eFzMWbS9SogNtxkmo3J7aO8FQMFQSKbtpwLMIOVsF6GGKpTQdgq.W", 'juany@email.com', 87, 'male', 'Barcelona', 'Retired', 'english', 'snowboarding', 'I am Juan Jose', 'https://i.pravatar.cc/150?img=63')
+('Juan Jose', "$2b$12$eFzMWbS9SogNtxkmo3J7aO8FQMFQSKbtpwLMIOVsF6GGKpTQdgq.W", 'juany@email.com', 87, 'male', 'Barcelona', 'Retired', 'english', 'snowboarding', 'I am Juan Jose', 'https://i.pravatar.cc/150?img=63');
+
+
+DROP TABLE IF EXISTS messages;
+
+CREATE TABLE messages (
+id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+senderId INT NOT NULL,
+receiverId INT NOT NULL,
+text VARCHAR(250) NOT NULL,
+dateTime DATETIME DEFAULT CURRENT_TIMESTAMP);

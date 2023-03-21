@@ -7,6 +7,7 @@ var createError = require("http-errors");
 var authRouter = require("./routes/auth");
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
+var chatRouter = require("./routes/chat.js");
 
 const cors = require("cors");
 
@@ -22,6 +23,7 @@ app.use(cookieParser());
 app.use("/api", indexRouter);
 app.use("/api/users", usersRouter);
 app.use("/api", authRouter);
+app.use("/api/chat", chatRouter);
 
 // Catch 404 and forward to error handler
 app.use(function (req, res, next) {
