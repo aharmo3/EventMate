@@ -9,6 +9,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import NextBar from "./NextBar";
 import ClientAPI from "../helpers/ClientAPI";
 import Local from "../helpers/Local";
+import addEventsToDB from "../helpers/Utils/addEventsToDB";
 
 
 function ChooseEvents() {
@@ -82,10 +83,11 @@ function ChooseEvents() {
         "genre": result.classifications["0"].genre.name,
         "subgenre": result.classifications["0"].subGenre.name,
         "eventType": result.classifications["0"].segment.name,
-        "eventHost": result._embedded.attractions.name}});
+        "eventHost": result._embedded.attractions.name,
+        "eventLocation": location}});
         console.log("new Results" , newResults)
         await setEvents(newResults);
-        setShowEvents(true);    
+        setShowEvents(true);  
     }
 
   
@@ -110,6 +112,8 @@ function ChooseEvents() {
     let userInfo= await Local.getUser();
     let userId = userInfo.userId;
     let toPost = await chosenEvents.forEach((c) => {ClientAPI.addToUserEvents(userId, c)})
+    let newEvents= addEventsToDB(chosenEvents, events); 
+    console.log(newEvents) 
     //if return is successful - success message
     // route to next page 
     
