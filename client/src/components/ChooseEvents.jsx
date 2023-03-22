@@ -11,7 +11,7 @@ import LocationDropdown from "./Registration/LocationDropdown";
 import Form from "./Form";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
-
+import EventCard from "./EventCard";
 function ChooseEvents() {
   const navigate = useNavigate();
   const userInfo = Local.getUser();
@@ -61,6 +61,7 @@ function ChooseEvents() {
   function handleCheckBoxChange(event) {
     let eventId = event.target.value;
     let checkedEvents = [...chosenEvents];
+    console.warn(checkedEvents);
     if (checkedEvents.includes(eventId)) {
       let idIndex = checkedEvents.indexOf(eventId);
       checkedEvents.splice(idIndex, 1);
@@ -138,12 +139,13 @@ function ChooseEvents() {
                       "aria-label": "Checkbox A",
                     }}
                   />
-                  <img src={r.image} alt="" className="event-img" />
+                  <EventCard r={r} />
+                  {/* <img src={r.image} alt="" className="event-img" />
                   <p className="event-title">{r.name}</p>
                   <p className="event-date-time">
                     {r.date} | {r.time}
                   </p>
-                  <p className="event-venue">{r.venue}</p>
+                  <p className="event-venue">{r.venue}</p> */}
                 </div>
               );
             })}
@@ -151,7 +153,7 @@ function ChooseEvents() {
         </div>
       )}
 
-      <NextBar
+      {/* <NextBar
         activeStep={1}
         nextCb={(e) => {
           handleSend();
@@ -159,7 +161,7 @@ function ChooseEvents() {
         prevCb={() => {
           navigate("/register-two");
         }}
-      />
+      /> */}
     </div>
   );
 }
