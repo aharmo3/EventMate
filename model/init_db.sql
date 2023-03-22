@@ -52,7 +52,7 @@ CREATE TABLE connections (
 connectId INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 inviterId INT NOT NULL,
 inviteeId INT NOT NULL,
-eventiD INT NOT NULL,
+eventId INT NOT NULL,
 accepted BOOLEAN,
 FOREIGN KEY (inviterId) REFERENCES users(userId),
 FOREIGN KEY (inviteeId) REFERENCES users(userId),

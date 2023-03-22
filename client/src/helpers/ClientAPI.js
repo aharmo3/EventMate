@@ -6,6 +6,18 @@ class ClientAPI {
     return await this._doFetch("/users/matched");
   }
 
+   // Invite a user
+   static async invite(inviterId, inviteeId, eventId) {
+    let body = { inviterId, inviteeId, eventId };
+    return await this._doFetch("/users/invite", "POST", body);
+  }
+  
+   // Invite a user
+   static async updateInvite(connectId, inviterId, accept) {
+    let body = { connectId, inviterId, accept };
+    return await this._doFetch("/users/invite", "PUT", body);
+  }
+
   // To get all connections for current user
   static async getConnections(userId) {
     return await this._doFetch(`/users/connects/${userId}`);
@@ -19,13 +31,15 @@ class ClientAPI {
 
   //Update User (more details)
   static async updateUser(body, userId) {
-    return await this._doFetch(`/users/${userId}`, "PUT", body);
+    return await this._doFetch(`/users/user/${userId}`, "PUT", body);
   }
+
   //login
   static async loginUser(username, password) {
     let body = { username, password };
     return await this._doFetch("/login", "POST", body);
   }
+
   //get all users
   static async getUsers() {
     return await this._doFetch("/users");

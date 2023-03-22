@@ -9,6 +9,11 @@ import DialogContent from '@mui/material/DialogContent';
 import Dialog from '@mui/material/Dialog';
 import IconButton from '@mui/material/IconButton';
 
+// Numerical typing for buttons
+// type = 1: viewing from notifications awaiting your reply - accept or reject
+// type = 2: viewing from notifications awaiting their reply - no buttons (could have a cancel invite in the future)
+// type = 3: viewing from matched - invite button
+
 export default function UserDialogView({open, onClose, userId}) {
   const [profile, setProfile] = useState(false);
 

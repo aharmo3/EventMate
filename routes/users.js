@@ -53,10 +53,7 @@ router.get("/matched", async function (req, res, next) {
   }
 });
 
-// Connections
-// accepted - 1= confirmed, 2= rejected, null= not dealt with yet
-router.get("/connects/:id", async function (req, res, next) {
-  let userId = req.params.id;
+function giantConnectionSQL(id){
   let sql = 
   `SELECT connections.connectId, 
           connections.accepted,
@@ -75,8 +72,16 @@ router.get("/connects/:id", async function (req, res, next) {
     ON connections.inviteeId = invitee.userId 
     INNER JOIN events 
     ON connections.eventId = events.eventid 
-    WHERE connections.inviterId = ${userId} 
-    OR connections.inviteeId=${userId}`
+    WHERE connections.inviterId = ${id} 
+    OR connections.inviteeId=${id}`
+  return sql
+}
+
+// Connections
+// accepted - 1= confirmed, 2= rejected, null= not dealt with yet
+router.get("/connects/:id", async function (req, res, next) {
+  let userId = req.params.id;
+  let sql = giantConnectionSQL(userId);
 
   try {
     let results = await db(sql);
@@ -134,7 +139,7 @@ router.post("/", async (req, res) => {
 });
 
 // For secondary registration page
-router.put("/:id", async (req, res) => {
+router.put("/user/:id", async (req, res) => {
   let userId = req.params.id;
   let sql = `SELECT * FROM users WHERE userId = ${userId}`;
 
@@ -176,5 +181,74 @@ router.put("/:id", async (req, res) => {
     res.status(500).send({ error: err.message });
   }
 });
+
+
+// New Invite
+router.post("/invite", async (req, res) => {
+  let {
+    inviterId,
+    inviteeId,
+    eventId,
+  } = req.body;
+  
+  try {
+    let sql = `
+      SELECT * FROM connections 
+      WHERE inviterId = ${inviterId} 
+      AND inviteeId = ${inviteeId}
+      AND eventId = ${eventId}`;
+    
+      let results = await db(sql);
+
+    if (results.data.length === 1) {
+      res.status(400).send({ message: `Invite already exists` });
+    } else {
+      let sql = `
+      INSERT INTO connections(inviterId, inviteeId, eventId) 
+      VALUES(${inviterId}, ${inviteeId}, ${eventId}) `;
+      
+      await db(sql);
+      let results = await db(giantConnectionSQL(inviterId));
+      
+      res.status(201).send(results);
+    }
+  } catch (err) {
+    res.status(500).send({ err: err.message });
+  }
+});
+
+// Update invite - accept or reject
+router.put("/invite", async (req, res) => {
+  let {
+    connectId,
+    inviterId,
+    accepted
+  } = req.body;
+
+  let sql = `
+      SELECT * FROM connections 
+      WHERE connectId = ${connectId}`;
+  
+  try {
+    let results = await db(sql);
+
+    if (results.data.length === 0) {
+      res.status(404).send({ error: "Invite not found" });
+    } else {
+      let sql = `
+      UPDATE connections
+      SET
+      accepted = ${accepted}
+      WHERE connectId = "${connectId}"`;
+
+      await db(sql);
+      let results = await db(giantConnectionSQL(inviterId));
+      res.send(results.data);
+    }
+  } catch (err) {
+    res.status(500).send({ error: err.message });
+  }
+});
+
 
 module.exports = router;

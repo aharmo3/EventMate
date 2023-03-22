@@ -80,6 +80,7 @@ export default function NotificationView() {
     setOpen(true);
   };
 
+
   function inviteList(iList, type) {
 
     return (
@@ -119,6 +120,7 @@ export default function NotificationView() {
               {type === 2 &&
                 <div>
                 <Button variant="outlined">Accept</Button>
+                <Button variant="outlined">Reject</Button>
                 <Button variant="outlined" onClick={(e) => handleClickOpen(invite.inviterId)}>View Profile</Button>
                 </div>
               }
@@ -166,12 +168,12 @@ export default function NotificationView() {
       <Typography sx={{ mt: 4, mb: 0 }} variant="h6" component="div">
         Confirmed
       </Typography>
-      {inviteList(invited, 3)}
+      {inviteList(confirmed, 3)}
 
       <Typography sx={{ mt: 4, mb: 0 }} variant="h6" component="div">
         Rejected
       </Typography>
-      {inviteList(invited, 4)}
+      {inviteList(rejected, 4)}
     </div>
   );
 
