@@ -23,7 +23,8 @@ export default function UserListView() {
 
   useEffect(() => {
     getMatched();
-  }, );
+    console.log(matched);
+  }, []);
 
   async function getMatched() {
     //Get all events in the events list that I'm going to
@@ -36,48 +37,29 @@ export default function UserListView() {
 
       if (eResponse.data.length > 0) {
         for (let row of eResponse.data) {
-          console.log("row: ", row);
           let usersResponse = await ClientAPI.getEventUsers(row.ticketmasterid);
-          console.log("userR: ", usersResponse);
           let users = usersResponse.data;
-          console.log("users: ", users);
           let otherUsers = users.filter(user => {
-            return user.userId === Local.getUserId()
+            return user.userId !== Local.getUserId()
           });
-          console.log("others: ", otherUsers);
+
           if (otherUsers.length > 0) {
             matchesToAdd.push(...otherUsers);
-          }
-          
+          } 
         }
-        
       }
-      
       
     } else {
       console.log("Error!", eResponse.error);
     }
 
-
-    setMatched(matched => ([...matched, matchesToAdd]));
-    console.log("Matched: ", matched);
+    //console.log("To Add: ", matchesToAdd);
+    setMatched(matchesToAdd);
+    //console.log("Matched: ", matched);
   }
 
-  // async function getEventUsers(row) {
-  //   let usersResponse = await ClientAPI.getEventUsers(row.ticketmasterid);
-  //   if (usersResponse.ok) {
-  //     
-  //     console.log("users2:", users);
-  //     
-  //     console.log("users3:", otherUsers);
-  //     return otherUsers;
-  //   } else {
-  //     console.log("Error!", usersResponse.error);
-  //   }
-  // }
-
   const handleClickOpen = (matchPass) => {
-    console.log("t----", matchPass);
+    //console.log("t----", matchPass);
     setMatchClicked(matchPass);
     setOpen(true);
   };
@@ -147,7 +129,13 @@ export default function UserListView() {
                 <Button 
                   variant="outlined"
                   onClick={() => {
-                    ClientAPI.invite(Local.getUserId(), match.userId, 1);
+                    ClientAPI.invite(Local.getUserId(), match.userId, match.eventId);
+                    let mCopy = [...matched];
+                    let pos = matched.indexOf(match);
+                    console.log("pos: ", pos)
+                    mCopy.splice(pos, 1);
+                    setMatched(mCopy);
+                    //message to say you have invited so and so
                   }}
                 >
                   Invite
