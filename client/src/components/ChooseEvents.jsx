@@ -12,6 +12,7 @@ import ClientAPI from "../helpers/ClientAPI";
 import Local from "../helpers/Local";
 import addEventsToDB from "../helpers/Utils/addEventsToDB";
 import LocationDropdown from "./Registration/LocationDropdown";
+import takeEventDetails from "../helpers/Utils/takeEventDetails";
 
 
 function ChooseEvents() {
@@ -74,19 +75,12 @@ function ChooseEvents() {
         "date" : result.dates.start.localDate, 
         "time" : result.dates.start.localTime, 
         "venue" : result._embedded.venues["0"].name
-        // "currency": result.priceRanges["0"].currency,
-        // "startingPrice":  result.priceRanges["0"].min,
-        // "purchaseLink":  result.url,
-        // "genreId":  result.classifications["0"].genre.id,
-        // "genre": result.classifications["0"].genre.name,
-        // "subgenre": result.classifications["0"].subGenre.name,
-        // "eventType": result.classifications["0"].segment.name,
-        // "eventLocation": location
       }});
         console.log("new Results" , newResults)
         await setEvents(newResults);
          setShowEvents(true);  
-        
+         let moreEventData= await results.forEach(r => takeEventDetails(r, location))
+        setEventsDetails(moreEventData)
     }
 
   
@@ -107,16 +101,12 @@ function ChooseEvents() {
 
   
   async function handleSend (){
-    // loading
-    let userId = userInfo.userId;
-    let toPost = await chosenEvents.forEach((c) => {ClientAPI.addToUserEvents(userId, c)})
-    let newEvents= addEventsToDB(chosenEvents, events); 
+    // sends user event choice to DB
+    let toPost = await chosenEvents.forEach((c) => {ClientAPI.addToUserEvents(userInfo.userId, c)})
+    // sends detailed events to
+    let newEvents= await addEventsToDB(chosenEvents, eventsDetails); 
     console.log(newEvents) 
-    //if return is successful - success message
-    // route to next page 
-    
-    // navigate("/matched")
-  
+    navigate("/matched")
   }
 
   return (
