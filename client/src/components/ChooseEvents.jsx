@@ -79,8 +79,8 @@ function ChooseEvents() {
         console.log("new Results" , newResults)
         await setEvents(newResults);
          setShowEvents(true);  
-         let moreEventData= await results.forEach(r => takeEventDetails(r, location))
-        setEventsDetails(moreEventData)
+        //  let moreEventData= await results.map(r => takeEventDetails(r, location))
+        // setEventsDetails(moreEventData)
     }
 
   
@@ -102,11 +102,12 @@ function ChooseEvents() {
   
   async function handleSend (){
     // sends user event choice to DB
-    let toPost = await chosenEvents.forEach((c) => {ClientAPI.addToUserEvents(userInfo.userId, c)})
+    let toPost = await chosenEvents.map((c) => ClientAPI.addToUserEvents(userInfo.userId, c))
     // sends detailed events to
-    let newEvents= await addEventsToDB(chosenEvents, eventsDetails); 
-    console.log(newEvents) 
-    navigate("/matched")
+    console.log("to post user events", toPost)
+    let newEvents= await addEventsToDB(chosenEvents, events); 
+    console.log("The detail events resp", newEvents) 
+    // navigate("/matched")
   }
 
   return (
