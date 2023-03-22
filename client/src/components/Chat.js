@@ -100,17 +100,17 @@ export default function Chat() {
 
   let listDiv = useRef(null);
 
-  // When new msg is added, scroll if necessary so it's visible
-  //   useEffect(() => {
-  //     let lastPara = listDiv.current.lastElementChild;
-  //     if (lastPara) {
-  //       lastPara.scrollIntoView(false);
-  //     }
-  //   }, [messages]);
+  //   When new msg is added, scroll if necessary so it's visible
+  useEffect(() => {
+    let lastPara = listDiv.current.lastElementChild; //.current is an HTML element..this gets the last message
+    if (lastPara) {
+      lastPara.scrollIntoView(false); //always make the last message visible...it is a JS function
+    }
+  }, [messages]);
 
-  //   function formatDT(dt) {
-  //     return new Date(dt).toLocaleString();
-  //   }
+  function formatDT(dt) {
+    return new Date(dt).toLocaleString();
+  }
 
   //FUNCTION FOR THE CHAT INPUT
   function handleChangeInput(event) {
@@ -146,13 +146,13 @@ export default function Chat() {
         </select>
       </div>
 
-      <div className="messagesList">
+      <div className="messagesList" ref={listDiv}>
         {messages.map((message) => {
           <p
             key={message.id}
             className={message.senderId === senderId ? "sender" : "receiver"}
           >
-            {/* <span title={formatDT(message.dateTime)}>{message.text}</span> */}
+            <span title={formatDT(message.dateTime)}>{message.text}</span>
           </p>;
         })}
       </div>

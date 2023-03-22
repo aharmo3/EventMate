@@ -27,33 +27,33 @@ function App() {
 
   const navigate = useNavigate();
 
-  async function doRegister(username, email, password) {
-    let myresponse = await ClientAPI.registerUser(username, email, password);
+  // async function doRegister(username, email, password) {
+  //   let myresponse = await ClientAPI.registerUser(username, email, password);
 
-    if (myresponse.ok) {
-      console.log("doreg data----", myresponse.data);
-      Local.saveUserInfo(myresponse.data.token, myresponse.data.user);
-      setRegistrationErrorMsg("");
-      if (myresponse.data.userId !== null) {
-        navigate("/register-two");
-      }
-    } else {
-      console.log(myresponse);
-      setRegistrationErrorMsg(`Registration Failed`);
-    }
-  }
+  //   if (myresponse.ok) {
+  //     console.log("doreg data----", myresponse.data);
+  //     Local.saveUserInfo(myresponse.data.token, myresponse.data.user);
+  //     setRegistrationErrorMsg("");
+  //     if (myresponse.data.userId !== null) {
+  //       navigate("/register-two");
+  //     }
+  //   } else {
+  //     console.log(myresponse);
+  //     setRegistrationErrorMsg(`Registration Failed`);
+  //   }
+  // }
 
-  async function doLogin(username, password) {
-    let myresponse = await ClientAPI.loginUser(username, password);
-    if (myresponse.ok) {
-      Local.saveUserInfo(myresponse.data.token, myresponse.data.user);
-      setUser(myresponse.data.user);
-      setLoginErrorMsg("");
-      // navigate("/");
-    } else {
-      setLoginErrorMsg("Login failed");
-    }
-  }
+  // async function doLogin(username, password) {
+  //   let myresponse = await ClientAPI.loginUser(username, password);
+  //   if (myresponse.ok) {
+  //     Local.saveUserInfo(myresponse.data.token, myresponse.data.user);
+  //     setUser(myresponse.data.user);
+  //     setLoginErrorMsg("");
+  //     // navigate("/");
+  //   } else {
+  //     setLoginErrorMsg("Login failed");
+  //   }
+  // }
 
   function doLogout() {
     Local.removeUserInfo();
@@ -65,13 +65,11 @@ function App() {
   return (
     <>
       <TopNav logOutCb={doLogout} />
+      {/* <Chat /> */}
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route
-            path="/login"
-            element={<LoginForm doRegister={doRegister} />}
-          />
+          <Route path="/login" element={<LoginForm />} />
 
           <Route
             path="/matched"
@@ -82,10 +80,7 @@ function App() {
             }
           />
 
-          <Route
-            path="/register"
-            element={<LoginForm doRegister={doRegister} />}
-          />
+          <Route path="/register" element={<LoginForm />} />
 
           <Route
             path="/register-two"
