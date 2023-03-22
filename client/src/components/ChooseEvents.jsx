@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import FormControl from "@mui/material/FormControl";
 import { GetByLocTM } from "../helpers/EventsApi/GetByLocTM";
 import Checkbox from '@mui/material/Checkbox';
 import Grid from "@mui/material/Grid";
@@ -9,47 +10,40 @@ import { useParams, useNavigate } from "react-router-dom";
 import NextBar from "./NextBar";
 import ClientAPI from "../helpers/ClientAPI";
 import Local from "../helpers/Local";
+import addEventsToDB from "../helpers/Utils/addEventsToDB";
+import LocationDropdown from "./Registration/LocationDropdown";
 
 
 function ChooseEvents() {
     const navigate = useNavigate();
 
-      const [location, setLocation] = useState(); // save location
+      const [location, setLocation] = useState(); 
       const [events, setEvents] = useState(); 
+      const [eventsDetails, setEventsDetails] = useState()
       const [showEvents, setShowEvents] = useState(false);
       const [showEdit, setShowEdit]= useState(false);
       const [showTitle, setShowTitle]= useState(true);
       const [chosenEvents, setChosenEvents] = useState([]);
-      // const [isChecked, setIsChecked]= useState([]); 
+      const [locationInput, setLocationInput]= useState("")
+      const userInfo = Local.getUser();
+      const [dblocation, setDbLocation] = useState(userInfo.location); 
 
-    //Loads with user's current country in DB     
+    //Loads with user's current country in DB when loading    
     useEffect(() => {
     getLocation();
-    getEvents(location)
+    
     }, []);
     
-    //Loads events when location changes   
-    useEffect(() => {
-    getEvents(location)
-    }, [location]);
 
-    //gets user location from local storage and sets it
+   //gets user location from local storage and sets it
     async function getLocation(){
-        //get id to fetch user data
-        let userInfo= await Local.getUser();
-        console.log("user info: ", userInfo)
-        let userId = userInfo.userId;
-        if (userInfo.location){
-          setLocation(userInfo.location)
-        }else{
-        //placeholder below   
-        setLocation("Barcelona, Spain");
-        }
+       await  getEvents(dblocation)
     };
 
     //location submits on typing
     const handleChange = event => {
-        setLocation(event.target.value);
+        // setLocation(event.target.value);
+        setLocationInput(event.target.value);
       };
     
       //show or don't show abiity to edit
@@ -60,34 +54,39 @@ function ChooseEvents() {
 
     async function handleFormLocation(e){
         e.preventDefault();
-        await getEvents(location)
-        console.log("events set as:", events)
+        // await getEvents(location)
+        // console.log("events set as:", events)
+        getEvents(locationInput)
+        setLocation(locationInput)
         setShowEdit(false);
         setShowTitle(true);
       };
     
      
-    async function getEvents(place){
+    async function getEvents(location){
         let results = await GetByLocTM(location);
       //formatting the object to only take what we need
     let newResults= results.map((result) =>{ 
-        return {"id": result.id, 
-        "name":result.name, 
+        return {
+        "id": result.id, 
+        "name": result.name, 
         "image": result.images["0"].url, 
         "date" : result.dates.start.localDate, 
         "time" : result.dates.start.localTime, 
-        "venue" : result._embedded.venues["0"].name,
-        "currency": result.priceRanges["0"].currency,
-        "startingPrice":  result.priceRanges["0"].min,
-        "purchaseLink":  result.url,
-        "genreId":  result.classifications["0"].genre.id,
-        "genre": result.classifications["0"].genre.name,
-        "subgenre": result.classifications["0"].subGenre.name,
-        "eventType": result.classifications["0"].segment.name,
-        "eventHost": result._embedded.attractions.name}});
+        "venue" : result._embedded.venues["0"].name
+        // "currency": result.priceRanges["0"].currency,
+        // "startingPrice":  result.priceRanges["0"].min,
+        // "purchaseLink":  result.url,
+        // "genreId":  result.classifications["0"].genre.id,
+        // "genre": result.classifications["0"].genre.name,
+        // "subgenre": result.classifications["0"].subGenre.name,
+        // "eventType": result.classifications["0"].segment.name,
+        // "eventLocation": location
+      }});
         console.log("new Results" , newResults)
         await setEvents(newResults);
-        setShowEvents(true);    
+         setShowEvents(true);  
+        
     }
 
   
@@ -106,15 +105,18 @@ function ChooseEvents() {
       console.log(chosenEvents);
    }
 
-   //sends selected events to database
-   function handleSend (){
-    //here goes put request put(chosenEvents)
+  
+  async function handleSend (){
     // loading
+    let userId = userInfo.userId;
+    let toPost = await chosenEvents.forEach((c) => {ClientAPI.addToUserEvents(userId, c)})
+    let newEvents= addEventsToDB(chosenEvents, events); 
+    console.log(newEvents) 
     //if return is successful - success message
     // route to next page 
     
-    navigate("/matched")
-    console.log("submitted events:", chosenEvents)
+    // navigate("/matched")
+  
   }
 
   return (
@@ -124,25 +126,33 @@ function ChooseEvents() {
        <div className="edit-location">
         <form className= "edit-loc-form" onSubmit={e => handleFormLocation(e)}>
         <h2>Events in </h2>
-        <TextField id="standard-basic" label="city" variant="standard" 
-              placeholder="enter your location"
+      
+        <TextField id="standard-basic" label="city, country" variant="standard" 
               name="location"
               type="text"
-              value={location}
+              // value={location}
               onChange={e => handleChange(e)}
             />
-            {/* add a country dropdown selector  */}
-          {/* <button className="edit" type="submit">
+            
+           
+            {/* <LocationDropdown
+            label="city"
+            name="location"
+            defaultValue={userInfo.location}
+            onChange={e => handleChange(e)}
+            /> */}
+           
+          <button className="edit" type="submit">
             ✓
-          </button> */}
-         
-        </form>
+          </button>
+          </form>
+      
       </div>
 }
 
     { showTitle &&
       <div className="title"> 
-       <h2>Events in {location}</h2>
+       <h2 onClick={(e)=> handleEditButton()}>Events in {location}</h2>
        <button className="edit" onClick={(e)=> handleEditButton()}>✎</button>
        </div> 
     }
@@ -156,7 +166,6 @@ function ChooseEvents() {
               <Checkbox
                 className="event-checkbox"
                 value={r.id}
-                // checked={checked}
                 onChange={handleCheckBoxChange}
                 inputProps={{
                     'aria-label': 'Checkbox A',

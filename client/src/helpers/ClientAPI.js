@@ -53,6 +53,36 @@ class ClientAPI {
     return await this._doFetch(url);
   }
 
+  //get event details from db
+  static async getEventDetails(ticketMasterId){
+    return await this._doFetch(`/events/ticketmaster/${ticketMasterId}`)
+  }
+  //get events by userID
+  static async getUserEvents(userId){
+    return await this._doFetch(`/events/user/${userId}`)
+  }
+
+  //add event - detailed entry
+  static async addEventDetails( ticketmasterid, eventname, eventdate, starttime, 
+    imageurl, eventlocation, venue, currency, startingprice, ticketurl, genre, 
+    subgenre, host, eventtype) {
+    let body = {  ticketmasterid, eventname, eventdate, starttime, imageurl, 
+      eventlocation, venue, currency, startingprice, ticketurl, genre, 
+      subgenre, host, eventtype};
+    return await this._doFetch("/events", "POST", body);
+  }
+
+  //add event for user
+  static async addToUserEvents (userid, ticketmasterid){
+   let body = {userid, ticketmasterid}
+   return await this._doFetch("/events/user", "POST", body);
+  }
+
+  //delete events by for individual user
+  static async deleteUserEvents(eventId){
+    return await this._doFetch(`/events/${eventId}`, "DELETE");
+  }
+
   static async _doFetch(url, method = "GET", body = null) {
     let options = {
       method,

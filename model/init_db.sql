@@ -45,8 +45,7 @@ host VARCHAR(100),
 eventtype VARCHAR(100),
 socialmedia VARCHAR(100),
 eventdetail VARCHAR(100) DEFAULT "No",
-PRIMARY KEY (`eventid`),
-FOREIGN KEY(`userId`) REFERENCES `users`(`userId`)
+PRIMARY KEY (`eventid`)
 );
 
 CREATE TABLE connections (
