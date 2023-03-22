@@ -153,7 +153,7 @@ function ChooseEvents() {
         </div>
       )}
 
-      {/* <NextBar
+      <NextBar
         activeStep={1}
         nextCb={(e) => {
           handleSend();
@@ -161,7 +161,7 @@ function ChooseEvents() {
         prevCb={() => {
           navigate("/register-two");
         }}
-      /> */}
+      />
     </div>
   );
 }
