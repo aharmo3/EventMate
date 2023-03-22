@@ -2,6 +2,8 @@ DROP TABLE IF EXISTS connections;
 DROP TABLE IF EXISTS events;
 DROP TABLE IF EXISTS users; 
 DROP TABLE IF EXISTS messages;
+DROP TABLE IF EXISTS files;
+
 
 
 CREATE TABLE users (
@@ -79,3 +81,9 @@ INSERT INTO connections (inviterId, inviteeId, eventId, accepted) VALUES
 
 
 
+CREATE TABLE files (
+id INT NOT NULL AUTO_INCREMENT, 
+filename VARCHAR(100) NOT NULL,
+uploadedOn DATETIME DEFAULT CURRENT_TIMESTAMP,
+PRIMARY KEY (id)
+);

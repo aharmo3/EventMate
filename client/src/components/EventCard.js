@@ -1,0 +1,43 @@
+import React from "react";
+import ListItem from "@mui/material/ListItem";
+import Divider from "@mui/material/Divider";
+import ListItemText from "@mui/material/ListItemText";
+import ListItemAvatar from "@mui/material/ListItemAvatar";
+import Typography from "@mui/material/Typography";
+export default function EventCard({ r }) {
+  return (
+    <>
+      <ListItem
+        dense={true}
+        alignItems="flex-start"
+        style={{ maxHeight: "60px" }}
+      >
+        <ListItemAvatar sx={{ paddingRight: "10px" }} alignItems="center">
+          <img
+            alt="event"
+            src={r.image}
+            style={{ width: "100px", maxHeight: "50px" }}
+          />
+        </ListItemAvatar>
+        <ListItemText
+          primary={r.name}
+          // onClick={(e) => handleOpenModal(r)}
+          secondary={
+            <React.Fragment>
+              <Typography
+                sx={{ display: "inline" }}
+                component="span"
+                variant="body2"
+                color="text.primary"
+              >
+                {r.date}, {r.time}
+              </Typography>
+              {`  ${r.venue}`}
+            </React.Fragment>
+          }
+        />
+      </ListItem>
+      <Divider variant="inset" component="div" />
+    </>
+  );
+}
