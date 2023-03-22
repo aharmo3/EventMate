@@ -31,26 +31,9 @@ function ChooseEvents() {
     //Loads with user's current country in DB when loading    
     useEffect(() => {
     getLocation();
-    // getEvents(location)
+    
     }, []);
     
-    //Loads events when location changes   
-    useEffect(() => {
-    getEvents(location)
-    }, [location]);
-
-    //gets user location from local storage and sets it
-    // async function getLocation(){
-    //     //get id to fetch user data
-    //     // let userInfo= await Local.getUser();
-    //     if (userInfo.location){
-    //       await setLocation(userInfo.location)
-    //     }else{
-    //     //placeholder below   
-    //     setLocation("Barcelona, Spain");
-    //     }
-    //     getEvents(location)
-    // };
 
    //gets user location from local storage and sets it
     async function getLocation(){
@@ -73,6 +56,7 @@ function ChooseEvents() {
         e.preventDefault();
         // await getEvents(location)
         // console.log("events set as:", events)
+        getEvents(locationInput)
         setLocation(locationInput)
         setShowEdit(false);
         setShowTitle(true);
@@ -83,23 +67,26 @@ function ChooseEvents() {
         let results = await GetByLocTM(location);
       //formatting the object to only take what we need
     let newResults= results.map((result) =>{ 
-        return {"id": result.id, 
-        "name":result.name, 
+        return {
+        "id": result.id, 
+        "name": result.name, 
         "image": result.images["0"].url, 
         "date" : result.dates.start.localDate, 
         "time" : result.dates.start.localTime, 
-        "venue" : result._embedded.venues["0"].name,
+        "venue" : result._embedded.venues["0"].name
         // "currency": result.priceRanges["0"].currency,
         // "startingPrice":  result.priceRanges["0"].min,
-        "purchaseLink":  result.url,
-        "genreId":  result.classifications["0"].genre.id,
-        "genre": result.classifications["0"].genre.name,
-        "subgenre": result.classifications["0"].subGenre.name,
-        "eventType": result.classifications["0"].segment.name,
-        "eventLocation": location}});
+        // "purchaseLink":  result.url,
+        // "genreId":  result.classifications["0"].genre.id,
+        // "genre": result.classifications["0"].genre.name,
+        // "subgenre": result.classifications["0"].subGenre.name,
+        // "eventType": result.classifications["0"].segment.name,
+        // "eventLocation": location
+      }});
         console.log("new Results" , newResults)
         await setEvents(newResults);
-        setShowEvents(true);  
+         setShowEvents(true);  
+        
     }
 
   
@@ -118,7 +105,7 @@ function ChooseEvents() {
       console.log(chosenEvents);
    }
 
-  //sends selected events to database
+  
   async function handleSend (){
     // loading
     let userId = userInfo.userId;
@@ -129,7 +116,7 @@ function ChooseEvents() {
     // route to next page 
     
     // navigate("/matched")
-    
+  
   }
 
   return (
