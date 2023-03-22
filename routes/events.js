@@ -36,7 +36,7 @@ eventsRouter.get("/:eventid",  async (req, res) => {
 eventsRouter.get("/ticketmaster/:ticketmasterid",  async (req, res) => {
     let ticketmasterId = req.params.ticketmasterid;
     let sql = 
-    `SELECT * FROM events WHERE ticketmasterid = ${ticketmasterId} AND eventdetail = "yes";`
+    `SELECT * FROM events WHERE ticketmasterid = "${ticketmasterId}" AND eventdetail = "yes";`
   
     try {
       let results = await db(sql);
@@ -95,10 +95,9 @@ eventsRouter.post("/", async (req, res) => {
         subgenre, 
         host, 
         eventtype, 
-        socialmedia, 
     } = req.body;
     let sql = `insert into events(userid,ticketmasterid, eventname, eventdate, starttime, imageurl, eventlocation, venue , currency, startingprice, ticketurl, genre, subgenre, host, eventtype, socialmedia, eventdetail) 
-    values(1, "${userid}","${ticketmasterid}", "${eventname}", "${eventdate}", "${starttime}", "${imageurl}", "${eventlocation}", "${venue}" , "${currency}", "${startingprice}", "${ticketurl}", "${genre}", "${subgenre}", "${host}", "${eventtype}", "${socialmedia}", "yes") `;
+    values(1, "${userid}","${ticketmasterid}", "${eventname}", "${eventdate}", "${starttime}", "${imageurl}", "${eventlocation}", "${venue}" , "${currency}", "${startingprice}", "${ticketurl}", "${genre}", "${subgenre}", "${host}", "${eventtype}", "yes") `;
   
     try {
       await db(sql);
