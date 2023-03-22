@@ -16,6 +16,7 @@ import ClientAPI from "./helpers/ClientAPI";
 import LoginForm from "./components/LoginForm";
 import UserDashboard from "./components/UserDashboardView";
 import SearchEvents from "./components/SearchEvents";
+import NotificationView from "./components/NotificationView";
 import Chat from "./components/Chat";
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -70,6 +71,15 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<LoginForm />} />
+
+          <Route
+          path="/notifications"
+            element={
+              <ProtectedRoute>
+                <NotificationView />
+              </ProtectedRoute>
+            }
+          />
 
           <Route
             path="/matched"
