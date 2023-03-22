@@ -48,9 +48,9 @@ for (let i of arrayOfObjects){
                 evType = i.eventType
 
 
-            // console.log("the stuff getting sent to db ....", i.id, i.name, i.date , i.time , 
-            // i.image, evLocation, i.venue, evCurrency, evStartPrice, pLink, genr, 
-            // subg, evHost,  evType);
+            console.log("the stuff getting sent to db ....", i.id, i.name, i.date , i.time , 
+            i.image, evLocation, i.venue, evCurrency, evStartPrice, pLink, genr, 
+            subg, evHost,  evType);
          let result=  await  ClientAPI.addEventDetails( i.id, i.name, i.date , i.time , 
                 i.image, evLocation, i.venue, evCurrency, evStartPrice, pLink, genr, 
                 subg, evHost,  evType)

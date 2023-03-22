@@ -20,7 +20,7 @@ function ChooseEvents() {
 
       const [location, setLocation] = useState(); 
       const [events, setEvents] = useState(); 
-      const [eventsDetails, setEventsDetails] = useState()
+      // const [eventDetails, setEventDetails] = useState([])
       const [showEvents, setShowEvents] = useState(false);
       const [showEdit, setShowEdit]= useState(false);
       const [showTitle, setShowTitle]= useState(true);
@@ -67,20 +67,25 @@ function ChooseEvents() {
     async function getEvents(location){
         let results = await GetByLocTM(location);
       //formatting the object to only take what we need
-    let newResults= results.map((result) =>{ 
-        return {
-        "id": result.id, 
-        "name": result.name, 
-        "image": result.images["0"].url, 
-        "date" : result.dates.start.localDate, 
-        "time" : result.dates.start.localTime, 
-        "venue" : result._embedded.venues["0"].name
-      }});
-        console.log("new Results" , newResults)
-        await setEvents(newResults);
+    // let newResults= await results.map((result) =>{ 
+    //     return {
+    //     "id": result.id, 
+    //     "name": result.name, 
+    //     "image": result.images["0"].url, 
+    //     "date" : result.dates.start.localDate, 
+    //     "time" : result.dates.start.localTime, 
+    //     "venue" : result._embedded.venues["0"].name
+    //   }});
+
+      let otherResults= await results.map((result) =>  
+                      {let eventdetails = takeEventDetails(result, location);
+                       return eventdetails});
+        console.log("other Results" , otherResults)
+  
+        await setEvents(otherResults);
          setShowEvents(true);  
-        //  let moreEventData= await results.map(r => takeEventDetails(r, location))
-        // setEventsDetails(moreEventData)
+        
+       
     }
 
   

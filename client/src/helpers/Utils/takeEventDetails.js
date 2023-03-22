@@ -2,35 +2,52 @@
 //This function is to take info about events without errors for the inconsistent values
 // - things that return as null or undefined
 
-export default async function takeEventDetails (eventData,location){    
+export default function takeEventDetails (eventData,location){    
 
     let result= eventData;
-    let eventObject = {};
-
-        eventObject.id = result.id; 
-        eventObject.name= result.name; 
-        eventObject.image= result.images["0"].url; 
-        eventObject.date = result.dates.start.localDate; 
-        eventObject.time= result.dates.start.localTime; 
-        eventObject.venue = result._embedded.venues["0"].name;
-      
-        if  (result.priceRanges["0"].currency)  {
-       eventObject.currency =result.priceRanges["0"].currency}
-       if (result.priceRanges["0"].min){
-        eventObject.startingPrice =  result.priceRanges["0"].min;
-       } if (result.url){
-            eventObject.purchaseLink = result.url;
+  
+  
+    let evLocation = null;
+    let pLink = null;
+    let genr= null;
+    let subg = null;
+    let evHost= null;
+    let evType= null;
+    
+    
+    console.log()
+       
+        if (result.url){
+            pLink = result.url;
         } if (result.classifications["0"].genre.name){
-            eventObject.genre = result.classifications["0"].genre.name;
+            genr = result.classifications["0"].genre.name;
         } if (result.classifications["0"].subGenre.name){
-            eventObject.subgenre = result.classifications["0"].subGenre.name;
+            subg = result.classifications["0"].subGenre.name;
         } if (result.classifications["0"].segment.name){
-            eventObject.eventType = result.classifications["0"].segment.name;
+            evHost = result.classifications["0"].segment.name;
         } if (location){
-            eventObject.location = location;
+            evLocation = location;
+        } if (result.classifications["0"].segment.name){
+            evType = result.classifications["0"].segment.name
         }
         
+        let eventObject= {
+            "id": result.id, 
+            "name":result.name, 
+            "image": result.images["0"].url, 
+            "date" : result.dates.start.localDate, 
+            "time" : result.dates.start.localTime, 
+            "venue" : result._embedded.venues["0"].name,
+            "purchaseURL": pLink,
+            "genre": genr,
+            "subgenre": subg,
+            "eventType": evType,
+            "eventHost": evHost,
+            "eventLocation": evLocation
+        }
 
+
+            console.log("take event details object: ", eventObject)
             return eventObject;
 
 }
