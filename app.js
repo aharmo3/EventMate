@@ -9,6 +9,7 @@ var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var chatRouter = require("./routes/chat.js");
 var eventsRouter = require("./routes/events");
+var filesRouter = require("./routes/files");
 
 const cors = require("cors");
 
@@ -19,13 +20,14 @@ app.use(logger("dev"));
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb" }));
 app.use(cookieParser());
-//app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/api", indexRouter);
 app.use("/api/users", usersRouter);
 app.use("/api", authRouter);
 app.use("/api/chat", chatRouter);
 app.use("/api/events", eventsRouter);
+app.use("/api", filesRouter);
 
 app.get("/api/events", (req, res) => {
   res.json("Hello, welcome to the events table");
