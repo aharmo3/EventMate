@@ -1,6 +1,7 @@
 DROP TABLE IF EXISTS connections; 
 DROP TABLE IF EXISTS events;
-DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS users; 
+DROP TABLE IF EXISTS messages;
 
 
 CREATE TABLE users (
@@ -58,6 +59,17 @@ FOREIGN KEY (inviterId) REFERENCES users(userId),
 FOREIGN KEY (inviteeId) REFERENCES users(userId),
 FOREIGN KEY (eventId) REFERENCES events(eventId)
 );
+
+
+
+
+CREATE TABLE messages (
+id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+senderId INT NOT NULL,
+receiverId INT NOT NULL,
+text VARCHAR(250) NOT NULL,
+dateTime DATETIME DEFAULT CURRENT_TIMESTAMP);
+
 
 INSERT INTO events (userid,ticketmasterid, eventname, eventdate, starttime, imageurl, eventlocation, venue , currency, startingprice, ticketurl, genre, subgenre, host, eventtype, socialmedia, eventdetail) VALUES 
 (1, "G5diZ94NPjotW", "Shania Twain: Queen Of Me Tour", "2023-07-11", "19:30:00", "https://s1.ticketm.net/dam/a/1d1/47cc9b10-4904-4dec-b1d6-539e44a521d1_1825531_RETINA_PORTRAIT_3_2.jpg", "New York, USA", "Madison Square Garden" , "USD", 65.95, "https://www.ticketmaster.com/shania-twain-queen-of-me-tour-new-york-new-york-07-11-2023/event/3B005D58E5711A7D", "Country", "Country", null, "Music", null, "yes");

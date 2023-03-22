@@ -17,6 +17,7 @@ import LoginForm from "./components/LoginForm";
 import UserDashboard from "./components/UserDashboardView";
 import SearchEvents from "./components/SearchEvents";
 import NotificationView from "./components/NotificationView";
+import Chat from "./components/Chat";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {

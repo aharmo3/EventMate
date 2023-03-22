@@ -44,6 +44,7 @@ export default function UploadImage({ name }) {
         <div className="upload__image-wrapper">
           <Button
             variant="outlined"
+            color="secondary"
             size="small"
             style={isDragging ? { color: "red" } : undefined}
             onClick={onImageUpload}
