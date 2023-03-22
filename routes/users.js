@@ -78,7 +78,7 @@ function giantConnectionSQL(id){
 }
 
 // Connections
-// accepted - 1= confirmed, 2= rejected, null= not dealt with yet
+// accepted - 1= confirmed, 0= rejected, null= not dealt with yet
 router.get("/connects/:id", async function (req, res, next) {
   let userId = req.params.id;
   let sql = giantConnectionSQL(userId);

@@ -35,8 +35,16 @@ export default function NotificationView() {
     getConnections(Local.getUserId());
   }, []);
 
+
+  // Update
+  function handleUpdate(accepted, invite) {
+    ClientAPI.updateInvite(invite.connectId, invite.inviterId, accepted);
+    getConnections(userId);
+  }
+
     // Gets the connections for the notification view
   async function getConnections(userId) {
+    console.log("--------------------------")
     let uresponse = await ClientAPI.getConnections(userId);
 
     if (uresponse.ok) {
@@ -63,6 +71,7 @@ export default function NotificationView() {
       setMyInvites(mInv);
       setConfirmed(conf);
       setRejected(rej);
+      setConnections(false);
       setConnections(uresponse.data);
     }
     else {
@@ -119,8 +128,25 @@ export default function NotificationView() {
 
               {type === 2 &&
                 <div>
-                <Button variant="outlined">Accept</Button>
-                <Button variant="outlined">Reject</Button>
+                <Button 
+                  variant="outlined"
+                  onClick={() => {
+                    handleUpdate(1, invite);
+                  }}
+                >
+                Accept
+                </Button>
+
+                <Button 
+                  variant="outlined"
+                  onClick={() => {
+                    handleUpdate(0, invite);
+                  }}
+                >
+                Reject
+                </Button>
+
+
                 <Button variant="outlined" onClick={(e) => handleClickOpen(invite.inviterId)}>View Profile</Button>
                 </div>
               }

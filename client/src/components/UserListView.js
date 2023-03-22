@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import Local from "../helpers/Local";
 
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -67,7 +68,6 @@ export default function UserListView() {
             <div>
               <ListItem
                 key={match.userId}
-                onClick={(e) => handleClickOpen(match.userId)}
               >
                 <ListItemAvatar
                   sx={{
@@ -93,7 +93,26 @@ export default function UserListView() {
                   }
                 />
 
-                <Button variant="outlined">Invite</Button>
+                <Button 
+                  variant="outlined"
+                  onClick={() => {
+                    handleClickOpen(match.userId);
+                  }}
+                >
+                  View Profile
+                </Button>
+
+                <Button 
+                  variant="outlined"
+                  onClick={() => {
+                    ClientAPI.invite(Local.getUserId(), match.userId, 1);
+                  }}
+                >
+                  Invite
+                </Button>
+
+
+
               </ListItem>
               <Divider component="li" />
 

@@ -13,8 +13,8 @@ class ClientAPI {
   }
   
    // Invite a user
-   static async updateInvite(connectId, inviterId, accept) {
-    let body = { connectId, inviterId, accept };
+   static async updateInvite(connectId, inviterId, accepted) {
+    let body = { connectId, inviterId, accepted };
     return await this._doFetch("/users/invite", "PUT", body);
   }
 
