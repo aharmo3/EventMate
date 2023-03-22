@@ -115,7 +115,7 @@ function ChooseEvents() {
     //if return is successful - success message
     // route to next page 
     
-    // navigate("/matched")
+    navigate("/matched")
   
   }
 

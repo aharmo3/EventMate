@@ -33,7 +33,7 @@ export default function NotificationView() {
 
   useEffect(() => {
     getConnections(Local.getUserId());
-  }, []);
+  }, connections);
 
 
   // Update

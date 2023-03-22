@@ -19,20 +19,62 @@ export default function UserListView() {
 
   const [matched, setMatched] = useState([]);
   const [open, setOpen] = useState(false);
-  const [matchClicked, setMatchClicked] = useState(false);
+  const [matchClicked, setMatchClicked] = useState([]);
 
   useEffect(() => {
     getMatched();
-  }, []);
+  }, );
 
   async function getMatched() {
-    let uresponse = await ClientAPI.getMatchedUsers();
-    if (uresponse.ok) {
-      setMatched(uresponse.data);
+    //Get all events in the events list that I'm going to
+    //Get all users going to those events - excluding me
+
+    let matchesToAdd = [];
+
+    let eResponse = await ClientAPI.getUserEvents(Local.getUserId());
+    if (eResponse.ok) {
+
+      if (eResponse.data.length > 0) {
+        for (let row of eResponse.data) {
+          console.log("row: ", row);
+          let usersResponse = await ClientAPI.getEventUsers(row.ticketmasterid);
+          console.log("userR: ", usersResponse);
+          let users = usersResponse.data;
+          console.log("users: ", users);
+          let otherUsers = users.filter(user => {
+            return user.userId === Local.getUserId()
+          });
+          console.log("others: ", otherUsers);
+          if (otherUsers.length > 0) {
+            matchesToAdd.push(...otherUsers);
+          }
+          
+        }
+        
+      }
+      
+      
     } else {
-      console.log("Error!", uresponse.error);
+      console.log("Error!", eResponse.error);
     }
+
+
+    setMatched(matched => ([...matched, matchesToAdd]));
+    console.log("Matched: ", matched);
   }
+
+  // async function getEventUsers(row) {
+  //   let usersResponse = await ClientAPI.getEventUsers(row.ticketmasterid);
+  //   if (usersResponse.ok) {
+  //     
+  //     console.log("users2:", users);
+  //     
+  //     console.log("users3:", otherUsers);
+  //     return otherUsers;
+  //   } else {
+  //     console.log("Error!", usersResponse.error);
+  //   }
+  // }
 
   const handleClickOpen = (matchPass) => {
     console.log("t----", matchPass);
@@ -63,7 +105,7 @@ export default function UserListView() {
           bgcolor: "background.paper",
         }}
       >
-        {matched &&
+        {matched.length > 0 &&
           matched.map((match) => (
             <div>
               <ListItem
@@ -125,6 +167,12 @@ export default function UserListView() {
               )}
             </div>
           ))}
+
+
+          {
+            matched.length <= 0 && 
+            <div>No Matches Found</div>
+          }
       </List>
       
       <NextBar

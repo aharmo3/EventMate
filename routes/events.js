@@ -66,7 +66,7 @@ eventsRouter.get("/user/:userid",  async (req, res) => {
 eventsRouter.get("/user/ticketmaster/:ticketmasterid",  async (req, res) => {
     let ticketmasterId = req.params.ticketmasterid;
     let sql = 
-    `select userId, eventid from events WHERE ticketmasterid = ${ticketmasterId} ORDER BY userId;`
+    `select userId, eventid from events WHERE ticketmasterid = "${ticketmasterId}" ORDER BY userId;`
   
     try {
       let results = await db(sql);

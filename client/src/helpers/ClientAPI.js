@@ -57,9 +57,15 @@ class ClientAPI {
   static async getEventDetails(ticketMasterId){
     return await this._doFetch(`/events/ticketmaster/${ticketMasterId}`)
   }
+
   //get events by userID
   static async getUserEvents(userId){
     return await this._doFetch(`/events/user/${userId}`)
+  }
+
+  //get users by ticketmasterId
+  static async getEventUsers(ticketmasterid){
+    return await this._doFetch(`/events/user/ticketmaster/${ticketmasterid}`)
   }
 
   //add event - detailed entry
