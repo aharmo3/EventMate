@@ -10,7 +10,12 @@ export const FormContext = createContext({
  * formInitialValues - Defaults for form after submit
  * submit - CB that can be passed in once form is submitted
  */
-export default function Form({ children, formInitialValues, submit }) {
+export default function Form({
+  children,
+  formInitialValues,
+  submit,
+  onFormChange,
+}) {
   const [form, setForm] = useState(formInitialValues);
   const handleFormChange = (event, formData) => {
     // If user is clicking on html el instead of form el,
@@ -21,7 +26,8 @@ export default function Form({ children, formInitialValues, submit }) {
         event.target?.value || formData.value,
     };
     console.log("Form updated", updatedForm);
-
+    //Callback
+    onFormChange(updatedForm);
     // Update state
     setForm(updatedForm);
   };

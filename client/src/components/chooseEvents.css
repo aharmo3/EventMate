@@ -92,3 +92,11 @@ button.edit{
     padding: 0;
 }
 
+.choose-events {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+.choose-events form {
+    margin-left: 20px;
+}

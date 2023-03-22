@@ -8,18 +8,46 @@ function Img({ src }) {
   return <img src={src} width="200" />;
 }
 export default function UploadImage({ name }) {
+  let formData = new FormData();
+
   const formContext = useContext(FormContext);
   const { form, handleFormChange } = formContext;
   const [images, setImages] = React.useState([]);
   const maxNumber = 1; // Can update to reflect more than one later
-  console.log(form);
+  async function uploadFile(formData) {
+    let options = {
+      method: "POST",
+      body: formData,
+    };
+
+    try {
+      let response = await fetch("/api/files", options);
+      if (response.ok) {
+        // Server responds with updated array of files
+        let data = await response.json();
+        console.warn("data", data);
+      } else {
+        console.log(`Server error: ${response.status}: ${response.statusText}`);
+      }
+    } catch (err) {
+      console.log(`Network error: ${err.message}`);
+    }
+  }
   const onChange = (imageList, addUpdateIndex) => {
     if (imageList.length) {
-      handleFormChange({}, { name: name, value: imageList[0].data_url });
-      // console.warn(imageList[0].file, imageList[0].file.name);
-      // formData.append("clientfile", imageList[0].file, imageList[0].file.name);
+      // This updates users
 
-      // uploadFile(formData);
+      formData.append("clientfile", imageList[0].file, imageList[0].file.name);
+      handleFormChange(
+        {},
+        {
+          name: name,
+          value: `http://localhost:5002/clientfiles/${imageList[0].file.name}`,
+        }
+      );
+
+      // This updates file table
+      uploadFile(formData);
     }
     setImages(imageList);
   };
@@ -44,6 +72,7 @@ export default function UploadImage({ name }) {
         <div className="upload__image-wrapper">
           <Button
             variant="outlined"
+            color="secondary"
             size="small"
             style={isDragging ? { color: "red" } : undefined}
             onClick={onImageUpload}

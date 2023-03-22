@@ -1,7 +1,9 @@
 DROP TABLE IF EXISTS events; 
 DROP TABLE IF EXISTS users; 
 DROP TABLE IF EXISTS messages;
--- the order of dropping the tables is important, we put events then users cause events has foreign keys from users
+DROP TABLE IF EXISTS files;
+
+
 
 CREATE TABLE users (
 userId INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -15,7 +17,7 @@ occupation VARCHAR(100),
 languages VARCHAR(200),
 interests VARCHAR(400),
 about VARCHAR(400),
-avatarURL longblob);
+avatarURL VARCHAR(100));
 
 CREATE TABLE events (
 `eventid` INT NOT NULL AUTO_INCREMENT,    
@@ -36,8 +38,7 @@ host VARCHAR(100),
 eventtype VARCHAR(100),
 socialmedia VARCHAR(100),
 eventdetail VARCHAR(100) DEFAULT "No",
-PRIMARY KEY (`eventid`),
-FOREIGN KEY(`userId`) REFERENCES `users`(`userId`)
+PRIMARY KEY (`eventid`)
 );
 
 
@@ -65,3 +66,9 @@ INSERT INTO events (userid,ticketmasterid, eventname, eventdate, starttime, imag
 (1, "G5diZ94NPjotW", "Shania Twain: Queen Of Me Tour", "2023-07-11", "19:30:00", "https://s1.ticketm.net/dam/a/1d1/47cc9b10-4904-4dec-b1d6-539e44a521d1_1825531_RETINA_PORTRAIT_3_2.jpg", "New York, USA", "Madison Square Garden" , "USD", 65.95, "https://www.ticketmaster.com/shania-twain-queen-of-me-tour-new-york-new-york-07-11-2023/event/3B005D58E5711A7D", "Country", "Country", null, "Music", null, "yes");
 
 
+CREATE TABLE files (
+id INT NOT NULL AUTO_INCREMENT, 
+filename VARCHAR(100) NOT NULL,
+uploadedOn DATETIME DEFAULT CURRENT_TIMESTAMP,
+PRIMARY KEY (id)
+);
