@@ -27,7 +27,7 @@ export default function Form({
     };
     console.log("Form updated", updatedForm);
     //Callback
-    onFormChange(updatedForm);
+    onFormChange && onFormChange(updatedForm);
     // Update state
     setForm(updatedForm);
   };
