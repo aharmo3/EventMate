@@ -69,6 +69,7 @@ class ClientAPI {
   //get users by ticketmasterId
   }
   
+  //get users by ticketmasterId
   static async getEventUsers(ticketmasterid){
     return await this._doFetch(`/events/user/ticketmaster/${ticketmasterid}`)
   }
