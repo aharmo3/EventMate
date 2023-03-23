@@ -33,7 +33,7 @@ eventsRouter.get("/:eventid",  async (req, res) => {
   });
 
 
-//get event by ticketmasterid - e.g. to check if it's in the db
+//Get Detailed events
 eventsRouter.get("/ticketmaster/:ticketmasterid",  async (req, res) => {
     let ticketmasterId = req.params.ticketmasterid;
     let sql = 
@@ -99,6 +99,7 @@ eventsRouter.get("/user/ticketmaster/:ticketmasterid",  async (req, res) => {
 // add event for detail
 eventsRouter.post("/", async (req, res) => {
     let {
+        userId,
         ticketmasterid, 
         eventname, 
         eventdate, 
@@ -110,12 +111,11 @@ eventsRouter.post("/", async (req, res) => {
         startingprice, 
         ticketurl, 
         genre, 
-        subgenre, 
-        host, 
+        subgenre,  
         eventtype, 
     } = req.body;
-    let sql = `insert into events(userid,ticketmasterid, eventname, eventdate, starttime, imageurl, eventlocation, venue , currency, startingprice, ticketurl, genre, subgenre, host, eventtype, socialmedia, eventdetail) 
-    values(1, "${userid}","${ticketmasterid}", "${eventname}", "${eventdate}", "${starttime}", "${imageurl}", "${eventlocation}", "${venue}" , "${currency}", "${startingprice}", "${ticketurl}", "${genre}", "${subgenre}", "${host}", "${eventtype}", "yes") `;
+    let sql = `insert into events(userid,ticketmasterid, eventname, eventdate, starttime, imageurl, eventlocation, venue , currency, startingprice, ticketurl, genre, subgenre, eventtype, eventdetail) 
+    values( ${userId},"${ticketmasterid}", "${eventname}", "${eventdate}", "${starttime}", "${imageurl}", "${eventlocation}", "${venue}" , "${currency}", "${startingprice}", "${ticketurl}", "${genre}", "${subgenre}", "${eventtype}", "yes") `;
   
     try {
       await db(sql);

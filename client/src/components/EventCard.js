@@ -1,16 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import ListItem from "@mui/material/ListItem";
 import Divider from "@mui/material/Divider";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Typography from "@mui/material/Typography";
-export default function EventCard({ r }) {
+export default function EventCard({ r, modelOpen }) {
   return (
     <>
       <ListItem
         dense={true}
         alignItems="flex-start"
         style={{ maxHeight: "60px" }}
+        className="eventCard"
       >
         <ListItemAvatar sx={{ paddingRight: "10px" }} alignItems="center">
           <img
@@ -21,7 +22,7 @@ export default function EventCard({ r }) {
         </ListItemAvatar>
         <ListItemText
           primary={r.name}
-          // onClick={(e) => handleOpenModal(r)}
+          onClick={(e) => modelOpen(r)}
           secondary={
             <React.Fragment>
               <Typography

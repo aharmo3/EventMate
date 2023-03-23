@@ -18,7 +18,8 @@ occupation VARCHAR(100),
 languages VARCHAR(200),
 interests VARCHAR(400),
 about VARCHAR(400),
-avatarURL VARCHAR(100)
+avatarURL VARCHAR(200)
+
 );
 
 INSERT INTO users (username, password, email, age, gender, location, occupation, languages, interests, about, avatarURL) VALUES 
