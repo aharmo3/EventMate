@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { GetByLocTM } from '../helpers/EventsApi/GetByLocTM.jsx';
-import "./chooseEvents.css"
-import { TextField } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import Local from "../helpers/Local";
 import addEventsToDB from "../helpers/Utils/addEventsToDB.js";
@@ -12,6 +11,8 @@ import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import EventCard from "./EventCard";
 import EventsDisplayModal from "./EventsDisplayModal.jsx";
+import "./searchEvents.css"
+
 
 function SearchEvents() {
   const navigate = useNavigate();
@@ -69,7 +70,7 @@ return (
   <div>
     <div>
       <h2 className="choose-events">
-        Events Near&nbsp;
+        Events Near Me &nbsp;
         {!showEdit && (
           <>
             {location}
@@ -102,7 +103,12 @@ return (
           {events.map((r) => {
             return (
               <div key={r.id} className="event-items">
-                <EventCard r={r} modelOpen={handleOpenModal} />
+                {/* <EventCard r={r} modelOpen={handleOpenModal}/> */}
+                <Button size="small" variant="text" fontSize="small">+ My Events</Button>
+                <Button size="small" variant= "contained" fontSize="small">Find a Mate</Button>
+                <EventCard r={r} modelOpen={handleOpenModal} className= "event-card-search"/>
+                <div className="btns-cards">
+                </div>
               </div>
             );
           })}
