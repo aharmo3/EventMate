@@ -9,9 +9,12 @@ export default async function getMyEvents(userId, numberToReturn){
     let dbData = await  ClientAPI.getUserEvents(userId)
     console.log("this is the db data array...", dbData.data)
     if(dbData.ok){
-        if (numberToReturn.typeOf === "number" && dbData.data.length > numberToReturn){
+        if (dbData.data.length > numberToReturn){
         let dataArray = [...dbData.data];
-        return dataArray.splice(0, numberToReturn)
+        console.log ("sliced", dataArray.slice(0, numberToReturn) )
+        console.log ("spliced", dataArray.splice(0, numberToReturn) )
+        console.log ("selected", dataArray.slice(0, numberToReturn) )
+        return dataArray.slice(0, numberToReturn)
         }else{
             return dbData.data;
         }

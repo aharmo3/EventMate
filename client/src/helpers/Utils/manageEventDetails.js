@@ -9,7 +9,6 @@
 
 // import ClientAPI from "../ClientAPI";
 
-<<<<<<< HEAD
 
 // export default async function manageEventDetails (objectids, object){
 
@@ -62,19 +61,3 @@
 //     }
 //     }
 // }
-=======
-    if (objectids.includes(object.id)){
-   let eventID= object.id
-   //add user id check here to make sure it really is a duplicate??
-   let eventExists= await ClientAPI.getEventDetails(eventID)
-    if (eventExists.data !== null){
-        console.log( "event with id: "  + object.id + " already in db");
-        } else{
-            console.log("sending event details to database....")
-             ClientAPI.addEventDetails( object.id, object.name, object.date , object.time , 
-                object.image, object.eventLocation, object.venue,  object.currency, object.startingPrice, object.purchaseLink, object.genre, 
-                object.subgenre, object.eventHost, object.eventType)
-        }
-    }
-}
->>>>>>> main

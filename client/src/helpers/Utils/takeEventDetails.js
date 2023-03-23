@@ -60,7 +60,7 @@ export default function takeEventDetails (eventData,location){
         }
 
 
-            console.log("take event details object: ", eventObject)
+            // console.log("take event details object: ", eventObject)
             return eventObject;
 
 }

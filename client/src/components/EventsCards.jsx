@@ -28,11 +28,11 @@ useEffect(() => {
  getEvents();
 }, [])
 
-function handleOpenModal(res){
+// function handleOpenModal(res){
  
-  setModalData(res);
-  setIsOpen(true)
-}
+//   setModalData(res);
+//   setIsOpen(true)
+// }
 
 
 
@@ -51,7 +51,6 @@ function handleOpenModal(res){
             {loading &&
             <div>
             <CircularProgress />
-            {/* <h1>Loading......</h1>   */}
             </div>
             }
 
