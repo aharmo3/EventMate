@@ -11,6 +11,8 @@ import { Button, CircularProgress } from '@mui/material';
 import { Link } from 'react-router-dom';
 import noRepeatEvents from '../helpers/Utils/noRepeatEvents.js';
 import { GetByLocTM } from '../helpers/EventsApi/GetByLocTM.jsx';
+import takeEventDetails from '../helpers/Utils/takeEventDetails.js';
+import Local from '../helpers/Local.js';
 
 
 //we can use geolocation or user's DB location - see "getEvents" function below
@@ -22,6 +24,8 @@ function EventsCards() {
 const [events, setEvents] = useState(); 
 const [loading, setLoading] = useState(true);
 const [showList, setShowList]= useState(false);
+const userInfo = Local.getUser()
+
 
 useEffect(() => {
  getEvents();
@@ -30,31 +34,22 @@ useEffect(() => {
 
     async function getEvents(){  
         console.log("getting events for event cards....")
-     let apiData =  await GetByLocTM("Barcelona, Spain");
-    // let apiData =  await getMyEvents();
-    let newResults= apiData.map((result) =>{ 
-        return {"id": result.id, 
-        "name":result.name, 
-        "image": result.images["0"].url, 
-        "imageB":result.images["1"].url, 
-        "imageC":result.images["2"].url, 
-        "date" : result.dates.start.localDate, 
-        "time" : result.dates.start.localTime, 
-        "venue" : result._embedded.venues["0"].name,
-        "currency": result.priceRanges["0"].currency,
-        "startingPrice":  result.priceRanges["0"].min,
-        "purchaseLink":  result.url,
-        "genreId":  result.classifications["0"].genre.id,
-        "genre": result.classifications["0"].genre.name,
-        "subgenre": result.classifications["0"].subGenre.name,
-        "eventType": result.classifications["0"].segment.name,
-        "eventHost": result._embedded.attractions.name}});
-        
-        //function checks events against first event for uniqueness
+    let apiData =  await GetByLocTM(userInfo.location);
+      console.log("Events near me fetch result :", apiData)
+    let newResults=  await apiData.map((result) =>  
+                {let eventdetails = takeEventDetails(result, userInfo.location, userInfo.userId);
+                return eventdetails});
+    console.log("other Results" , newResults)
+
+      await setEvents(newResults);
+    console.log("newResults for events near me: ", newResults)  
+       
+    
+      //function checks events against first event for uniqueness
         // the number is how many objects it returns in the array
-        let limitedEvents = noRepeatEvents(newResults,4);
+        // let limitedEvents = await noRepeatEvents(newResults,4);
   
-        await setEvents(limitedEvents); 
+        // await setEvents(limitedEvents); 
         setLoading(false)
         setShowList(true)
     }
