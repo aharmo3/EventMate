@@ -53,7 +53,7 @@ export default function UserListView() {
       console.log("Error!", eResponse.error);
     }
 
-    //console.log("To Add: ", matchesToAdd);
+    console.log("To Add: ", matchesToAdd);
     setMatched(matchesToAdd);
     //console.log("Matched: ", matched);
   }
@@ -129,7 +129,7 @@ export default function UserListView() {
                 <Button 
                   variant="outlined"
                   onClick={() => {
-                    ClientAPI.invite(Local.getUserId(), match.userId, match.eventId);
+                    ClientAPI.invite(Local.getUserId(), match.userId, match.eventid);
                     let mCopy = [...matched];
                     let pos = matched.indexOf(match);
                     console.log("pos: ", pos)

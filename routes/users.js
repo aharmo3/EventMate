@@ -3,6 +3,7 @@ var router = express.Router();
 var db = require("../model/helper");
 const { ensureSameUser } = require("../middleware/guards");
 
+
 // Had to change from :id to /user/:id to stop conflicting with other routes
 router.get("/user/:id", async (req, res) => {
   let id = req.params.id;
@@ -209,7 +210,7 @@ router.post("/invite", async (req, res) => {
       
       await db(sql);
       let results = await db(giantConnectionSQL(inviterId));
-      
+
       res.status(201).send(results);
     }
   } catch (err) {
