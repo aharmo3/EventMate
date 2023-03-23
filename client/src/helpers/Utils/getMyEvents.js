@@ -11,9 +11,6 @@ export default async function getMyEvents(userId, numberToReturn){
     if(dbData.ok){
         if (dbData.data.length > numberToReturn){
         let dataArray = [...dbData.data];
-        console.log ("sliced", dataArray.slice(0, numberToReturn) )
-        console.log ("spliced", dataArray.splice(0, numberToReturn) )
-        console.log ("selected", dataArray.slice(0, numberToReturn) )
         return dataArray.slice(0, numberToReturn)
         }else{
             return dbData.data;
