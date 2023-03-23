@@ -109,12 +109,11 @@ eventsRouter.post("/", async (req, res) => {
         startingprice, 
         ticketurl, 
         genre, 
-        subgenre, 
-        host, 
+        subgenre,  
         eventtype, 
     } = req.body;
-    let sql = `insert into events(userid,ticketmasterid, eventname, eventdate, starttime, imageurl, eventlocation, venue , currency, startingprice, ticketurl, genre, subgenre, host, eventtype, eventdetail) 
-    values( ${userId},"${ticketmasterid}", "${eventname}", "${eventdate}", "${starttime}", "${imageurl}", "${eventlocation}", "${venue}" , "${currency}", "${startingprice}", "${ticketurl}", "${genre}", "${subgenre}", "${host}", "${eventtype}", "yes") `;
+    let sql = `insert into events(userid,ticketmasterid, eventname, eventdate, starttime, imageurl, eventlocation, venue , currency, startingprice, ticketurl, genre, subgenre, eventtype, eventdetail) 
+    values( ${userId},"${ticketmasterid}", "${eventname}", "${eventdate}", "${starttime}", "${imageurl}", "${eventlocation}", "${venue}" , "${currency}", "${startingprice}", "${ticketurl}", "${genre}", "${subgenre}", "${eventtype}", "yes") `;
   
     try {
       await db(sql);
