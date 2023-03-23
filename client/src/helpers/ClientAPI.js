@@ -12,7 +12,7 @@ class ClientAPI {
     return await this._doFetch("/users/invite", "POST", body);
   }
   
-   // Invite a user
+   // Update invite a user
    static async updateInvite(connectId, inviterId, accepted) {
     let body = { connectId, inviterId, accepted };
     return await this._doFetch("/users/invite", "PUT", body);
@@ -63,16 +63,22 @@ class ClientAPI {
     return await this._doFetch(`/events/user/${userId}`)
   }
 
+  // show users who chose an event
+  static async getUsersWhoChoseEvent(ticketmasterId){
+    return await this._doFetch(`/events/user/ticketmaster/${ticketmasterId}`)
+  //get users by ticketmasterId
+  }
+  
   //get users by ticketmasterId
   static async getEventUsers(ticketmasterid){
     return await this._doFetch(`/events/user/ticketmaster/${ticketmasterid}`)
   }
 
   //add event - detailed entry
-  static async addEventDetails( ticketmasterid, eventname, eventdate, starttime, 
+  static async addEventDetails( userId, ticketmasterid, eventname, eventdate, starttime, 
     imageurl, eventlocation, venue, currency, startingprice, ticketurl, genre, 
     subgenre, host, eventtype) {
-    let body = {  ticketmasterid, eventname, eventdate, starttime, imageurl, 
+    let body = {  userId, ticketmasterid, eventname, eventdate, starttime, imageurl, 
       eventlocation, venue, currency, startingprice, ticketurl, genre, 
       subgenre, host, eventtype};
     return await this._doFetch("/events", "POST", body);

@@ -4,23 +4,28 @@ import Checkbox from "@mui/material/Checkbox";
 import "./chooseEvents.css";
 import { useNavigate } from "react-router-dom";
 import NextBar from "./NextBar";
-import ClientAPI from "../helpers/ClientAPI";
 import Local from "../helpers/Local";
 import addEventsToDB from "../helpers/Utils/addEventsToDB";
 import LocationDropdown from "./Registration/LocationDropdown";
+import takeEventDetails from "../helpers/Utils/takeEventDetails";
 import Form from "./Form";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import EventCard from "./EventCard";
+import EventsDisplayModal from "./EventsDisplayModal.jsx";
+
 function ChooseEvents() {
   const navigate = useNavigate();
   const userInfo = Local.getUser();
   const userLocation = userInfo.location;
-  const [location, setLocation] = useState(userLocation);
   const [events, setEvents] = useState();
+  const [location, setLocation] = useState();
   const [showEvents, setShowEvents] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [chosenEvents, setChosenEvents] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
+  const [modalData, setModalData] = useState({});
+
 
   //Loads with user's current country in DB when loading
   useEffect(() => {
@@ -31,37 +36,35 @@ function ChooseEvents() {
   async function getLocation() {
     await getEvents(userLocation);
   }
+  function handleOpenModal(res) {
+    setModalData(res);
+    setIsOpen(true);
+  }
+
+
+  const handleLocationChange = async (form) => {
+    await getEvents(form.location);
+    setLocation(form.location);
+    setShowEdit(!showEdit);
+    console.log("events set as:", events);
+  };
 
   async function getEvents(location) {
+    let userId = userInfo.userId;
     let results = await GetByLocTM(location);
-    //formatting the object to only take what we need
-    let newResults = results.map((result) => {
-      return {
-        id: result.id,
-        name: result.name,
-        image: result.images["0"].url,
-        date: result.dates.start.localDate,
-        time: result.dates.start.localTime,
-        venue: result._embedded.venues["0"].name,
-        // "currency": result.priceRanges["0"].currency,
-        // "startingPrice":  result.priceRanges["0"].min,
-        // "purchaseLink":  result.url,
-        // "genreId":  result.classifications["0"].genre.id,
-        // "genre": result.classifications["0"].genre.name,
-        // "subgenre": result.classifications["0"].subGenre.name,
-        // "eventType": result.classifications["0"].segment.name,
-        // "eventLocation": location
-      };
+    let otherResults = await results.map((result) => {
+      let eventdetails = takeEventDetails(result, location, userId);
+      return eventdetails;
     });
-    console.log("new Results", newResults);
-    await setEvents(newResults);
+    console.log("other Results", otherResults);
+
+    await setEvents(otherResults);
     setShowEvents(true);
   }
 
   function handleCheckBoxChange(event) {
     let eventId = event.target.value;
     let checkedEvents = [...chosenEvents];
-    console.warn(checkedEvents);
     if (checkedEvents.includes(eventId)) {
       let idIndex = checkedEvents.indexOf(eventId);
       checkedEvents.splice(idIndex, 1);
@@ -73,24 +76,9 @@ function ChooseEvents() {
     console.log(chosenEvents);
   }
 
-  const handleLocationChange = async (form) => {
-    await getEvents(form.location);
-    setLocation(form.location);
-    setShowEdit(!showEdit);
-    console.log("events set as:", events);
-  };
-
   async function handleSend() {
-    // loading
-    let userId = userInfo.userId;
-    let toPost = await chosenEvents.forEach((c) => {
-      ClientAPI.addToUserEvents(userId, c);
-    });
-    let newEvents = addEventsToDB(chosenEvents, events);
-    console.log(newEvents);
-    //if return is successful - success message
-    // route to next page
-
+    let newEvents = await addEventsToDB(chosenEvents, events, userInfo.userId);
+    console.log("The detail events resp", newEvents);
     navigate("/matched");
   }
 
@@ -139,13 +127,7 @@ function ChooseEvents() {
                       "aria-label": "Checkbox A",
                     }}
                   />
-                  <EventCard r={r} />
-                  {/* <img src={r.image} alt="" className="event-img" />
-                  <p className="event-title">{r.name}</p>
-                  <p className="event-date-time">
-                    {r.date} | {r.time}
-                  </p>
-                  <p className="event-venue">{r.venue}</p> */}
+                  <EventCard r={r} modelOpen={handleOpenModal} />
                 </div>
               );
             })}
@@ -161,6 +143,11 @@ function ChooseEvents() {
         prevCb={() => {
           navigate("/register-two");
         }}
+      />
+      <EventsDisplayModal
+        isOpen={isOpen}
+        handleOpen={setIsOpen}
+        eventData={modalData}
       />
     </div>
   );

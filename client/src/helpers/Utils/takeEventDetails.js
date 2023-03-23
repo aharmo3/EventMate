@@ -1,41 +1,67 @@
 
-export default async function takeEventDetails (eventData, location){    
+//This function is to take info about events without errors for the inconsistent values
+// - things that return as null or undefined
 
-    let doesItExist = eventData.forEach()
+export default function takeEventDetails (eventData,location){    
 
-    let newResults= eventData.map((result) => { 
-    return {
-    "id": result.id, 
-    "name":result.name, 
-    "image": result.images["0"].url, 
-    "date" : result.dates.start.localDate, 
-    "time" : result.dates.start.localTime, 
-    "venue" : result._embedded.venues["0"].name,
-    "currency": result.priceRanges["0"].currency,
-    "startingPrice":  result.priceRanges["0"].min,
-    "purchaseLink":  result.url,
-    "genreId":  result.classifications["0"].genre.id,
-    "genre": result.classifications["0"].genre.name,
-    "subgenre": result.classifications["0"].subGenre.name,
-    "eventType": result.classifications["0"].segment.name,
-    "eventLocation": location}});
+    let result= eventData;
+  
+  
+    let evLocation = null;
+    let pLink = null;
+    let genr= null;
+    let subg = null;
+    let evHost= null;
+    let evType= null;
+    
+
+       //purchase link
+        if (result.url){
+            pLink = result.url;
+        } if (location){
+            evLocation = location;
+        }
+       
+        //genre name
+        if (result.classifications){
+            if(result.classifications["0"]){
+                if (result.classifications["0"].genre){
+                    if (result.classifications["0"].genre.name){
+                    genr = result.classifications["0"].genre.name;
+                    }
+                } //subgenre
+                if (result.classifications["0"].subGenre){
+                    if (result.classifications["0"].subGenre.name){
+                    subg = result.classifications["0"].subGenre.name;
+                    }
+                }
+            }
+            if (result.classifications["0"].segment){
+                if(result.classifications["0"].segment.name){
+                    evType = result.classifications["0"].segment.name;
+                }
+            }
+        } 
+
+        
+        let eventObject= {
+            "id": result.id, 
+            "name":result.name, 
+            "image": result.images["0"].url, 
+            "date" : result.dates.start.localDate, 
+            "time" : result.dates.start.localTime, 
+            "venue" : result._embedded.venues["0"].name,
+            "purchaseURL": pLink,
+            "genre": genr,
+            "subgenre": subg,
+            "eventType": evType,
+            "eventHost": evHost,
+            "eventLocation": evLocation
+        }
 
 
-//     let newResults= eventData.map((result) =>{ 
-//         return {"id": result.id, 
-//         "name":result.name, 
-//         "image": result.images["0"].url, 
-//         "date" : result.dates.start.localDate, 
-//         "time" : result.dates.start.localTime, 
-//         "venue" : result._embedded.venues["0"].name,
-//         // "currency": result.priceRanges["0"].currency,
-//         // "startingPrice":  result.priceRanges["0"].min,
-//         "purchaseLink":  result.url,
-//         "genreId":  result.classifications["0"].genre.id,
-//         "genre": result.classifications["0"].genre.name,
-//         "subgenre": result.classifications["0"].subGenre.name,
-//         "eventType": result.classifications["0"].segment.name,
-//         "eventLocation": location}});
+            // console.log("take event details object: ", eventObject)
+            return eventObject;
 
 }
 

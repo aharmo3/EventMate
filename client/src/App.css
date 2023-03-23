@@ -3,7 +3,6 @@ main {
   max-width: 1200px;
   margin: 1rem auto;
   position: relative;
-  height: 300vh;
 }
 
 .next-bar {
@@ -30,6 +29,11 @@ p,
 button {
   font-family: "Work Sans";
 }
+H2 {
+  margin: 0;
+  font-weight: 400;
+  font-size: 30px;
+}
 p,
 span {
   font-size: 15px;
@@ -45,4 +49,9 @@ body video {
   top: 0;
   bottom: 0;
   z-index: -1;
+}
+
+.eventCard:hover {
+  cursor: pointer;
+  box-shadow: -1px 0px 5px 0px rgba(0, 0, 0, 0.75);
 }
