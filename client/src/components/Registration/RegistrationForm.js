@@ -16,6 +16,7 @@ export default function RegistrationForm() {
   const navigate = useNavigate();
   const userId = Local.getUserId();
   const userInfo = Local.getUser();
+  
   async function updateUser(form) {
     let myresponse = await ClientAPI.updateUser(form, userId);
 

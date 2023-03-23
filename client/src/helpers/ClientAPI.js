@@ -6,6 +6,23 @@ class ClientAPI {
     return await this._doFetch("/users/matched");
   }
 
+   // Invite a user
+   static async invite(inviterId, inviteeId, eventId) {
+    let body = { inviterId, inviteeId, eventId };
+    return await this._doFetch("/users/invite", "POST", body);
+  }
+  
+   // Invite a user
+   static async updateInvite(connectId, inviterId, accepted) {
+    let body = { connectId, inviterId, accepted };
+    return await this._doFetch("/users/invite", "PUT", body);
+  }
+
+  // To get all connections for current user
+  static async getConnections(userId) {
+    return await this._doFetch(`/users/connects/${userId}`);
+  }
+
   //register
   static async registerUser(username, email, password) {
     let body = { username, password, email };
@@ -14,20 +31,22 @@ class ClientAPI {
 
   //Update User (more details)
   static async updateUser(body, userId) {
-    return await this._doFetch(`/users/${userId}`, "PUT", body);
+    return await this._doFetch(`/users/user/${userId}`, "PUT", body);
   }
+
   //login
   static async loginUser(username, password) {
     let body = { username, password };
     return await this._doFetch("/login", "POST", body);
   }
+
   //get all users
   static async getUsers() {
     return await this._doFetch("/users");
   }
   //get user by id
   static async getUser(userId) {
-    return await this._doFetch(`/users/${userId}`);
+    return await this._doFetch(`/users/user/${userId}`);
   }
   //get content
   static async getContent(url) {
@@ -38,6 +57,7 @@ class ClientAPI {
   static async getEventDetails(ticketMasterId){
     return await this._doFetch(`/events/ticketmaster/${ticketMasterId}`)
   }
+
   //get events by userID
   static async getUserEvents(userId){
     return await this._doFetch(`/events/user/${userId}`)
@@ -46,6 +66,11 @@ class ClientAPI {
   // show users who chose an event
   static async getUsersWhoChoseEvent(ticketmasterId){
     return await this._doFetch(`/events/user/ticketmaster/${ticketmasterId}`)
+  //get users by ticketmasterId
+  }
+  
+  static async getEventUsers(ticketmasterid){
+    return await this._doFetch(`/events/user/ticketmaster/${ticketmasterid}`)
   }
 
   //add event - detailed entry
