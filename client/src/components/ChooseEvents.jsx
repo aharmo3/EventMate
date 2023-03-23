@@ -13,26 +13,23 @@ import Form from "./Form";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import EventCard from "./EventCard";
-
-
-
+import EventsDisplayModal from "./EventsDisplayModal.jsx";
 
 function ChooseEvents() {
   const navigate = useNavigate();
   const userInfo = Local.getUser();
   const userLocation = userInfo.location;
   const [events, setEvents] = useState();
+  const [location, setLocation] = useState();
   const [showEvents, setShowEvents] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [chosenEvents, setChosenEvents] = useState([]);
-  const [location, setLocation] = useState(); 
-  // const [eventDetails, setEventDetails] = useState([])
-  const [showTitle, setShowTitle]= useState(true);
-  const [locationInput, setLocationInput]= useState("")
-  const [dblocation, setDbLocation] = useState(userInfo.location); 
+  const [isOpen, setIsOpen] = useState(false);
+  const [modalData, setModalData] = useState({});
+  const [locationInput, setLocationInput] = useState("");
 
-    //Loads with user's current country in DB when loading    
-    useEffect(() => {
+  //Loads with user's current country in DB when loading
+  useEffect(() => {
     getLocation();
   }, []);
 
@@ -40,29 +37,21 @@ function ChooseEvents() {
   async function getLocation() {
     await getEvents(userLocation);
   }
+  function handleOpenModal(res) {
+    setModalData(res);
+    setIsOpen(true);
+  }
 
-    //location submits on typing
-    const handleChange = event => {
-        // setLocation(event.target.value);
-        setLocationInput(event.target.value);
-      };
-    
-      //show or don't show abiity to edit
-    function handleEditButton(){
-        setShowEdit(true);
-        setShowTitle(false);
-    }  
+  // async function handleFormLocation(e){
+  //     e.preventDefault();
+  //     // await getEvents(location)
+  //     // console.log("events set as:", events)
+  //     getEvents(locationInput)
+  //     setLocation(locationInput)
+  //     setShowEdit(false);
+  //     setShowTitle(true);
+  //   };
 
-    // async function handleFormLocation(e){
-    //     e.preventDefault();
-    //     // await getEvents(location)
-    //     // console.log("events set as:", events)
-    //     getEvents(locationInput)
-    //     setLocation(locationInput)
-    //     setShowEdit(false);
-    //     setShowTitle(true);
-    //   };
-    
   const handleLocationChange = async (form) => {
     await getEvents(form.location);
     setLocation(form.location);
@@ -70,24 +59,22 @@ function ChooseEvents() {
     console.log("events set as:", events);
   };
 
-     
-    async function getEvents(location){
-        let userId= userInfo.userId
-        let results = await GetByLocTM(location);
-      let otherResults= await results.map((result) =>  
-                      {let eventdetails = takeEventDetails(result, location, userId);
-                       return eventdetails});
-        console.log("other Results" , otherResults)
-  
-        await setEvents(otherResults);
-         setShowEvents(true);  
-    };
-       
+  async function getEvents(location) {
+    let userId = userInfo.userId;
+    let results = await GetByLocTM(location);
+    let otherResults = await results.map((result) => {
+      let eventdetails = takeEventDetails(result, location, userId);
+      return eventdetails;
+    });
+    console.log("other Results", otherResults);
+
+    await setEvents(otherResults);
+    setShowEvents(true);
+  }
 
   function handleCheckBoxChange(event) {
     let eventId = event.target.value;
     let checkedEvents = [...chosenEvents];
-    console.warn(checkedEvents);
     if (checkedEvents.includes(eventId)) {
       let idIndex = checkedEvents.indexOf(eventId);
       checkedEvents.splice(idIndex, 1);
@@ -99,28 +86,11 @@ function ChooseEvents() {
     console.log(chosenEvents);
   }
 
-  // function handleCheckBoxChange(event){
-//     let eventId= event.target.value;
-//     let checkedEvents= [...chosenEvents]
-//     if (checkedEvents.includes(eventId)){
-//       let idIndex= checkedEvents.indexOf(eventId);
-//       checkedEvents.splice(idIndex,1);
-//       setChosenEvents(checkedEvents);
-//     }else {
-//       checkedEvents.push(eventId)
-//       setChosenEvents(checkedEvents);
-//     }
-//     console.log(chosenEvents);
-//  }
-
-
-  
-  async function handleSend(){
-    let newEvents= await addEventsToDB(chosenEvents, events, userInfo.userId); 
-    console.log("The detail events resp", newEvents) 
-    navigate("/matched")
+  async function handleSend() {
+    let newEvents = await addEventsToDB(chosenEvents, events, userInfo.userId);
+    console.log("The detail events resp", newEvents);
+    navigate("/matched");
   }
- 
 
   return (
     <div>
@@ -167,13 +137,7 @@ function ChooseEvents() {
                       "aria-label": "Checkbox A",
                     }}
                   />
-                  <EventCard r={r} />
-                  {/* <img src={r.image} alt="" className="event-img" />
-                  <p className="event-title">{r.name}</p>
-                  <p className="event-date-time">
-                    {r.date} | {r.time}
-                  </p>
-                  <p className="event-venue">{r.venue}</p> */}
+                  <EventCard r={r} modelOpen={handleOpenModal} />
                 </div>
               );
             })}
@@ -189,6 +153,11 @@ function ChooseEvents() {
         prevCb={() => {
           navigate("/register-two");
         }}
+      />
+      <EventsDisplayModal
+        isOpen={isOpen}
+        handleOpen={setIsOpen}
+        eventData={modalData}
       />
     </div>
   );
