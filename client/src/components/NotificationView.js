@@ -71,7 +71,6 @@ export default function NotificationView() {
       setMyInvites(mInv);
       setConfirmed(conf);
       setRejected(rej);
-      setConnections(false);
       setConnections(uresponse.data);
     }
     else {
