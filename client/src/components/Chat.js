@@ -2,10 +2,11 @@ import React, { useEffect, useState, useRef } from "react";
 import Pusher from "pusher-js";
 import axios from "axios";
 import "./Chat.css";
+import Local from "../helpers/Local";
 
-export default function Chat() {
+export default function Chat(props) {
   //states for the view of the sender name and receiver name
-  const [senderId, setSenderId] = useState(1); // default sender ID
+  const [senderId, setSenderId] = useState(Local.getUserId()); // default sender ID
   const [receiverId, setReceiverId] = useState(2); // default receiver ID
   let [messages, setMessages] = useState([]);
   let [text, setText] = useState(""); //state for the chat input bar
@@ -30,15 +31,21 @@ export default function Chat() {
 
   //subscribe to channel
   useEffect(() => {
-    if (senderId === receiverId) {
-      return;
+    if (senderId === props.showChat.inviterId) {
+      setReceiverId(props.showChat.inviteeId);
+    } else {
+      setReceiverId(props.showChat.inviterId);
     }
+
     let ids = [senderId, receiverId].sort();
     let channelName = "channel-" + ids.join("-");
+    console.log("channel name here", channelName);
 
     let channel = pusherRef.current.subscribe(channelName);
     channel.bind("message", function (msg) {
       setMessages((messages) => [...messages, msg]);
+      //here i will have to set the senderId and receiver id...
+      //ask how to specify who is sender from which side
     });
 
     return () => {
@@ -47,7 +54,9 @@ export default function Chat() {
   }, [senderId, receiverId]);
 
   //send and receive messages when users change
-  useEffect(() => {}, [senderId, receiverId]);
+  useEffect(() => {
+    getRecentMessages();
+  }, [senderId, receiverId]);
 
   //GET loading previous messages from the database
   async function getRecentMessages() {
@@ -106,6 +115,7 @@ export default function Chat() {
     if (lastPara) {
       lastPara.scrollIntoView(false); //always make the last message visible...it is a JS function
     }
+    console.log("heysss");
   }, [messages]);
 
   function formatDT(dt) {
@@ -127,34 +137,19 @@ export default function Chat() {
       <h1 className="text-center my-4">Let's Go Mate</h1>
 
       <div className="d-flex justify-content-between mb-1">
-        <select
-          name="receiverId"
-          value={receiverId}
-          onChange={handleChangeUser}
-        >
-          <option value="1">Maria</option>
-          <option value="2">Raul</option>
-          <option value="3">Ana</option>
-          <option value="4">Sam</option>
-        </select>
-
-        <select name="senderId" value={senderId} onChange={handleChangeUser}>
-          <option value="1">Maria</option>
-          <option value="2">Raul</option>
-          <option value="3">Ana</option>
-          <option value="4">Sam</option>
-        </select>
+        <p> {JSON.stringify(props.showChat.inviterUsername)}</p>
+        <p>{JSON.stringify(props.showChat.inviteeUsername)}</p>
       </div>
 
       <div className="messagesList" ref={listDiv}>
-        {messages.map((message) => {
+        {messages.map((message) => (
           <p
             key={message.id}
             className={message.senderId === senderId ? "sender" : "receiver"}
           >
             <span title={formatDT(message.dateTime)}>{message.text}</span>
-          </p>;
-        })}
+          </p>
+        ))}
       </div>
 
       <form onSubmit={handleSubmit}>

@@ -66,14 +66,14 @@ function App() {
   return (
     <>
       <TopNav logOutCb={doLogout} />
-      {/* <Chat /> */}
+
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<LoginForm />} />
 
           <Route
-          path="/notifications"
+            path="/notifications"
             element={
               <ProtectedRoute>
                 <NotificationView />

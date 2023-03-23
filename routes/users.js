@@ -53,9 +53,8 @@ router.get("/matched", async function (req, res, next) {
   }
 });
 
-function giantConnectionSQL(id){
-  let sql = 
-  `SELECT connections.connectId, 
+function giantConnectionSQL(id) {
+  let sql = `SELECT connections.connectId, 
           connections.accepted,
           inviter.userId as inviterId, 
           inviter.username as inviterUsername,
@@ -73,8 +72,8 @@ function giantConnectionSQL(id){
     INNER JOIN events 
     ON connections.eventId = events.eventid 
     WHERE connections.inviterId = ${id} 
-    OR connections.inviteeId=${id}`
-  return sql
+    OR connections.inviteeId=${id}`;
+  return sql;
 }
 
 // Connections
@@ -96,7 +95,6 @@ router.get("/connects/:id", async function (req, res, next) {
     res.status(500).send({ error: err.message });
   }
 });
-
 
 router.get("/:id", ensureSameUser, async (req, res) => {
   let userId = req.params.id;
@@ -182,23 +180,18 @@ router.put("/user/:id", async (req, res) => {
   }
 });
 
-
 // New Invite
 router.post("/invite", async (req, res) => {
-  let {
-    inviterId,
-    inviteeId,
-    eventId,
-  } = req.body;
-  
+  let { inviterId, inviteeId, eventId } = req.body;
+
   try {
     let sql = `
       SELECT * FROM connections 
       WHERE inviterId = ${inviterId} 
       AND inviteeId = ${inviteeId}
       AND eventId = ${eventId}`;
-    
-      let results = await db(sql);
+
+    let results = await db(sql);
 
     if (results.data.length === 1) {
       res.status(400).send({ message: `Invite already exists` });
@@ -206,10 +199,10 @@ router.post("/invite", async (req, res) => {
       let sql = `
       INSERT INTO connections(inviterId, inviteeId, eventId) 
       VALUES(${inviterId}, ${inviteeId}, ${eventId}) `;
-      
+
       await db(sql);
       let results = await db(giantConnectionSQL(inviterId));
-      
+
       res.status(201).send(results);
     }
   } catch (err) {
@@ -219,16 +212,12 @@ router.post("/invite", async (req, res) => {
 
 // Update invite - accept or reject
 router.put("/invite", async (req, res) => {
-  let {
-    connectId,
-    inviterId,
-    accepted
-  } = req.body;
+  let { connectId, inviterId, accepted } = req.body;
 
   let sql = `
       SELECT * FROM connections 
       WHERE connectId = ${connectId}`;
-  
+
   try {
     let results = await db(sql);
 
@@ -249,6 +238,5 @@ router.put("/invite", async (req, res) => {
     res.status(500).send({ error: err.message });
   }
 });
-
 
 module.exports = router;
