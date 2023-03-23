@@ -12,6 +12,8 @@ import Form from "./Form";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import EventCard from "./EventCard";
+import EventsDisplayModal from "./EventsDisplayModal.jsx";
+
 function ChooseEvents() {
   const navigate = useNavigate();
   const userInfo = Local.getUser();
@@ -21,7 +23,8 @@ function ChooseEvents() {
   const [showEvents, setShowEvents] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [chosenEvents, setChosenEvents] = useState([]);
-
+  const [isOpen, setIsOpen] = useState(false);
+  const [modalData, setModalData] = useState({});
   //Loads with user's current country in DB when loading
   useEffect(() => {
     getLocation();
@@ -30,6 +33,10 @@ function ChooseEvents() {
   //gets user location from local storage and sets it
   async function getLocation() {
     await getEvents(userLocation);
+  }
+  function handleOpenModal(res) {
+    setModalData(res);
+    setIsOpen(true);
   }
 
   async function getEvents(location) {
@@ -139,7 +146,7 @@ function ChooseEvents() {
                       "aria-label": "Checkbox A",
                     }}
                   />
-                  <EventCard r={r} />
+                  <EventCard r={r} modelOpen={handleOpenModal} />
                   {/* <img src={r.image} alt="" className="event-img" />
                   <p className="event-title">{r.name}</p>
                   <p className="event-date-time">
@@ -161,6 +168,11 @@ function ChooseEvents() {
         prevCb={() => {
           navigate("/register-two");
         }}
+      />
+      <EventsDisplayModal
+        isOpen={isOpen}
+        handleOpen={setIsOpen}
+        eventData={modalData}
       />
     </div>
   );

@@ -1,10 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Days+One&family=Work+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Days+One&family=Work+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&display=swap");
 main {
   max-width: 1200px;
   margin: 1rem auto;
-  position:relative;
+  position: relative;
 }
-
 
 .next-bar {
   display: flex;
@@ -15,27 +14,44 @@ main {
   box-sizing: border-box;
   bottom: 0;
   right: 0;
-  background:white;
-  box-shadow: 3px -2px 5px 1px rgba(0, 0, 0, 0.50);
+  background: white;
+  box-shadow: 3px -2px 5px 1px rgba(0, 0, 0, 0.5);
   width: 100%;
 }
 
-H1, H2, H3, H4, H5, H6, p, button{
-  font-family: 'Work Sans';
+H1,
+H2,
+H3,
+H4,
+H5,
+H6,
+p,
+button {
+  font-family: "Work Sans";
 }
-p, span {
+H2 {
+  margin: 0;
+  font-weight: 400;
+  font-size: 30px;
+}
+p,
+span {
   font-size: 15px;
 }
 
 body video {
-    width: 100vw;
-      height: 100vh;
-      object-fit: cover;
-      position: fixed;
-      left: 0;
-      right: 0;
-      top: 0;
-      bottom: 0;
-      z-index: -1;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: -1;
+}
 
+.eventCard:hover {
+  cursor: pointer;
+  box-shadow: -1px 0px 5px 0px rgba(0, 0, 0, 0.75);
 }
