@@ -4,7 +4,6 @@ import Checkbox from "@mui/material/Checkbox";
 import "./chooseEvents.css";
 import { useNavigate } from "react-router-dom";
 import NextBar from "./NextBar";
-import ClientAPI from "../helpers/ClientAPI";
 import Local from "../helpers/Local";
 import addEventsToDB from "../helpers/Utils/addEventsToDB";
 import LocationDropdown from "./Registration/LocationDropdown";
@@ -26,7 +25,7 @@ function ChooseEvents() {
   const [chosenEvents, setChosenEvents] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [modalData, setModalData] = useState({});
-  const [locationInput, setLocationInput] = useState("");
+
 
   //Loads with user's current country in DB when loading
   useEffect(() => {
@@ -42,15 +41,6 @@ function ChooseEvents() {
     setIsOpen(true);
   }
 
-  // async function handleFormLocation(e){
-  //     e.preventDefault();
-  //     // await getEvents(location)
-  //     // console.log("events set as:", events)
-  //     getEvents(locationInput)
-  //     setLocation(locationInput)
-  //     setShowEdit(false);
-  //     setShowTitle(true);
-  //   };
 
   const handleLocationChange = async (form) => {
     await getEvents(form.location);
