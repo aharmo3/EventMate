@@ -14,22 +14,35 @@ export default function takeEventDetails (eventData,location){
     let evHost= null;
     let evType= null;
     
-    
-    console.log()
-       
+
+       //purchase link
         if (result.url){
             pLink = result.url;
-        } if (result.classifications["0"].genre.name){
-            genr = result.classifications["0"].genre.name;
-        } if (result.classifications["0"].subGenre.name){
-            subg = result.classifications["0"].subGenre.name;
-        } if (result.classifications["0"].segment.name){
-            evHost = result.classifications["0"].segment.name;
         } if (location){
             evLocation = location;
-        } if (result.classifications["0"].segment.name){
-            evType = result.classifications["0"].segment.name
         }
+       
+        //genre name
+        if (result.classifications){
+            if(result.classifications["0"]){
+                if (result.classifications["0"].genre){
+                    if (result.classifications["0"].genre.name){
+                    genr = result.classifications["0"].genre.name;
+                    }
+                } //subgenre
+                if (result.classifications["0"].subGenre){
+                    if (result.classifications["0"].subGenre.name){
+                    subg = result.classifications["0"].subGenre.name;
+                    }
+                }
+            }
+            if (result.classifications["0"].segment){
+                if(result.classifications["0"].segment.name){
+                    evType = result.classifications["0"].segment.name;
+                }
+            }
+        } 
+
         
         let eventObject= {
             "id": result.id, 

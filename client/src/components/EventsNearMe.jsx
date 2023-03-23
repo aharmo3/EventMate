@@ -6,7 +6,6 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Typography from '@mui/material/Typography';
 import React, {useState} from 'react'
 import { useEffect } from 'react';
-import getMyEvents from '../helpers/Utils/getMyEvents.js';
 import { Button, CircularProgress } from '@mui/material';
 import { Link } from 'react-router-dom';
 import noRepeatEvents from '../helpers/Utils/noRepeatEvents.js';
@@ -40,16 +39,14 @@ useEffect(() => {
                 {let eventdetails = takeEventDetails(result, userInfo.location, userInfo.userId);
                 return eventdetails});
     console.log("other Results" , newResults)
-
+    if (newResults.length > 8){
+      let resultsCopy= [...newResults]
+      let limitedResults= resultsCopy.splice(0,6);
+      setEvents(limitedResults)
+    } else{
       await setEvents(newResults);
+    }
     console.log("newResults for events near me: ", newResults)  
-       
-    
-      //function checks events against first event for uniqueness
-        // the number is how many objects it returns in the array
-        // let limitedEvents = await noRepeatEvents(newResults,4);
-  
-        // await setEvents(limitedEvents); 
         setLoading(false)
         setShowList(true)
     }
@@ -58,8 +55,7 @@ useEffect(() => {
     <div className= "event-cards">
             {loading &&
             <div>
-            <h1>Loading......</h1>  
-            {/* <CircularProgress /> */}
+            <CircularProgress />
             </div>
             }
 

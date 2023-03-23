@@ -2,7 +2,7 @@
 import ClientAPI from "../ClientAPI";
 // loops through the array, calling a function which prepares them for the database
 
-export default async function addEventsToDB(objectIds, arrayOfObjects) {
+export default async function addEventsToDB(objectIds, arrayOfObjects, userId) {
 
 let responseArr = [];
 
@@ -45,7 +45,7 @@ for (let i of arrayOfObjects){
                     // console.log("the stuff getting sent to db ....", i.id, i.name, i.date , i.time , 
                     // i.image, evLocation, i.venue, evCurrency, evStartPrice, pLink, genr, 
                     // subg, evHost,  evType);
-                let result=  await  ClientAPI.addEventDetails( i.id, i.name, i.date , i.time , 
+                let result=  await  ClientAPI.addEventDetails( userId, i.id, i.name, i.date , i.time , 
                         i.image, evLocation, i.venue, evCurrency, evStartPrice, pLink, genr, 
                         subg, evHost,  evType)
                     

@@ -43,11 +43,16 @@ class ClientAPI {
     return await this._doFetch(`/events/user/${userId}`)
   }
 
+  // show users who chose an event
+  static async getUsersWhoChoseEvent(ticketmasterId){
+    return await this._doFetch(`/events/user/ticketmaster/${ticketmasterId}`)
+  }
+
   //add event - detailed entry
-  static async addEventDetails( ticketmasterid, eventname, eventdate, starttime, 
+  static async addEventDetails( userId, ticketmasterid, eventname, eventdate, starttime, 
     imageurl, eventlocation, venue, currency, startingprice, ticketurl, genre, 
     subgenre, host, eventtype) {
-    let body = {  ticketmasterid, eventname, eventdate, starttime, imageurl, 
+    let body = {  userId, ticketmasterid, eventname, eventdate, starttime, imageurl, 
       eventlocation, venue, currency, startingprice, ticketurl, genre, 
       subgenre, host, eventtype};
     return await this._doFetch("/events", "POST", body);

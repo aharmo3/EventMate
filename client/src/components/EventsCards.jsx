@@ -4,11 +4,13 @@ import Divider from '@mui/material/Divider';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Typography from '@mui/material/Typography';
-import React, {useState} from 'react'
-import { useEffect } from 'react';
+import {Button, Link, CircularProgress} from '@mui/material';
+import React, {useState, useEffect} from 'react'
 import getMyEvents from '../helpers/Utils/getMyEvents.js';
-import { CircularProgress } from '@mui/material';
 import EventsDisplayModal from './EventsDisplayModal.jsx';
+import Local from '../helpers/Local.js';
+
+
 
 
 //pass the data into the component as a prop
@@ -20,6 +22,7 @@ const [loading, setLoading] = useState(true);
 const [showList, setShowList]= useState(false);
 const [isOpen, setIsOpen]= useState(false);
 const [modalData, setModalData]= useState({});
+const userInfo = Local.getUser();
 
 useEffect(() => {
  getEvents();
@@ -35,25 +38,10 @@ function handleOpenModal(res){
 
     async function getEvents(){  
         console.log("getting events for event cards....")
-    let apiData =  await getMyEvents();
-    let newResults= apiData.map((result) =>{ 
-        return {"id": result.id, 
-        "name":result.name, 
-        "image": result.images["0"].url, 
-        "date" : result.dates.start.localDate, 
-        "time" : result.dates.start.localTime, 
-        "venue" : result._embedded.venues["0"].name,
-        "currency": result.priceRanges["0"].currency,
-        "startingPrice":  result.priceRanges["0"].min,
-        "purchaseLink":  result.url,
-        "genreId":  result.classifications["0"].genre.id,
-        "genre": result.classifications["0"].genre.name,
-        "subgenre": result.classifications["0"].subGenre.name,
-        "eventType": result.classifications["0"].segment.name,
-        "eventHost": result._embedded.attractions.name
-      }});
-      console.log("new results mapped", newResults)
-        await setEvents(newResults); 
+    let apiData =  await getMyEvents(userInfo.userId, 6);
+ 
+      console.log("new results mapped", apiData)
+        await setEvents(apiData); 
         setLoading(false)
         setShowList(true)
     }
@@ -74,25 +62,25 @@ function handleOpenModal(res){
         <div>
          {
       events.map(r => {
-          return <List key={r.id} sx={{ width: '100%', maxWidth: "70vw", bgcolor: 'background.paper'}}>
+          return <List key={r.eventid} sx={{ width: '100%', maxWidth: "70vw", bgcolor: 'background.paper'}}>
       <ListItem 
      dense={true}
-      alignItems="flex-start"
+      alignitems="flex-start"
       style={{maxHeight:"60px"}}
       >
         <ListItemAvatar
           sx={{ paddingRight: '10px'}}
-          alignItems="center" 
+          alignitems="center" 
           >
           <img alt="event"
-           src={r.image} 
+           src={r.imageurl} 
            style={{width:"100px",
            maxHeight:"50px"}}
            />
         </ListItemAvatar>
         <ListItemText
-          primary={r.name} 
-          onClick={(e) => handleOpenModal(r)} 
+          primary={r.eventname} 
+          // onClick={(e) => handleOpenModal(r)} 
           secondary={
             <React.Fragment>
               <Typography
@@ -101,7 +89,7 @@ function handleOpenModal(res){
                 variant="body2"
                 color="text.primary"
               >
-                {r.date}, {r.time}
+                {r.eventdate}, {r.starttime}
               </Typography>
                { `  ${r.venue}` }
             </React.Fragment>
@@ -115,12 +103,19 @@ function handleOpenModal(res){
         })} {/*close map fn */}
        </div> 
    }
-
+{/* 
    <EventsDisplayModal
    isOpen={isOpen}
    handleOpen={setIsOpen}
    eventData={modalData}
-   />
+   /> */}
+   <Link to="/searchevents"
+        style={{textDecoration: "none"}}
+        >
+        <Button 
+        variant="text"
+        >See More...</Button>
+        </Link>
    </div>
   )
 }

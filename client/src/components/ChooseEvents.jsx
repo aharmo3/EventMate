@@ -20,7 +20,7 @@ function ChooseEvents() {
 
       const [location, setLocation] = useState(); 
       const [events, setEvents] = useState(); 
-      // const [eventDetails, setEventDetails] = useState([])
+      const [eventDetails, setEventDetails] = useState([])
       const [showEvents, setShowEvents] = useState(false);
       const [showEdit, setShowEdit]= useState(false);
       const [showTitle, setShowTitle]= useState(true);
@@ -65,6 +65,7 @@ function ChooseEvents() {
     
      
     async function getEvents(location){
+        let userId= userInfo.userId
         let results = await GetByLocTM(location);
       //formatting the object to only take what we need
     // let newResults= await results.map((result) =>{ 
@@ -74,17 +75,18 @@ function ChooseEvents() {
     //     "image": result.images["0"].url, 
     //     "date" : result.dates.start.localDate, 
     //     "time" : result.dates.start.localTime, 
-    //     "venue" : result._embedded.venues["0"].name
+    //     "venue" : result._embedded.venues["0"].name,
+    //     "location": location
     //   }});
 
       let otherResults= await results.map((result) =>  
-                      {let eventdetails = takeEventDetails(result, location);
+                      {let eventdetails = takeEventDetails(result, location, userId);
                        return eventdetails});
         console.log("other Results" , otherResults)
   
         await setEvents(otherResults);
          setShowEvents(true);  
-        
+        // setEventDetails(otherResults);
        
     }
 
@@ -107,12 +109,12 @@ function ChooseEvents() {
   
   async function handleSend (){
     // sends user event choice to DB
-    let toPost = await chosenEvents.map((c) => ClientAPI.addToUserEvents(userInfo.userId, c))
-    // sends detailed events to
-    console.log("to post user events", toPost)
-    let newEvents= await addEventsToDB(chosenEvents, events); 
+    // let toPost = await chosenEvents.map((c) => ClientAPI.addToUserEvents(userInfo.userId, c))
+    // // sends detailed events to
+    // console.log("to post user events", toPost)
+    let newEvents= await addEventsToDB(chosenEvents, events, userInfo.userId); 
     console.log("The detail events resp", newEvents) 
-    // navigate("/matched")
+    navigate("/matched")
   }
 
   return (
