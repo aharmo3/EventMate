@@ -19,6 +19,13 @@ function EventsDisplayModal({ isOpen, handleOpen, eventData }) {
     border: "2px solid #000",
     boxShadow: 24,
   };
+
+
+  const openInNewTab = (url) => {
+    window.open(url, '_blank', 'noreferrer');
+    console.log(url)
+  };
+
   console.warn(eventData);
   return (
     <Modal
@@ -52,10 +59,16 @@ function EventsDisplayModal({ isOpen, handleOpen, eventData }) {
                   {eventData.eventType} Event, {eventData.genre},
                   {eventData.subgenre}
                 </p>
-                <Button href={eventData.purchaseLink} target="_blank">
-                  Purchase Tickets Online
-                </Button>
-                <Button>add to my events</Button>
+
+               { eventData.purchaseURL &&
+                <Button
+                 variant="contained" href={eventData.purchaseURL} target="_blank" 
+                onClick={(e) => openInNewTab(`${eventData.purchaseURL}`)}>
+                  Purchase Tickets
+                </Button> 
+                }
+
+                <Button>+ my events</Button>
               </Typography>
             </CardContent>
           </CardActionArea>
