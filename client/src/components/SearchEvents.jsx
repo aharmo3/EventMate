@@ -12,6 +12,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import EventCard from "./EventCard";
 import EventsDisplayModal from "./EventsDisplayModal.jsx";
 import "./searchEvents.css"
+import MyEventIDs from "../helpers/Utils/MyEventIDs.js";
 
 
 function SearchEvents() {
@@ -24,10 +25,12 @@ function SearchEvents() {
   const [showEdit, setShowEdit] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [modalData, setModalData] = useState({});
+  const [myEventsids, setMyEventsids] = useState([])
    
  //Loads with user's current country in DB when loading
     useEffect(() => {
       getLocation();
+      setLocation(userLocation)
     }, []);
 
 
@@ -35,6 +38,32 @@ function SearchEvents() {
   async function getLocation() {
     await getEvents(userLocation);
   }
+
+  async function inMyEvents(userID, eventsObjects){
+    let myEvents= await MyEventIDs(userID);
+    setMyEventsids(myEvents);
+      return eventsObjects.map(o => 
+        myEvents.includes(o.id)
+          ? o.showAdd = false
+          : o.showAdd = true
+         )
+         
+  }
+
+  async function getEvents(location) {
+    let results = await GetByLocTM(location);
+
+    let otherResults = await results.map((result) => {
+      let eventdetails = takeEventDetails(result, location, userInfo.userId);
+      return eventdetails;
+    });
+
+    let myEvents = await inMyEvents(userInfo.userId, otherResults);
+      await setEvents(otherResults);
+    setShowEvents(true);
+  }
+
+
   function handleOpenModal(res) {
     setModalData(res);
     setIsOpen(true);
@@ -46,25 +75,31 @@ function SearchEvents() {
     console.log("events set as:", events);
   };
 
-  async function getEvents(location) {
-    let userId = userInfo.userId;
-    let results = await GetByLocTM(location);
-    let otherResults = await results.map((result) => {
-      let eventdetails = takeEventDetails(result, location, userId);
-      return eventdetails;
-    });
-    console.log("other Results", otherResults);
-
-    await setEvents(otherResults);
-    setShowEvents(true);
+  function handleShowAdd(eventObj){
+    if (myEventsids.includes(eventObj.id)){
+      eventObj.showAdd = false
+    }
   }
 
+ 
+    async function handleAddToMyEventsBtn(eventId, eventObject){
+      console.log("handle events, id, object, userid", eventId, eventObject, userInfo.userId)
+      let result = await addEventsToDB(eventId, eventObject, userInfo.userId)
+      console.log("handle add events", result)
+      if (result){
 
-    // async function handleSend() {
-    //   // let newEvents = await addEventsToDB(chosenEvents, events, userInfo.userId);
-    //   console.log("The detail events resp", newEvents);
-    //   navigate("/matched");
-    // }
+        setShowEvents(true);
+        getEvents(location);
+
+      }
+    }
+
+
+    async function handleFindAMateBtn(eventId){
+
+    }
+
+
 
 return (
   <div>
@@ -103,10 +138,38 @@ return (
           {events.map((r) => {
             return (
               <div key={r.id} className="event-items">
-                {/* <EventCard r={r} modelOpen={handleOpenModal}/> */}
-                <Button size="small" variant="text" fontSize="small">+ My Events</Button>
-                <Button size="small" variant= "contained" fontSize="small">Find a Mate</Button>
-                <EventCard r={r} modelOpen={handleOpenModal} className= "event-card-search"/>
+                <EventCard 
+                r={r} 
+                modelOpen={handleOpenModal}
+                />
+                {r.showAdd &&
+                <Button 
+                size="small" 
+                variant="text" 
+                fontSize="small" 
+                onClick={e => handleAddToMyEventsBtn(r.id, r)}
+                >+ My Events</Button>
+                  }
+                
+                  {!r.showAdd &&
+                <Button 
+                size="small" 
+                variant="text" 
+                fontSize="small" 
+                disabled
+                >My Events</Button>
+                  }
+
+                <Button 
+                size="small" 
+                variant= "contained" 
+                fontSize="small"
+                onClick={e => handleFindAMateBtn(r.id)}
+                >Find a Mate</Button>
+                {/* <EventCard r={r}
+                 modelOpen={handleOpenModal} 
+                className= "event-card-search"/> */}
+
                 <div className="btns-cards">
                 </div>
               </div>
