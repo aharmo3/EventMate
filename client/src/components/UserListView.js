@@ -34,21 +34,19 @@ export default function UserListView() {
 
     let eResponse = await ClientAPI.getUserEvents(Local.getUserId());
     if (eResponse.ok) {
-
       if (eResponse.data.length > 0) {
         for (let row of eResponse.data) {
           let usersResponse = await ClientAPI.getEventUsers(row.ticketmasterid);
           let users = usersResponse.data;
-          let otherUsers = users.filter(user => {
-            return user.userId !== Local.getUserId()
+          let otherUsers = users.filter((user) => {
+            return user.userId !== Local.getUserId();
           });
 
           if (otherUsers.length > 0) {
             matchesToAdd.push(...otherUsers);
-          } 
+          }
         }
       }
-      
     } else {
       console.log("Error!", eResponse.error);
     }
@@ -90,9 +88,7 @@ export default function UserListView() {
         {matched.length > 0 &&
           matched.map((match) => (
             <div>
-              <ListItem
-                key={match.userId}
-              >
+              <ListItem key={match.userId}>
                 <ListItemAvatar
                   sx={{
                     mr: "15px",
@@ -104,7 +100,6 @@ export default function UserListView() {
                     sx={{ width: 56, height: 56 }}
                   />
                 </ListItemAvatar>
-
                 <ListItemText
                   primary={<div>{match.username}</div>}
                   secondary={
@@ -116,8 +111,7 @@ export default function UserListView() {
                     </div>
                   }
                 />
-
-                <Button 
+                <Button
                   variant="outlined"
                   onClick={() => {
                     handleClickOpen(match.userId);
@@ -125,14 +119,18 @@ export default function UserListView() {
                 >
                   View Profile
                 </Button>
-
-                <Button 
+                &nbsp;
+                <Button
                   variant="outlined"
                   onClick={() => {
-                    ClientAPI.invite(Local.getUserId(), match.userId, match.eventid);
+                    ClientAPI.invite(
+                      Local.getUserId(),
+                      match.userId,
+                      match.eventid
+                    );
                     let mCopy = [...matched];
                     let pos = matched.indexOf(match);
-                    console.log("pos: ", pos)
+                    console.log("pos: ", pos);
                     mCopy.splice(pos, 1);
                     setMatched(mCopy);
                     //message to say you have invited so and so
@@ -140,9 +138,6 @@ export default function UserListView() {
                 >
                   Invite
                 </Button>
-
-
-
               </ListItem>
               <Divider component="li" />
 
@@ -156,13 +151,9 @@ export default function UserListView() {
             </div>
           ))}
 
-
-          {
-            matched.length <= 0 && 
-            <div>No Matches Found</div>
-          }
+        {matched.length <= 0 && <div>No Matches Found</div>}
       </List>
-      
+
       <NextBar
         activeStep={3}
         prevCb={() => {

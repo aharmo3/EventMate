@@ -7,9 +7,13 @@ import FormInput from "../FormInput";
 export default function LanguageDropdown({ label, placeholder, name }) {
   const formContext = useContext(FormContext);
   const { form, handleFormChange } = formContext;
-  const defaultValues = languages.filter((item) =>
-    form.languages.includes(item.name)
-  );
+  const defaultValues = languages.filter((item) => {
+    const languageArray =
+      typeof form.languages === "string"
+        ? form.languages.split(",")
+        : form.languages;
+    return languageArray.includes(item.name);
+  });
   return (
     <>
       <Autocomplete

@@ -2,13 +2,15 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
+import Badge from "@mui/material/Badge";
+
 import Button from "@mui/material/Button";
 import { Link, useNavigate } from "react-router-dom";
 import * as React from "react";
 import Avatar from "@mui/material/Avatar";
 import Local from "../helpers/Local";
-import IconButton from '@mui/material/IconButton';
-import NotificationsIcon from '@mui/icons-material/Notifications';
+import IconButton from "@mui/material/IconButton";
+import NotificationsIcon from "@mui/icons-material/Notifications";
 
 export default function TopNav(props) {
   const navigate = useNavigate();
@@ -35,10 +37,10 @@ export default function TopNav(props) {
               </Typography>
 
               <Link to="/notifications">
-                <IconButton aria-label="notifications"
-                  sx={{ mx: 2 }}>
-                  <NotificationsIcon 
-                  fontSize="large"/>
+                <IconButton aria-label="notifications" sx={{ mx: 2 }}>
+                  <Badge badgeContent={6} color="secondary">
+                    <NotificationsIcon fontSize="large" />
+                  </Badge>
                 </IconButton>
               </Link>
 
