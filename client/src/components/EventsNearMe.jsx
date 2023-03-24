@@ -156,7 +156,7 @@ function EventsCards() {
                 variant="text" 
                 fontSize="small" 
                 disabled
-                >My Events</Button>
+                >going</Button>
                   }
                 </ListItem>
                 <Divider variant="inset" component="li" />
