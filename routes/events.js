@@ -2,6 +2,7 @@ var express = require("express");
 const eventsRouter = express.Router();
 var db = require("../model/helper");
 
+
 // -------------------------- GET ROUTES ---------------------------------
 
 //get all events
@@ -64,7 +65,8 @@ eventsRouter.get("/user/:userid",  async (req, res) => {
 
 //get all user ids from event by ticketmasterid 
 eventsRouter.get("/user/ticketmaster/:ticketmasterid",  async (req, res) => {
-    let ticketmasterId = req.params.ticketmasterid;
+ 
+  let ticketmasterId = req.params.ticketmasterid;
     let sql = 
     `SELECT events.userId, 
             events.eventid,
