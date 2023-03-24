@@ -163,7 +163,6 @@ function EventsCards() {
               </List>
             );
           })}
-          {/*close map fn */}
         </div>
       )}
 

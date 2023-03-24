@@ -157,12 +157,12 @@ return (
                 >My Events</Button>
                   }
 
-                <Button 
+                {/* <Button 
                 size="small" 
                 variant= "contained" 
                 fontSize="small"
                 onClick={e => handleFindAMateBtn(r.id)}
-                >Find a Mate</Button>
+                >Find a Mate</Button> */}
                 {/* <EventCard r={r}
                  modelOpen={handleOpenModal} 
                 className= "event-card-search"/> */}
