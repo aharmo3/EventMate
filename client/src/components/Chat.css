@@ -1,15 +1,47 @@
-.messagesList {
-  background-color: green;
+* {
+  box-sizing: border-box;
 }
 
 .Chat {
-  border: 2px solid red;
-  margin: 30px auto;
-  width: 80%;
+  width: 400px;
   text-align: center;
+  position: fixed;
+  z-index: 999;
+  bottom: 50px;
+  right: 30px;
+  background-color: white;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  border-radius: 5px;
 }
 input {
-  width: 60%;
-  height: 200px;
   margin-top: 30px;
+  width: 100%;
+}
+
+.messagesList {
+  width: 100%;
+  height: 150px;
+  padding: 8px;
+  overflow: scroll;
+}
+.sender .spanning {
+  background-color: yellow;
+  padding: 5px;
+  border-radius: 5px;
+}
+.receiver .spanning {
+  background-color: plum;
+  padding: 5px;
+  border-radius: 5px;
+}
+.sender {
+  text-align: right;
+}
+.receiver {
+  text-align: left;
+}
+
+.button-close {
+  margin-left: -300px;
+  padding-top: 20px;
 }
