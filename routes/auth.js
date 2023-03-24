@@ -37,14 +37,17 @@ router.post("/register", async (req, res) => {
     let sql = `select * from users where username = "${username}"`;
     let results = await db(sql);
 
-    if (results.data.length === 1) {
+    if (false && results.data.length === 1) {
+      //here it will just see false and not event look at what is after &&, it will jump to line 43 onwards.
+      //and when it reaches line 49 it will see a uniqueness violation
+
       res.status(400).send({ message: `username already exists` });
     } else {
       let sql = `
             INSERT INTO users (username, password, email)
             VALUES ('${username}', '${hashedPassword}', '${email}')
         `;
-      await db(sql);
+      await db(sql); //here will be the uniqueness violation cause this is where the insert is happening
 
       let results = await db(
         `select * from users where username = "${username}"`
@@ -56,7 +59,14 @@ router.post("/register", async (req, res) => {
       res.send({ message: "Registration succeeded", token: token, user: user });
     }
   } catch (err) {
-    res.status(500).send({ err: err.message });
+    //if this is the error code, then return username exists or else return the error on line 59
+    if (err.code === "ER_DUP_ENTRY") {
+      res.status(400).send({ err: err.code });
+    } else {
+      res.status(500).send({ err: err.message });
+    }
+
+    console.log(err);
   }
 });
 

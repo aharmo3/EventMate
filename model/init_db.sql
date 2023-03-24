@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS connections; 
 DROP TABLE IF EXISTS events;
-DROP TABLE IF EXISTS users; 
 DROP TABLE IF EXISTS messages;
+DROP TABLE IF EXISTS users; 
 DROP TABLE IF EXISTS files;
 
 
@@ -74,7 +74,10 @@ id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 senderId INT NOT NULL,
 receiverId INT NOT NULL,
 text VARCHAR(250) NOT NULL,
-dateTime DATETIME DEFAULT CURRENT_TIMESTAMP);
+dateTime DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+FOREIGN KEY (senderId) REFERENCES users(userId),
+FOREIGN KEY (receiverId) REFERENCES users(userId));
 
 
 INSERT INTO events (userid,ticketmasterid, eventname, eventdate, starttime, imageurl, eventlocation, venue , currency, startingprice, ticketurl, genre, subgenre, host, eventtype, socialmedia, eventdetail) VALUES 

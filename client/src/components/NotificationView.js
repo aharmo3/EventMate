@@ -2,15 +2,19 @@ import React, { useState, useEffect, useMemo } from "react";
 import Local from "../helpers/Local";
 import ClientAPI from "../helpers/ClientAPI";
 import UserDialogView from "./UserDialogView";
-
+import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
+import Chat from "./Chat";
 
 export default function NotificationView() {
+  const [showChat, setShowChat] = useState(false);
+  const [toggleChat, setToggleChat] = useState(false);
+
   const userId = Local.getUserId();
 
   // For Dialog
@@ -83,91 +87,102 @@ export default function NotificationView() {
     setOpen(true);
   };
 
+  const handleChat = (invite) => {
+    setShowChat(invite);
+    setToggleChat((toggleChat) => !toggleChat);
+  };
+
   function inviteList(iList, type) {
     return (
-      <>
-        <List
-          sx={{
-            width: "100%",
-            bgcolor: "background.paper",
-          }}
-        >
-          <Divider component="li" />
+      <List
+        sx={{
+          width: "100%",
+          bgcolor: "background.paper",
+        }}
+      >
+        <Divider component="li" />
 
-          {iList &&
-            iList.map((invite) => (
-              <div>
-                <ListItem key={invite.connectId}>
-                  <ListItemText
-                    primary={
-                      <div>
-                        {invite.inviterUsername === Local.getUserName()
-                          ? " You"
-                          : invite.inviterUsername}
-                        &nbsp;invited&nbsp;
-                        {invite.inviteeUsername === Local.getUserName()
-                          ? "You"
-                          : invite.inviteeUsername}
-                      </div>
-                    }
-                    secondary={
-                      <div>
-                        <div>
-                          {invite.eventname} :: {invite.eventdate} ::
-                          {invite.eventlocation}
-                        </div>
-                      </div>
-                    }
-                  />
-
-                  {type === 2 && (
+        {iList &&
+          iList.map((invite) => (
+            <div>
+              <ListItem key={invite.connectId}>
+                <ListItemText
+                  primary={
                     <div>
-                      <Button
-                        variant="outlined"
-                        onClick={() => {
-                          handleUpdate(1, invite);
-                        }}
-                      >
-                        Accept
-                      </Button>
-                      &nbsp;
-                      <Button
-                        variant="outlined"
-                        onClick={() => {
-                          handleUpdate(0, invite);
-                        }}
-                      >
-                        Reject
-                      </Button>
-                      &nbsp;
-                      <Button
-                        variant="outlined"
-                        onClick={(e) => handleClickOpen(invite.inviterId)}
-                      >
-                        View Profile
-                      </Button>
+                      {invite.inviterUsername === Local.getUserName()
+                        ? "You"
+                        : invite.inviterUsername}{" "}
+                      invited{" "}
+                      {invite.inviteeUsername === Local.getUserName()
+                        ? "You"
+                        : invite.inviteeUsername}
                     </div>
-                  )}
-
-                  {type === 3 && (
+                  }
+                  secondary={
                     <div>
-                      <Button variant="outlined">Chat</Button>
+                      <div>
+                        {invite.eventname} :: {invite.eventdate} ::{" "}
+                        {invite.eventlocation}
+                      </div>
                     </div>
-                  )}
-                </ListItem>
-                <Divider component="li" />
+                  }
+                />
 
-                {profileClicked && (
-                  <UserDialogView
-                    open={open}
-                    onClose={handleClose}
-                    userId={profileClicked}
-                  />
+                {type === 2 && (
+                  <div>
+                    <Button
+                      variant="outlined"
+                      onClick={() => {
+                        handleUpdate(1, invite);
+                      }}
+                    >
+                      Accept
+                    </Button>
+
+                    <Button
+                      variant="outlined"
+                      onClick={() => {
+                        handleUpdate(0, invite);
+                      }}
+                    >
+                      Reject
+                    </Button>
+
+                    <Button
+                      variant="outlined"
+                      onClick={(e) => handleClickOpen(invite.inviterId)}
+                    >
+                      View Profile
+                    </Button>
+                  </div>
                 )}
-              </div>
-            ))}
-        </List>
-      </>
+
+                {type === 3 && (
+                  <div>
+                    <Button
+                      variant="outlined"
+                      onClick={() => handleChat(invite)}
+                    >
+                      Chat
+                    </Button>
+                    {toggleChat && (
+                      <Chat showChat={showChat} isVisible={toggleChat} />
+                    )}
+                  </div>
+                )}
+              </ListItem>
+              <Divider component="li" />
+
+              {profileClicked && (
+                <UserDialogView
+                  open={open}
+                  onClose={handleClose}
+                  userId={profileClicked}
+                />
+              )}
+            </div>
+          ))}
+      </List>
     );
   }
 
