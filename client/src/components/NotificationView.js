@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Local from "../helpers/Local";
 import ClientAPI from "../helpers/ClientAPI";
 import UserDialogView from "./UserDialogView";
@@ -8,7 +8,7 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Divider from "@mui/material/Divider";
-import Typography from '@mui/material/Typography';
+import Typography from "@mui/material/Typography";
 
 export default function NotificationView() {
   const userId = Local.getUserId();
@@ -17,7 +17,6 @@ export default function NotificationView() {
   const [open, setOpen] = useState(false);
   const [profileClicked, setProfileClicked] = useState(false);
 
-  
   let [connections, setConnections] = useState([]);
   // You've done the inviting
   const [myInvites, setMyInvites] = useState([]);
@@ -33,8 +32,7 @@ export default function NotificationView() {
 
   useEffect(() => {
     getConnections(Local.getUserId());
-  }, connections);
-
+  }, []);
 
   // Update
   function handleUpdate(accepted, invite) {
@@ -42,29 +40,28 @@ export default function NotificationView() {
     getConnections(userId);
   }
 
-    // Gets the connections for the notification view
+  // Gets the connections for the notification view
   async function getConnections(userId) {
-    console.log("--------------------------")
+    console.log("--------------------------");
     let uresponse = await ClientAPI.getConnections(userId);
-
+    console.warn(uresponse.data.length);
     if (uresponse.ok) {
       const mInv = uresponse.data.filter((row) => {
-        return (row.inviterId === userId && row.accepted === null)
+        return row.inviterId === userId && row.accepted === null;
       });
 
       const tInv = uresponse.data.filter((row) => {
-        return (row.inviterId !== userId && row.accepted === null)
+        return row.inviterId !== userId && row.accepted === null;
       });
 
       const conf = uresponse.data.filter((row) => {
-        return (row.accepted === 1)
+        return row.accepted === 1;
       });
 
       const rej = uresponse.data.filter((row) => {
-        return (row.accepted === 0)
+        return row.accepted === 0;
       });
-      
-      
+
       console.log("their Invites: ", tInv);
 
       setInvited(tInv);
@@ -72,9 +69,8 @@ export default function NotificationView() {
       setConfirmed(conf);
       setRejected(rej);
       setConnections(uresponse.data);
-    }
-    else {
-      console.log('Error!', uresponse.error);
+    } else {
+      console.log("Error!", uresponse.error);
     }
   }
 
@@ -88,118 +84,117 @@ export default function NotificationView() {
     setOpen(true);
   };
 
-
   function inviteList(iList, type) {
-
     return (
-      <List
-        sx={{
-          width: "100%",
-          bgcolor: "background.paper",
-        }}
-      >
-      
-      <Divider component="li" />
-      
-      {
-        iList &&
-        iList.map(invite => (
-          <div>
-            <ListItem
-              key={invite.connectId}
-            >
+      <>
+        <List
+          sx={{
+            width: "100%",
+            bgcolor: "background.paper",
+          }}
+        >
+          <Divider component="li" />
 
-              <ListItemText
-                primary={
-                  <div>
-                    {
-                      invite.inviterUsername === Local.getUserName() ? "You" : invite.inviterUsername
-                    } invited {
-                      invite.inviteeUsername === Local.getUserName() ? "You" : invite.inviteeUsername
+          {iList &&
+            iList.map((invite) => (
+              <div>
+                <ListItem key={invite.connectId}>
+                  <ListItemText
+                    primary={
+                      <div>
+                        {invite.inviterUsername === Local.getUserName()
+                          ? " You"
+                          : invite.inviterUsername}
+                        &nbsp;invited&nbsp;
+                        {invite.inviteeUsername === Local.getUserName()
+                          ? "You"
+                          : invite.inviteeUsername}
+                      </div>
                     }
-                  </div>}
-                secondary={
-                  <div>
-                    <div>{invite.eventname} :: {invite.eventdate} :: {invite.eventlocation}</div>
-                  </div>
-                }
-              />
+                    secondary={
+                      <div>
+                        <div>
+                          {invite.eventname} :: {invite.eventdate} ::
+                          {invite.eventlocation}
+                        </div>
+                      </div>
+                    }
+                  />
 
-              {type === 2 &&
-                <div>
-                <Button 
-                  variant="outlined"
-                  onClick={() => {
-                    handleUpdate(1, invite);
-                  }}
-                >
-                Accept
-                </Button>
+                  {type === 2 && (
+                    <div>
+                      <Button
+                        variant="outlined"
+                        onClick={() => {
+                          handleUpdate(1, invite);
+                        }}
+                      >
+                        Accept
+                      </Button>
+                      &nbsp;
+                      <Button
+                        variant="outlined"
+                        onClick={() => {
+                          handleUpdate(0, invite);
+                        }}
+                      >
+                        Reject
+                      </Button>
+                      &nbsp;
+                      <Button
+                        variant="outlined"
+                        onClick={(e) => handleClickOpen(invite.inviterId)}
+                      >
+                        View Profile
+                      </Button>
+                    </div>
+                  )}
 
-                <Button 
-                  variant="outlined"
-                  onClick={() => {
-                    handleUpdate(0, invite);
-                  }}
-                >
-                Reject
-                </Button>
+                  {type === 3 && (
+                    <div>
+                      <Button variant="outlined">Chat</Button>
+                    </div>
+                  )}
+                </ListItem>
+                <Divider component="li" />
 
-
-                <Button variant="outlined" onClick={(e) => handleClickOpen(invite.inviterId)}>View Profile</Button>
-                </div>
-              }
-
-              {type === 3 &&
-                <div>
-                <Button variant="outlined">Chat</Button>
-                </div>
-              }
-
-            </ListItem>
-            <Divider component="li" />
-
-
-            {profileClicked && (
-              <UserDialogView
-                open={open}
-                onClose={handleClose}
-                userId={profileClicked}
-              />
-            )}
-
-          </div>
-        ))
-      }
-      </List>
+                {profileClicked && (
+                  <UserDialogView
+                    open={open}
+                    onClose={handleClose}
+                    userId={profileClicked}
+                  />
+                )}
+              </div>
+            ))}
+        </List>
+      </>
     );
   }
 
-
-
-  return(
+  return (
     <div>
+      <h1>Notifications</h1>
+
       <Typography sx={{ mt: 4, mb: 0 }} variant="h6" component="div">
-        Awaiting Their Reply
+        Awaiting Their Reply ({myInvites.length})
       </Typography>
       {inviteList(myInvites, 1)}
-      
 
       <Typography sx={{ mt: 4, mb: 0 }} variant="h6" component="div">
-        Awaiting Your Reply
+        Awaiting Your Reply ({invited.length})
       </Typography>
       {inviteList(invited, 2)}
 
       <Typography sx={{ mt: 4, mb: 0 }} variant="h6" component="div">
-        Confirmed
+        Confirmed ({confirmed.length})
       </Typography>
       {inviteList(confirmed, 3)}
 
       <Typography sx={{ mt: 4, mb: 0 }} variant="h6" component="div">
-        Rejected
+        Rejected ({rejected.length})
       </Typography>
       {inviteList(rejected, 4)}
     </div>
   );
-
 }

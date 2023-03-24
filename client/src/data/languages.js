@@ -38,7 +38,7 @@ const languages = [
   { code: "dz", name: "Dzongkha" },
   { code: "en", name: "English" },
   { code: "eo", name: "Esperanto" },
-  { code: "es", name: "Spanish; Castilian" },
+  { code: "es", name: "Spanish" },
   { code: "et", name: "Estonian" },
   { code: "eu", name: "Basque" },
   { code: "fa", name: "Persian" },
