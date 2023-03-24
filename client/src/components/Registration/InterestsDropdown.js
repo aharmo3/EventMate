@@ -7,10 +7,13 @@ import FormInput from "../FormInput";
 export default function InterestsDropdown({ label, placeholder, name }) {
   const formContext = useContext(FormContext);
   const { form, handleFormChange } = formContext;
-  const defaultValues = betterInterests.filter((item) =>
-    form.interests.includes(item.title)
-  );
-
+  const defaultValues = betterInterests.filter((item) => {
+    const interestsArray =
+      typeof form.interests === "string"
+        ? form.interests.split(",")
+        : form.interests;
+    return interestsArray.includes(item.title);
+  });
   return (
     <Autocomplete
       multiple

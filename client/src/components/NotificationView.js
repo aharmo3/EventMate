@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Local from "../helpers/Local";
 import ClientAPI from "../helpers/ClientAPI";
 import UserDialogView from "./UserDialogView";
@@ -48,7 +48,6 @@ export default function NotificationView() {
   async function getConnections(userId) {
     console.log("--------------------------");
     let uresponse = await ClientAPI.getConnections(userId);
-
     if (uresponse.ok) {
       const mInv = uresponse.data.filter((row) => {
         return row.inviterId === userId && row.accepted === null;
@@ -189,23 +188,25 @@ export default function NotificationView() {
 
   return (
     <div>
+      <h1>Notifications</h1>
+
       <Typography sx={{ mt: 4, mb: 0 }} variant="h6" component="div">
-        Awaiting Their Reply
+        Awaiting Their Reply ({myInvites.length})
       </Typography>
       {inviteList(myInvites, 1)}
 
       <Typography sx={{ mt: 4, mb: 0 }} variant="h6" component="div">
-        Awaiting Your Reply
+        Awaiting Your Reply ({invited.length})
       </Typography>
       {inviteList(invited, 2)}
 
       <Typography sx={{ mt: 4, mb: 0 }} variant="h6" component="div">
-        Confirmed
+        Confirmed ({confirmed.length})
       </Typography>
       {inviteList(confirmed, 3)}
 
       <Typography sx={{ mt: 4, mb: 0 }} variant="h6" component="div">
-        Rejected
+        Rejected ({rejected.length})
       </Typography>
       {inviteList(rejected, 4)}
     </div>
