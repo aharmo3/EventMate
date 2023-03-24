@@ -75,11 +75,7 @@ function SearchEvents() {
     console.log("events set as:", events);
   };
 
-  function handleShowAdd(eventObj){
-    if (myEventsids.includes(eventObj.id)){
-      eventObj.showAdd = false
-    }
-  }
+ 
 
  
     async function handleAddToMyEventsBtn(eventId, eventObject){
@@ -145,7 +141,8 @@ return (
                 {r.showAdd &&
                 <Button 
                 size="small" 
-                variant="text" 
+                variant="contained" 
+                color= "secondary"
                 fontSize="small" 
                 onClick={e => handleAddToMyEventsBtn(r.id, r)}
                 >+ My Events</Button>
