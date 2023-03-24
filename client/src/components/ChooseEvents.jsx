@@ -19,13 +19,12 @@ function ChooseEvents() {
   const userInfo = Local.getUser();
   const userLocation = userInfo.location;
   const [events, setEvents] = useState();
-  const [location, setLocation] = useState();
+  const [location, setLocation] = useState(userLocation);
   const [showEvents, setShowEvents] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [chosenEvents, setChosenEvents] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [modalData, setModalData] = useState({});
-
 
   //Loads with user's current country in DB when loading
   useEffect(() => {
@@ -40,7 +39,6 @@ function ChooseEvents() {
     setModalData(res);
     setIsOpen(true);
   }
-
 
   const handleLocationChange = async (form) => {
     await getEvents(form.location);
