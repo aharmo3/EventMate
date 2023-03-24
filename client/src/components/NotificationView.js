@@ -44,7 +44,6 @@ export default function NotificationView() {
   async function getConnections(userId) {
     console.log("--------------------------");
     let uresponse = await ClientAPI.getConnections(userId);
-    console.warn(uresponse.data.length);
     if (uresponse.ok) {
       const mInv = uresponse.data.filter((row) => {
         return row.inviterId === userId && row.accepted === null;
