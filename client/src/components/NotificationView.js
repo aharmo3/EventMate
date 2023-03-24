@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Local from "../helpers/Local";
 import ClientAPI from "../helpers/ClientAPI";
 import UserDialogView from "./UserDialogView";
-
+import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -13,6 +13,7 @@ import Chat from "./Chat";
 
 export default function NotificationView() {
   const [showChat, setShowChat] = useState(false);
+  const [toggleChat, setToggleChat] = useState(false);
 
   const userId = Local.getUserId();
 
@@ -35,7 +36,7 @@ export default function NotificationView() {
 
   useEffect(() => {
     getConnections(Local.getUserId());
-  }, connections);
+  }, []);
 
   // Update
   function handleUpdate(accepted, invite) {
@@ -89,6 +90,7 @@ export default function NotificationView() {
 
   const handleChat = (invite) => {
     setShowChat(invite);
+    setToggleChat((toggleChat) => !toggleChat);
   };
 
   function inviteList(iList, type) {
@@ -164,13 +166,9 @@ export default function NotificationView() {
                     >
                       Chat
                     </Button>
-                    {showChat && <Chat showChat={showChat} />}
-                    {/* onClick calls an outside method within notification view... it compares the local id with the inviter id and the invitee id
-                     then if statment to compare which one you are ...
-                     then it will navigate to chat component and pass in my local id and the other person's id */}
-                    {/* then find a way to pass those ids into chat and use them as variables in the rest of my code */}
-                    {/* opens the chat component */}
-                    {/* who is inviter and who is invitee when clicking on the chat button */}
+                    {toggleChat && (
+                      <Chat showChat={showChat} isVisible={toggleChat} />
+                    )}
                   </div>
                 )}
               </ListItem>
