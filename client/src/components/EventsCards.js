@@ -7,7 +7,6 @@ import Typography from "@mui/material/Typography";
 import { Button, Link, CircularProgress } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import getMyEvents from "../helpers/Utils/getMyEvents.js";
-import EventsDisplayModal from "./EventsDisplayModal.jsx";
 import Local from "../helpers/Local.js";
 
 //pass the data into the component as a prop

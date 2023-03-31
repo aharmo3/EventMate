@@ -15,7 +15,7 @@ export default function Home() {
     if (isLoggedIn) {
       navigate("/dashboard");
     }
-  }, []);
+  }, [isLoggedIn]);
 
   return (
     <>

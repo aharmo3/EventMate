@@ -12,7 +12,7 @@ import Form from "./Form";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import EventCard from "./EventCard";
-import EventsDisplayModal from "./EventsDisplayModal.jsx";
+import EventsDisplayModal from "./EventsDisplayModal.js";
 
 function ChooseEvents() {
   const navigate = useNavigate();

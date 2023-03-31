@@ -1,8 +1,7 @@
 import React from "react";
-import EventsCards from "./EventsCards.jsx";
-import Local from "../helpers/ClientAPI";
+import EventsCards from "./EventsCards.js";
 
-import EventsNearMe from "./EventsNearMe.jsx";
+import EventsNearMe from "./EventsNearMe.js";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";

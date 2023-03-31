@@ -20,7 +20,7 @@ export default function UserDialogView({ open, onClose, userId }) {
   useEffect(() => {
     console.log("user id", userId);
     getProfile(userId);
-  }, []);
+  }, [userId]);
 
   // Gets the connections for the notification view
   async function getProfile(user) {

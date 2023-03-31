@@ -1,28 +1,25 @@
 import { Box, Button, Modal } from "@mui/material";
 import React, { useState } from "react";
-import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import CardActionArea from "@mui/material/CardActionArea";
 
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import Paper from "@mui/material/Paper";
 import Local from "../helpers/Local";
 import addEventsToDB from "../helpers/Utils/addEventsToDB";
 
+function EventsDisplayModal({ isOpen, handleOpen, eventData }) {
+  const userInfo = Local.getUser();
+  const userId = userInfo.userId;
+  const [addedToEvents, setAddedToEvents] = useState(false);
 
-function EventsDisplayModal({ isOpen, handleOpen, eventData}) {
-const userInfo = Local.getUser()
-const userId= userInfo.userId
-const [addedToEvents, setAddedToEvents]= useState(false);
-
- async function handleMyEvents(){
-  let response= await addEventsToDB(eventData.id, eventData, userId)
- if (response){
-    setAddedToEvents(true)
-    eventData.showAdd=(false)
- }
+  async function handleMyEvents() {
+    let response = await addEventsToDB(eventData.id, eventData, userId);
+    if (response) {
+      setAddedToEvents(true);
+      eventData.showAdd = false;
+    }
   }
 
   const style = {
@@ -36,10 +33,9 @@ const [addedToEvents, setAddedToEvents]= useState(false);
     boxShadow: 24,
   };
 
-
   const openInNewTab = (url) => {
-    window.open(url, '_blank', 'noreferrer');
-    console.log(url)
+    window.open(url, "_blank", "noreferrer");
+    console.log(url);
   };
 
   console.warn(eventData);
@@ -76,26 +72,39 @@ const [addedToEvents, setAddedToEvents]= useState(false);
                   {eventData.subgenre}
                 </p>
 
-               { eventData.purchaseURL &&
-                <Button
-                 variant="contained" size= "small" href={eventData.purchaseURL} target="_blank" 
-                onClick={(e) => openInNewTab(`${eventData.purchaseURL}`)}>
-                  Purchase Tickets
-                </Button> 
-                }
+                {eventData.purchaseURL && (
+                  <Button
+                    variant="contained"
+                    size="small"
+                    href={eventData.purchaseURL}
+                    target="_blank"
+                    onClick={(e) => openInNewTab(`${eventData.purchaseURL}`)}
+                  >
+                    Purchase Tickets
+                  </Button>
+                )}
 
-                { eventData.showAdd &&
-                <Button color= "secondary" variant="contained" 
-                onClick={e => handleMyEvents()}>my events +</Button>
-                }
-                { !addedToEvents && !eventData.showAdd &&
-                <Button size= "small" color= "secondary"> my event</Button>
-                }
-                 { addedToEvents &&
-                <Button size= "small"  color= "secondary" > added!</Button>
-                }
-
-
+                {eventData.showAdd && (
+                  <Button
+                    color="secondary"
+                    variant="contained"
+                    onClick={(e) => handleMyEvents()}
+                  >
+                    my events +
+                  </Button>
+                )}
+                {!addedToEvents && !eventData.showAdd && (
+                  <Button size="small" color="secondary">
+                    {" "}
+                    my event
+                  </Button>
+                )}
+                {addedToEvents && (
+                  <Button size="small" color="secondary">
+                    {" "}
+                    added!
+                  </Button>
+                )}
               </Typography>
             </CardContent>
           </CardActionArea>

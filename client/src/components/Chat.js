@@ -8,7 +8,7 @@ import IconButton from "@mui/material/IconButton";
 
 export default function Chat(props) {
   //states for the view of the sender name and receiver name
-  const [senderId, setSenderId] = useState(Local.getUserId()); // default sender ID
+  const [senderId] = useState(Local.getUserId()); // default sender ID
   const [receiverId, setReceiverId] = useState(2); // default receiver ID
   let [messages, setMessages] = useState([]);
   let [text, setText] = useState(""); //state for the chat input bar
@@ -101,16 +101,6 @@ export default function Chat(props) {
       } else {
         console.log(`Network error: ${err.message}`);
       }
-    }
-  }
-
-  //FUNCTION FOR USER NAMES WHEN CHATTING
-  function handleChangeUser(event) {
-    let { name, value } = event.target;
-    if (name === "senderId") {
-      setSenderId(Number(value));
-    } else {
-      setReceiverId(Number(value));
     }
   }
 

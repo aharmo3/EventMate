@@ -1,7 +1,7 @@
 import React from "react";
 import Button from "@mui/material/Button";
 import LinearStepper from "./LinearStepper";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function NextBar({ activeStep, prevCb, nextCb }) {
   const navigate = useNavigate();

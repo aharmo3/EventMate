@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Local from "../helpers/Local";
 
 import List from "@mui/material/List";
@@ -23,7 +23,6 @@ export default function UserListView() {
 
   useEffect(() => {
     getMatched();
-    console.log(matched);
   }, []);
 
   async function getMatched() {

@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import ListItem from "@mui/material/ListItem";
 import Divider from "@mui/material/Divider";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Typography from "@mui/material/Typography";
-import { Button } from "@mui/material";
 export default function EventCard({ r, modelOpen }) {
   return (
     <>
